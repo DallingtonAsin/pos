@@ -37,7 +37,7 @@ class UserFactory extends Factory
       'nationalID_no' => strtoupper(Str::random(14)),
       'email_verified_at' => now(),
       'image' => NULL,
-      'password' => Hash::make('12345678'),
+      'password' => Hash::make('admin@123'),
       'remember_token' => Str::random(10),
     ];
   }

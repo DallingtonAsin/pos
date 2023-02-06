@@ -216,7 +216,7 @@
           //      var itemName = $('.item-name').val();
           //      var isBarcode = 0;
           //      if(itemName.length >= 3){
-            //        PopulateCartBag(isBarcode, itemName);
+            //        AddItemToCart(isBarcode, itemName);
             //      }
             //      $('.item-name').val("");
             // });
@@ -226,7 +226,7 @@
               var itemName = $('.item-name').val();
               var isBarcode = 0;
               // if(itemName.length >= 3){
-                PopulateCartBag(isBarcode, itemName);
+                AddItemToCart(isBarcode, itemName);
               // }
               $('.item-name').val("");
             });
@@ -247,7 +247,7 @@
             Numberize(".extra_money");
 
             
-            function PopulateCartBag(searchId, item){
+            function AddItemToCart(searchId, item){
               
               var url = "{{ route('item.get') }}";
               
@@ -316,24 +316,30 @@
                           $('.item-name').val("");
                           $('#qty').val("");
                           $('#discount').val("");
-                          var newQty = Convert2Num(itemQty);
-
-                          if(tblItemId == row.item_code){
-                            // alert("Yes it exists");
-                            // $(this).addClass('tr-exists');
-                            $(this).css({'background': '#ffa500', 'color': '#fff'});
-
-                          }
+                          let newQty = Convert2Num(itemQty);
 
                           // if(tblItemId == row.item_code){
-                            
-                          //   var newSubTotal = newQty*Convert2Num(ItemPrice);
-                          //   $(this).children(":eq(2)").text(FormatNumber(newQty));
-                          //   $(this).children(":eq(4)").text(FormatNumber(newSubTotal));
-                          //   updateSubTotal();
-                          //   ComputeBalance();
-                          //   inc += 1;
+                          //   $(this).css({'background': '#ffa500', 'color': '#fff'});
                           // }
+
+                          if(tblItemId == row.item_code){
+                            newQty = Convert2Num(itemQty) + quantity;
+              
+                            var newSubTotal = newQty*Convert2Num(ItemPrice);
+                            let newTotalDiscount = Convert2Num(newQty) * Convert2Num(
+                                    discount);
+                                let newTotal = newSubTotal - newTotalDiscount;
+                                newTotal % 1 != 0 ? newTotal = newTotal.toFixed(2) : newTotal =
+                                    newTotal;
+
+                            $(this).children(":eq(2)").text(FormatNumber(newQty));
+                            $(this).children(":eq(4)").text(FormatNumber(newSubTotal));
+                            $(this).children(":eq(6)").text(FormatNumber(newTotal));
+                            $(this).children(":eq(7)").text(FormatNumber(newTotal));
+                            updateSubTotal();
+                            ComputeBalance();
+                            inc += 1;
+                          }
                           
                           
                         });
@@ -475,7 +481,7 @@
                   //        var barcode = $('.barcode').val();
                   //        var isBarcode = 1;
                   //        if(barcode.length >= 13){
-                    //          PopulateCartBag(isBarcode, barcode);
+                    //          AddItemToCart(isBarcode, barcode);
                     //        }
                     //   });
                     
@@ -486,25 +492,25 @@
                         var barcode = $('.barcode').val();
                         var isBarcode = 1;
                         if(barcode.length >= 13){
-                          PopulateCartBag(isBarcode, barcode);
+                          AddItemToCart(isBarcode, barcode);
                         }
                       }
                     });
                     
                     
-                    $(document).keydown(function(event){
-                      var key = event.keyCode || event.charCode;
-                      if(key == 13 || key == '13' ){
-                        var table = document.getElementById('cart-table');
-                        var rowCount = (table.rows.length - 1);
-                        if(rowCount > 0){
-                          PrintReceipt();
-                        }else{
-                          alert('cart is empty');
-                        }
+                    // $(document).keydown(function(event){
+                    //   var key = event.keyCode || event.charCode;
+                    //   if(key == 13 || key == '13' ){
+                    //     var table = document.getElementById('cart-table');
+                    //     var rowCount = (table.rows.length - 1);
+                    //     if(rowCount > 0){
+                    //       PrintReceipt();
+                    //     }else{
+                    //       alert('cart is empty');
+                    //     }
                         
-                      }
-                    });
+                    //   }
+                    // });
                     
                     
                     $('#printBtn').on('click', function(){

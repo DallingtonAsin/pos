@@ -252,6 +252,7 @@ class Helper
       
       public static function createStock($row){
         try{
+
           $insertStock =  Stock::create([
             'item_code' => $row['item_code'],
             'item' => $row['item'],
@@ -261,9 +262,11 @@ class Helper
             'wholesale_price' => floatval(Helper::Numberize($row['wholesale_price'])),
             'supplier' => $row['supplier']
           ]);
-          return true;
-        }catch(Exception $ex){
-          dd($ex->getMessage());
+          
+          return $insertStock;
+
+        }catch(\Exception $ex){
+           throw $ex;
         }
       }
       
