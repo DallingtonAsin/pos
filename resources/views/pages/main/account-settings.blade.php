@@ -108,7 +108,7 @@
 
         <div class="row form-group">
          <div class="col-lg-3">
-         <button type="submit" class="btn btn-primary addProfileBtn"  name="addProfileBtn">Update Profile</button>
+         <button type="submit" class="btn btn-success addProfileBtn"  name="addProfileBtn">Update Profile</button>
            {{-- <input type="button" 
            class="btn overview-item--c4 text-white addProfileBtn"
             id="addProfileBtn" value="Update Profile"> --}}
@@ -234,7 +234,7 @@
               if(data.error){
                 ShowResponse('.response', data.error, 'error');
               }
-              $('.addProfileBtn').html('Update Profile');
+              $('.addProfileBtn').html("Update");
               
           },
           error: function (data) {

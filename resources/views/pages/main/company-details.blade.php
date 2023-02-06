@@ -92,7 +92,7 @@
 <!--Add company -->
 <div class="modal fade nunito-font addCompanyModal" id="addCompanyModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form name="company" id="CompanyForm">
@@ -108,45 +108,45 @@ role="dialog" aria-labelledby="myModalLabel">
 
         <div class="form-group">
             {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-            <input type="hidden" class="form-control companyId bg-white companyId" name="id"
+            <input type="hidden" class="form-control companyId  companyId" name="id"
              placeholder="Enter customer id"  Required autofocus>
           </div>
 
         <div class="form-group">
           <span>Name</span>
-          <input type="text" class="form-control company_name bg-white" 
+          <input type="text" class="form-control company_name " 
           name="company_name" placeholder="Enter company name" Required autofocus>
         </div>
 
        
         <div class="form-group">
           <span>Abbreviation</span>
-          <input type="text" class="form-control company_abbrev bg-white"
+          <input type="text" class="form-control company_abbrev "
            name="company_abbrev" placeholder="Enter company abbreviation" autofocus>
         </div>
 
         <div class="form-group">
           <span>Email</span>
-          <input type="email" class="form-control company_email bg-white"
+          <input type="email" class="form-control company_email "
            name="company_email" placeholder="Enter company email">
         </div>
 
 
         <div class="form-group">
           <span>Address</span>
-          <input type="text" class="form-control company_address bg-white" name="company_address"
+          <input type="text" class="form-control company_address " name="company_address"
            placeholder="Enter company address">
         </div>
 
         <div class="form-group">
             <span>Motto</span>
-            <textarea class="form-control company_motto bg-white" placeholder="Enter company motto"></textarea>
+            <textarea class="form-control company_motto " placeholder="Enter company motto"></textarea>
           </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary AddcompanyBtn"  name="AddcompanyBtn">Save</button>
+          <button type="submit" class="btn btn-success AddcompanyBtn"  name="AddcompanyBtn">Save</button>
           <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-          <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+          
         </div>
 
         <div class="form-group">
@@ -162,7 +162,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
  <!--Modal Deletecompany -->
  <div class="modal fade" id="deleteCompanyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete company</h5>
@@ -186,7 +186,7 @@ role="dialog" aria-labelledby="myModalLabel">
          </div>
 
          <div class="form-group">
-            <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+            <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
             <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
         </div>
       </div>
@@ -219,7 +219,7 @@ role="dialog" aria-labelledby="myModalLabel">
          e.preventDefault();
          DisableTableFields(false);
          ShowBtns();
-        $('.AddcompanyBtn').text("Register company");
+        $('.AddcompanyBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('.companyId').val('');
         $('#CompanyForm').trigger("reset");
         $('#modalHeading').html("Register new company");

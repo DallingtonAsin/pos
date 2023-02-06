@@ -120,7 +120,7 @@ class Helper
           //     return back()->with("fail", "Sorry, message has not been sent!");
           
           // }
-        }catch(Exception $ex){
+        }catch(\Exception $ex){
           echo('Problems thhh');
           return back()->with("fail", "Sorry, message has not been sent!");
         }
@@ -171,7 +171,7 @@ class Helper
           }
           return true;
           
-        }catch(Exception $ex){
+        }catch(\Exception $ex){
           throw $ex;
         }
         
@@ -239,7 +239,7 @@ class Helper
             
           }
           return true;
-        }catch(Exception $ex){
+        }catch(\Exception $ex){
           throw $ex;
         }
         
@@ -383,7 +383,7 @@ class Helper
           
           return $netProfitPerMonth;
           
-        }catch(Exception $ex){
+        }catch(\Exception $ex){
           throw $ex;
         }
       }
@@ -421,25 +421,22 @@ class Helper
       {
         $year = date('Y');
 
-        $result = DB::select(DB::raw("SELECT MONTHNAME(created_at) as month, sum(cost_price_per_item) as purchases
-        FROM purchases GROUP BY MONTH(created_at), MONTHNAME(created_at) ORDER BY MONTH(created_at)"));
-        // dd($result);
-
+        $result  = DB::table('monthly_purchases')
+        ->where('purchase_year', $year)
+        ->orderBy('month_int','asc')
+        ->get();
         $data = $months = $purchases = array();
      
         foreach($result as $row){
           
-          array_push($months, $row->month);
-          array_push($purchases, $row->purchases);
+          array_push($months, $row->month_name);
+          array_push($purchases, $row->total_purchases);
         }
         $data = array('months' => $months,
                       'purchases' => $purchases
                     );
      
-        if(!empty($data))
-        {
-          return $data;
-        }
+       return $data;
         
       }
       

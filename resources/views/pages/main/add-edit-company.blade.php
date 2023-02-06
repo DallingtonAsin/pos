@@ -17,60 +17,69 @@
 
       <div class="panel-body">
 
-        <form class="form" method="post" action="{{ route('companies.register', isset($company)?$company['id']:0) }}"
+        <form class="form" method="post" action="{{ route('companies.register', $company->is_registered ? $company->id : 0) }}"
           enctype='multipart/form-data'>
           @csrf
 
           <div class="form-group">
-            <span class="text-muted"><span class="text-danger pr-2">*</span>Company Name</span>
-            <input type="text"  class="form-control" placeholder="Enter company name" required
-            name="company_name" value="<?= isset($company)? $company['company_name'] : ''?>" autocomplete="off">
+            <span class="text-muted"><span class="text-danger pr-2">*</span>Name</span>
+            <input type="text"  class="form-control" placeholder="Enter company name" 
+            name="name" value="<?= isset($company)? $company->name : ''?>" autocomplete="off">
+            @error('name')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
           </div>
 
           <div class="form-group">
-           <span class="text-muted"> Abbreviation</span>
-           <input type="text" class="form-control"  placeholder="Enter company abbreviation" 
-            name="company_abbrev" value="<?= isset($company)? $company['company_abbrev'] : ''?>"
-           autocomplete="off">
-         </div>
+            <span class="text-muted"><span class="text-danger pr-2">*</span>Phone Number</span>
+            <input type="text" class="form-control" name="phone_number"  
+            placeholder="Enter phone number" value="<?= isset($company)? $company->phone_number : ''?>"
+             >
+             @error('phone_number')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
+          </div>
+
 
          <div class="form-group">
-          <span class="text-muted"><span class="text-danger pr-2">*</span>Company Email</span>
-          <input type="text" class="form-control" name="company_email"  placeholder="Enter company email" 
-          value="<?= isset($company)? $company['company_email'] : ''?>" required
+          <span class="text-muted"><span class="text-danger pr-2">*</span>Email</span>
+          <input type="text" class="form-control" name="email"  placeholder="Enter email" 
+          value="<?= isset($company)? $company->email : ''?>" 
           autocomplete="off"
           >
+          @error('email')
+          <span class="text-danger">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
-          <span class="text-muted"><span class="text-danger pr-2">*</span>Company Address</span>
-          <input type="text" class="form-control"  placeholder="Enter company address" required
-          name="company_address" value="<?= isset($company)? $company['company_address'] : ''?>"
+          <span class="text-muted"><span class="text-danger pr-2">*</span>Address</span>
+          <input type="text" class="form-control"  placeholder="Enter address" 
+          name="address" value="<?= isset($company)? $company->address : ''?>"
           autocomplete="off">
+          @error('address')
+          <span class="text-danger">{{ $message }}</span>
+          @enderror
+        </div>
+
+      
+          <div class="form-group">
+            <span class="text-muted"> Abbreviation</span>
+            <input type="text" class="form-control"  placeholder="Enter abbreviation" 
+             name="abbrev" value="<?= isset($company)? $company->abbrev : ''?>" autocomplete="off">
+          </div>
+
+        <div class="form-group">
+          <span class="text-muted">Company Logo</span>
+          <input type="file" class="form-control-file" name="logo">
         </div>
 
         <div class="form-group">
-            <span class="text-muted">Company Moto</span>
-            <textarea class="form-control" name="company_motto"  placeholder="Enter company motto" 
-             ><?= isset($company)? $company['company_motto'] : ''?></textarea>
-          </div>
-
-        <div class="row form-group">
-            <div class="col-lg-5">
-          <span class="text-muted">Company Logo</span>
-          <input type="file" class="form-control-file" name="company_logo" >
-            </div>
-            <div class="col-lg-3">
-                <input type="submit" class="btn btn-sm overview-item--c4 text-white" 
-                value="<?= isset($company)? 'Update' : 'Add Company'?>">
-              </div>
+            <input type="submit" class="btn btn-success text-white" 
+            value="<?= isset($company)? 'Update' : 'Submit'?>">
         </div>
 
-        <div class="row form-group">
-         <div class="col-lg-9">
-            <span class="pl-0 response"></span>
-          </div>
-        </div>
+      
 
        </form>
      </div>

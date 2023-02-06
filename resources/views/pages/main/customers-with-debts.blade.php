@@ -90,7 +90,7 @@
 
 <div class="modal fade nunito-font CustomerDebtDetailsModel" id="CustomerDebtDetailsModel" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form name="customers" id="DebtSaleDetailsForm">
@@ -106,20 +106,20 @@ role="dialog" aria-labelledby="myModalLabel">
 
         <div class="form-group">
           <span>Name</span>
-          <input type="hidden" class="form-control sale_id bg-white" name="id">
-          <input type="text" class="form-control name bg-white" name="name">
+          <input type="hidden" class="form-control sale_id " name="id">
+          <input type="text" class="form-control name " name="name">
         </div>
 
        
         <div class="row">
         <div class="form-group col-md-6">
           <span>Item taken</span>
-          <input type="text" class="form-control item_taken bg-white" name="item_taken">
+          <input type="text" class="form-control item_taken " name="item_taken">
         </div>
 
         <div class="form-group col-md-6">
           <span>Quantity</span>
-          <input name="quantity" class="form-control bg-white quantity"  id="quantity">
+          <input name="quantity" class="form-control  quantity"  id="quantity">
           </select>
         </div>
       </div>
@@ -127,46 +127,46 @@ role="dialog" aria-labelledby="myModalLabel">
       <div class="row">
          <div class="form-group col-md-6">
           <span>Discount</span>
-          <input type="text" class="form-control discount bg-white" name="discount">
+          <input type="text" class="form-control discount " name="discount">
         </div>
 
         <div class="form-group col-md-6">
           <span>Taken on</span>
-          <input type="date" value="" class="form-control taken_on bg-white" id="taken_on" name="taken_on">
+          <input type="date" value="" class="form-control taken_on " id="taken_on" name="taken_on">
         </div>
 
         <div class="form-group col-md-6">
           <span>Amount</span>
-          <input type="text" class="form-control amount bg-white" name="amount">
+          <input type="text" class="form-control amount " name="amount">
         </div>
 
         <div class="form-group col-md-6">
           <span>Paid Amount</span>
-          <input type="text" class="form-control paid_amount bg-white" name="paid_amount">
+          <input type="text" class="form-control paid_amount " name="paid_amount">
         </div>
       </div>
 
 
         <div class="form-group received-div">
           <span>Received now</span>
-          <input type="text" class="form-control received bg-white" placeholder="Enter amount the customer has just paid now" name="received">
+          <input type="text" class="form-control received " placeholder="Enter amount the customer has just paid now" name="received">
         </div>
 
         <div class="form-group date">
           <span>Date of repayment</span>
-          <input type="date" class="form-control date bg-white" name="date" value="{{date('Y-m-d')}}">
+          <input type="date" class="form-control date " name="date" value="{{date('Y-m-d')}}">
         </div>
 
         <div class="form-group">
           <span>Balance</span>
-          <input type="text" class="form-control balance bg-white text-danger" name="balance" required>
+          <input type="text" class="form-control balance  text-danger" name="balance" required>
         </div>
 
        
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary submitBtn"  name="submitBtn">Save</button>
-          <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success submitBtn"  name="submitBtn">Save</button>
+          
         </div>
 
         <div class="form-group">

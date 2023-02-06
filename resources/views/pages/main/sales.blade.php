@@ -151,7 +151,7 @@
 
 <!--Modal DeleteSale -->
 <div class="modal fade" id="deleteSaleModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
         <h5 class="modal-title w-100 font-weight-bold">Delete sold item</h5>
@@ -170,7 +170,7 @@
          </div>
        </div>
        <div class="form-group">
-        <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+        <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
         <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
       </div>
     </div>
@@ -182,11 +182,11 @@
 
 <!-- View Sold Item Details -->
 <div class="modal fade" id="SalesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 
     <div class="modal-content nunito-font border border-custom-dark rounded-0">
-      <div class="modal-header main-color-bg text-center">
-        <h5 class="modal-title w-100 nunito-font text-white modalHeading  font-weight-bold">
+      <div class="modal-header  text-center">
+        <h5 class="modal-title w-100 nunito-font text-dark modalHeading font-weight-bold">
           <i class="fa fa-info-circle"></i>
           Details of the sale
         </h5>
@@ -203,34 +203,34 @@
           <div class="form-group">
             <span>Item</span>
             <input type="hidden" class="form-control item_id" name="item_id">
-            <input type="text" class="form-control item-name bg-white text-dark" value="">
+            <input type="text" class="form-control item-name messageArray text-dark" value="">
           </div>
 
           <div class="form-group">
             <span>Qty</span>
-            <input type="text" class="form-control qty bg-white text-dark"  value="">
+            <input type="text" class="form-control qty messageArray text-dark"  value="">
           </div>
 
           <div class="form-group">
             <span>Selling Price</span>
-            <input type="text" class="form-control sprice bg-white text-dark"  value="">
+            <input type="text" class="form-control sprice messageArray text-dark"  value="">
           </div>
 
           <div class="form-group">
             <span>Total cost</span>
-            <input type="text" class="form-control tcost bg-white text-dark"  value="">
+            <input type="text" class="form-control tcost messageArray text-dark"  value="">
           </div>
           
           <div class="form-group row">
 
             <div class="col-lg-6">
               <span>Discount</span>
-              <input type="text" class="form-control discount bg-white text-dark"  value="">
+              <input type="text" class="form-control discount messageArray text-dark"  value="">
             </div>
 
             <div class="col-lg-6">
               <span>Sold at</span>
-              <input type="text" class="form-control amount bg-white text-danger"  value="">
+              <input type="text" class="form-control amount messageArray text-danger"  value="">
             </div>
 
           </div>
@@ -241,25 +241,25 @@
 
             <div class="col-lg-6">
               <span>Customer</span>
-              <input type="text" class="form-control customer bg-white text-dark"  value="">
+              <input type="text" class="form-control customer messageArray text-dark"  value="">
             </div>
 
             <div class="col-lg-6">
               <span>Cashier</span>
-              <input type="text" class="form-control cashier bg-white text-dark"  value="">
+              <input type="text" class="form-control cashier messageArray text-dark"  value="">
             </div>
 
           </div>
 
           <div class="form-group">
             <span>Date of transaction</span>
-            <input type="date" name="date_of_sale" class="form-control date bg-white text-dark"  value="">
+            <input type="date" name="date_of_sale" class="form-control date messageArray text-dark"  value="">
           </div>
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary addSaleBtn"  name="AddItemBtn">Save</button>
+            <button type="submit" class="btn btn-success addSaleBtn"  name="AddItemBtn">Save</button>
             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-            <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+            
           </div>
 
           <div class="form-group">

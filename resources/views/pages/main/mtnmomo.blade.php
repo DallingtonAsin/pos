@@ -23,7 +23,7 @@
           <span class="text-muted">Receiver</span>
           <span class="input-group">
             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-            <input type="text"  class="form-control bg-white"
+            <input type="text"  class="form-control "
             name="Name" value="{{ config('app.name') }}" autocomplete="off" readonly>
           </span>
         </div>
@@ -34,7 +34,7 @@
           <span class="input-group-addon">
             <i class="fa fa-phone"></i>
           </span>
-          <input type="text" class="form-control bg-white" name="Contact" value="+256772833275"
+          <input type="text" class="form-control " name="Contact" value="+256772833275"
           autocomplete="off" readonly>    
         </span>
       </div>

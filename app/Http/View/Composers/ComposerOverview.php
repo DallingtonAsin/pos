@@ -2,6 +2,7 @@
 
 
 namespace App\Http\View\Composers;
+
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -17,10 +18,14 @@ use App\Models\Role;
 use App\Models\TopCashier;
 use App\Models\DebtorsCustomer;
 use App\Models\DebtorsSupplier;
+use App\Models\Company;
 
-class ComposerOverview{
 
-  public function compose(View $view){
+class ComposerOverview
+{
+
+  public function compose(View $view)
+  {
 
     $items_in_stock = Stock::count();
     $total_sales = Sale::count();
@@ -38,6 +43,20 @@ class ComposerOverview{
     $fiveSuperAdmin = User::limit(5)->get();
 
 
+    $company = Company::where('id', '!=', null)->first();
+    if(empty($company)){
+
+      $company = new Company();
+      $company->name = env('COMPANY_NAME', 'Point of Sale');
+      $company->abbrev = env('COMPANY_ABBREV', 'POS');
+      $company->email = env('COMPANY_EMAIL', 'info@pivosoftltd.com');
+      $company->phone_number = env('COMPANY_PHONE_NUMBER', '+256 700477421');
+      $company->address = env('COMPANY_ADDRESS', 'Ntinda, Kampala');
+      $company->logo = "";
+      $company->is_registered = false;
+    }
+
+      $view->with('company', $company);
 
 
     $data = array(
@@ -58,63 +77,53 @@ class ComposerOverview{
       'superAdminArr' => $fiveSuperAdmin,
     );
 
-     $response = Gate::inspect('isSuperAdmin');
-        if($response->allowed())
-        { 
-            $view->with('registeredRoles', $this->getRoles());
-
-        }
+    $response = Gate::inspect('isSuperAdmin');
+    if ($response->allowed()) {
+      $view->with('registeredRoles', $this->getRoles());
+    }
 
 
-    if(Auth::check())
-    {
-     $id = Auth::user()->id;
-     $view->with('user_role', $this->getUserRole());
-     $view->with('data', $data);
-   }
-   else
-   {
-    return redirect('/home');
+    if (Auth::check()) {
+      $view->with('user_role', $this->getUserRole());
+      $view->with('data', $data);
+    } {
+      return redirect('/home');
+    }
+
+
+   
+
   }
 
 
 
-}
-
-
-
-   public function getRoles()
-   {
+  public function getRoles()
+  {
     $roles = DB::table('roles')
-                     ->get();
+      ->get();
     return $roles;
-   }
+  }
 
 
-    public function getUserRole()
-    {
-      $userRole = DB::table('roles')
-                 ->where('role_id', Auth::user()->user_role)
-                  ->value('role');
-      return $userRole;
+  public function getUserRole()
+  {
+    $userRole = DB::table('roles')
+      ->where('role_id', Auth::user()->user_role)
+      ->value('role');
+    return $userRole;
+  }
 
-    }
+  public function getRoleId($role)
+  {
+    $role_id = Role::where("role", $role)->value("role_id");
+    return $role_id;
+  }
 
-    public function getRoleId($role)
-    {
-      $role_id = Role::where("role", $role)->value("role_id");
-      return $role_id;
-    }
-
-    public function getNumberofSuperAdmin()
-    {
-       $role = "SuperAdministrator";
-       $userRoleId = $this->getRoleId($role);
-       $totl = User::where("user_role", $userRoleId)->count();
-       return $totl;
-    }
-
-    
-
-
+  public function getNumberofSuperAdmin()
+  {
+    $role = "SuperAdministrator";
+    $userRoleId = $this->getRoleId($role);
+    $totl = User::where("user_role", $userRoleId)->count();
+    return $totl;
+  }
 }

@@ -130,7 +130,7 @@
 <!--Add suppliers -->
 <div class="modal fade nunito-font addSuppliersModal" id="addSuppliersModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form name="suppliers" id="SuppliersForm">
@@ -146,48 +146,48 @@ role="dialog" aria-labelledby="myModalLabel">
 
         <div class="form-group">
             {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-            <input type="hidden" class="form-control supplierId bg-white supplierId" name="id"
+            <input type="hidden" class="form-control supplierId  supplierId" name="id"
              placeholder="Enter supplier id"  Required autofocus>
           </div>
 
         <div class="form-group">
-          <span>Name</span>
-          <input type="text" class="form-control name bg-white" name="name" placeholder="Enter supplier name" Required autofocus>
+          <span><span class="text-danger pr-2">*</span>Name</span>
+          <input type="text" class="form-control name " name="name" placeholder="Enter supplier name" Required autofocus>
         </div>
 
         <div class="form-group">
-          <span>Address</span>
-          <input type="text" class="form-control address bg-white" name="address" placeholder="Enter address" Required autofocus>
+          <span><span class="text-danger pr-2">*</span>Address</span>
+          <input type="text" class="form-control address " name="address" placeholder="Enter address" Required autofocus>
         </div>
 
 
         <div class="form-group">
-          <span>Contact</span>
-          <input type="text" class="form-control contact bg-white" name="contact" placeholder="Enter contact" Required autofocus>
+          <span><span class="text-danger pr-2">*</span>Contact</span>
+          <input type="text" class="form-control contact " name="contact" placeholder="Enter contact" Required autofocus>
         </div>
 
 
         <div class="form-group">
           <span>Email</span>
-          <input type="email" class="form-control email bg-white" name="email" placeholder="Email (optional)">
+          <input type="email" class="form-control email " name="email" placeholder="Email (optional)">
         </div>
 
 
         <div class="form-group">
           <span>Debt</span>
-          <input type="text" class="form-control debt bg-white" name="debt" placeholder="Enter debt">
+          <input type="text" class="form-control debt " name="debt" placeholder="Enter debt">
         </div>
 
 
         <div class="form-group">
           <span>Credit</span>
-          <input type="text" class="form-control credit bg-white" name="credit" placeholder="Enter credit">
+          <input type="text" class="form-control credit " name="credit" placeholder="Enter credit">
         </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary addsupplierBtn"  name="AddsupplierBtn">Save</button>
+          <button type="submit" class="btn btn-success addsupplierBtn"  name="AddsupplierBtn">Save</button>
           <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-          <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+          
         </div>
 
         <div class="form-group">
@@ -202,7 +202,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
 <!--Import Suppliers -->
 <div class="modal fade nunito-font" id="importSuppliers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form action="{{ Route('suppliers.import') }}" method="post"
@@ -236,7 +236,7 @@ role="dialog" aria-labelledby="myModalLabel">
           @enderror
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="submit" class="btn btn-success">Upload</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -248,7 +248,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
  <!--Modal Deletesuppliers -->
  <div class="modal fade" id="deleteSuppliersModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete supplier</h5>
@@ -271,7 +271,7 @@ role="dialog" aria-labelledby="myModalLabel">
          </div>
 
          <div class="form-group">
-            <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+            <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
             <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
         </div>
       </div>
@@ -323,7 +323,7 @@ role="dialog" aria-labelledby="myModalLabel">
          e.preventDefault();
          DisableTableFields(false);
          ShowBtns();
-        $('.addsupplierBtn').text("Register supplier");
+        $('.addsupplierBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('.supplierId').val('');
         $('#SuppliersForm').trigger("reset");
         $('#modalHeading').html("Register new supplier");

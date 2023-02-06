@@ -57,7 +57,7 @@ class SmsController extends Controller
     //     return back()->with("fail", "Sorry, message has not been sent!");
 
     // }
-}catch(Exception $ex){
+}catch(\Exception $ex){
     echo('Problems thhh');
     return back()->with("fail", "Sorry, message has not been sent!");
 }

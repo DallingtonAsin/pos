@@ -25,7 +25,7 @@ class StockCatsDataTable extends DataTable
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="'.$pdt_category->id.'" data-original-title="Edit" id="edit-pdt-category"
             class="px-3 py-1 border border-success rounded mx-2 edit-stock pr-4">
-             <span class=" fa fa-pen"></span></a>';
+             <span class="fa fa-pen text-success"></span></a>';
 
             $btn .= '<a href="javascript:void(0);" id="view-pdt-category"
             data-toggle="tooltip" data-original-title="View"

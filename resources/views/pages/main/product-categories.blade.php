@@ -21,13 +21,13 @@
           <h5>
             <a class="add-link text-info text-decoration-none"
             href="javascript:void(0)"
-            id="createNewPdtCategory"><strong>Add Stock Category</strong> </a>
+            id="createNewPdtCategory"><strong>Add stock category</strong> </a>
           </h5>
         </div>
 
         <div class="col-lg-3">
           <h5>
-            <a href=""  class="add-link text-info text-decoration-none" data-toggle="modal" data-target="#importCategories"><strong>Import Categories</strong></a>
+            <a href=""  class="add-link text-info text-decoration-none" data-toggle="modal" data-target="#importCategories"><strong>Import categories</strong></a>
           </h5>
         </div>
 
@@ -99,7 +99,7 @@
 
       <!--Modal DeleteItemCategory -->
       <div class="modal fade" id="deletePdtCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header text-center">
               <h5 class="modal-title w-100 font-weight-bold">Delete Category</h5>
@@ -123,7 +123,7 @@
             </div>
 
             <div class="form-group">
-              <button type="submit" class="btn btn-primary delete-ok-btn" id="delete-ok-btn"  name="ConfirmBtn">Yes</button>
+              <button type="submit" class="btn btn-success delete-ok-btn" id="delete-ok-btn"  name="ConfirmBtn">Yes</button>
               <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
 
             </div>
@@ -134,7 +134,7 @@
 
     <!--Add product category -->
     <div class="modal fade nunito-font" id="addItemCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
 
           <form  name="categories" id="PdtCategoryForm">
@@ -149,15 +149,15 @@
           <div class="modal-body">
 
             <div class="form-group">
-              <span>Item Category</span>
+              <span><span class="text-danger pr-2">*</span>Item Category</span>
               <input type="hidden" name="id" class="PdtCategoryId">
-              <input type="text" class="form-control PdtCategory bg-white" name="item-category" placeholder="Enter item category" Required autofocus>
+              <input type="text" class="form-control PdtCategory " name="item-category" placeholder="Enter item category" Required autofocus>
             </div>
 
             <div class="form-group">
-              <button type="submit" class="btn btn-primary addPdtCategoryBtn"  name="AddCategoryBtn">Save</button>
+              <button type="submit" class="btn btn-success addPdtCategoryBtn"  name="AddCategoryBtn">Save</button>
               <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-              <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+              
             </div>
 
             <div class="form-group">
@@ -172,7 +172,7 @@
 
   <!--Import PdtCategory Categories -->
   <div class="modal fade nunito-font" id="importCategories" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
 
         <form action="{{ Route('categories.import') }}" method="post"
@@ -206,7 +206,7 @@
           @enderror
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="submit" class="btn btn-success">Upload</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -266,9 +266,9 @@
            e.preventDefault();
            NullifyFields();
            ShowHideBtns('show');
-           $('.addPdtCategoryBtn').text("Record product category");
+           $('.addPdtCategoryBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
            $('#PdtCategoryForm').trigger("reset");
-           $('#modalHeading').html("Record New Pdt Category");
+           $('#modalHeading').html("Add new stock category");
            DisableFormFields(false);
            $('#addItemCategoryModal').modal('show');
 
@@ -280,7 +280,7 @@ $('body').on('click', '#edit-pdt-category', function (event) {
   event.preventDefault();
 
   ShowHideBtns('show');
-  $('.addPdtCategoryBtn').text("Edit product category");
+  $('.addPdtCategoryBtn').text("Update");
   $('#addItemCategoryModal').modal('show');
   var Url = "{{ route('product-categories.show', ':id') }}";
   Url = Url.replace(':id', PdtCategory_id);

@@ -39,7 +39,7 @@
             <span class="text-muted">Sender</span>
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user" ></i></span>
-              <input type="text"  class="form-control bg-white  @error('senderName') is-invalid @enderror"  value="{{ Auth::user()->name}}" 
+              <input type="text"  class="form-control   @error('senderName') is-invalid @enderror"  value="{{ Auth::user()->name}}" 
               name="senderName" placeholder="type your name" value="{{ Auth::user()->name }}"
               autocomplete="off" id='sender' spellcheck="false" disabled>
             </div>
@@ -52,7 +52,7 @@
             <span class="text-muted">Recipient</span>
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user" ></i></span>
-              <input type="text"  class="form-control bg-white" 
+              <input type="text"  class="form-control " 
               name="receiverName" placeholder="type recipient's name" id='recipient' value="{{ old('receiverName') }}"
               autocomplete="off" spellcheck="false">
             </div>
@@ -66,7 +66,7 @@
         <span class="text-muted">Subject</span>
         <div class="input-group">
           <span class="input-group-addon"><i class="fas fa-heading" ></i></span>
-          <input type="text" class="form-control bg-white " id="subject" name="subject"
+          <input type="text" class="form-control  " id="subject" name="subject"
            value="{{  old('subject') }}" placeholder="type your email subject or heading" 
           autocomplete="off">
         </div>
@@ -79,7 +79,7 @@
           <span class="text-muted">Sender's email</span>
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-envelope" ></i></span>
-            <input type="text"  class="form-control bg-white"  placeholder="type your email" 
+            <input type="text"  class="form-control "  placeholder="type your email" 
             name="senderEmail" value="{{ Auth::user()->email}}" disabled
             autocomplete="off" spellcheck="false">
           </div>
@@ -92,7 +92,7 @@
          <span class="text-muted">Recipient's email</span>
          <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-envelope" ></i></span>
-          <input type="email" class="form-control bg-white"
+          <input type="email" class="form-control "
            placeholder="type recepient's email" 
            name="receiverEmail" value="{{ old('receiverEmail') }}" id='receiverEmail'
           autocomplete="on"  >
@@ -106,7 +106,7 @@
 
       <div class="col-md-8">
         <span class="text-muted">Message</span>
-        <textarea class="form-control bg-white"  id="email-message" value="{{ old('message') }}"
+        <textarea class="form-control "  id="email-message" value="{{ old('message') }}"
          name="message" spellcheck="true" placeholder="Write your email message here"></textarea>
         @error('message')
         <span class="text-danger">{{ $message }}</span>
@@ -115,7 +115,7 @@
 
       <div class="col-md-4 pt-4">
             <span class="text-muted">Attachment</span>
-            <input type="file" id='attachment' class="form-control-file bg-white" name="email-attachment[]" multiple >
+            <input type="file" id='attachment' class="form-control-file " name="email-attachment[]" multiple >
           </div>
         </div>
 
