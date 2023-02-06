@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\DataTables\StockDataTable;
 use Illuminate\Support\Str;
 use Constant;
-use Helper;
+use App\Helpers\Helper;
 
 
 class StockController extends Controller

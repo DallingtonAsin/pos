@@ -28,17 +28,17 @@ class SuppliersDataTable extends DataTable
             
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$supplier->id.'" data-original-title="Edit" id="edit-supplier"
-              class="edit-btn edit-supplier pr-4">
-             <span class="fa fa-pen"></span></a>';
+              class="px-3 py-1 border border-success rounded mx-2 edit-supplier pr-4">
+             <span class="fa fa-pen text-success"></span></a>';
           
             $btn .= '<a href="javascript:void(0);" id="delete-supplier" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$supplier->id.'" class="trash-btn pr-4"">
-            <span class="fa fa-trash-alt" ></span></a>';
+             data-id="'.$supplier->id.'" class="px-3 py-1 border border-danger rounded mx-2 pr-4"">
+            <span class="fa fa-trash-alt text-danger" ></span></a>';
 
            $btn .= '<a href="javascript:void(0);" id="view-supplier" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$supplier->id.'" class="text-info bolded">
+            data-id="'.$supplier->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
            <i class="fa fa-eye" ></i></a>';
 
            return $btn;

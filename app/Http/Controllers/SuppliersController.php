@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 use Constant;
 use DataTable;
 use Excel;
-use Helper;
+use App\Helpers\Helper;
 
 class SuppliersController extends Controller
 {

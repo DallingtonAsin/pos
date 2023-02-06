@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Expense;
-use Helper;
+use App\Helpers\Helper;
 use App\Imports\ImportExpenses;
 use App\Exports\ExportExpenses;
 use Illuminate\Http\Request;

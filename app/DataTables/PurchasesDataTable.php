@@ -21,17 +21,17 @@ class PurchasesDataTable extends DataTable
         ->addColumn('action', function ($purchase) {
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="'.$purchase->id.'" data-original-title="Edit" id="edit-purchase"
-              class="edit-btn edit-purchase pr-4">
-             <span class="fa fa-pen"></span></a>';
+              class="px-3 py-1 border border-success rounded mx-2 edit-purchase pr-4">
+             <span class="fa fa-pen text-success"></span></a>';
 
             // $btn .= '<a href="javascript:void(0);" id="delete-purchase"
             // data-toggle="tooltip" data-original-title="Delete" data-id="'.$purchase->id.'"
-            //  class="trash-btn pr-4"">
-            // <span class="fa fa-trash-alt" ></span></a>';
+            //  class="px-3 py-1 border border-danger rounded mx-2 pr-4"">
+            // <span class="fa fa-trash-alt text-danger" ></span></a>';
 
            $btn .= '<a href="javascript:void(0);" id="view-purchase"
            data-toggle="tooltip" data-original-title="View" data-id="'.$purchase->id.'" 
-           class="text-info bolded">
+           class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
            <i class="fa fa-eye" ></i></a>';
 
            return $btn;

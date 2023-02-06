@@ -12,7 +12,7 @@ use App\Models\Role;
 use App\Jobs\MailDailySalesReport;
 use Illuminate\Support\Facades\DB;
 use App\User;
-use Helper;
+use App\Helpers\Helper;
 use Constant;
 
 class SendSalesMade extends Command

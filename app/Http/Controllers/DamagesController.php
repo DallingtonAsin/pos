@@ -15,7 +15,7 @@ use App\DataTables\DamagesDataTable;
 use Illuminate\Support\Str;
 use Constant;
 use Excel;
-use Helper;
+use App\Helpers\Helper;
 
 class DamagesController extends Controller
 {

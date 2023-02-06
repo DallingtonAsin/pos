@@ -8,7 +8,7 @@ use BotMan\BotMan\BotMan;
 use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\Drivers\DriverManager;
 use BotMan\BotMan\Messages\Message;
-use Helper;
+use App\Helpers\Helper;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\LogAfterRequest;

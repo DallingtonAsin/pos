@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use App\Models\Event;
-use Helper;
+use App\Helpers\Helper;
 use App\Jobs\MailEvent;
 use App\DataTables\EventsDataTable;
 use App\User;

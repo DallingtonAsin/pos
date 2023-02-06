@@ -6,7 +6,7 @@ use App\User;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\MonthlySale;
 use App\Models\MonthlyPurchase;
-use Helper;
+use App\Helpers\Helper;
 
 
 class MonthlySalesDataTable extends DataTable

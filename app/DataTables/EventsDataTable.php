@@ -28,17 +28,17 @@ class EventsDataTable extends DataTable
 
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$event->id.'" data-original-title="Edit" id="edit-event"
-              class="edit-btn edit-event pr-3">
-             <span class="fa fa-pen"></span></a>';
+              class="px-3 py-1 border border-success rounded mx-2 edit-event pr-3">
+             <span class="fa fa-pen text-success"></span></a>';
 
             $btn .= '<a href="javascript:void(0);" id="delete-event"
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$event->id.'" class="trash-btn pr-3">
-            <span class="fa fa-trash-alt" ></span></a>';
+             data-id="'.$event->id.'" class="px-3 py-1 border border-danger rounded mx-2 pr-3">
+            <span class="fa fa-trash-alt text-danger" ></span></a>';
 
             $btn .= '<a href="javascript:void(0);" id="view-event"
             data-toggle="tooltip" data-original-title="View"
-             data-id="'.$event->id.'" class="text-info bolded">
+             data-id="'.$event->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
             <i class="fa fa-eye" ></i></a>';
 
 

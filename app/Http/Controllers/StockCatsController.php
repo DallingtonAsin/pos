@@ -14,7 +14,7 @@ use App\DataTables\StockCatsDataTable;
 use Illuminate\Support\Str;
 use Constant;
 use Excel;
-use Helper;
+use App\Helpers\Helper;
 
 class StockCatsController extends Controller
 {

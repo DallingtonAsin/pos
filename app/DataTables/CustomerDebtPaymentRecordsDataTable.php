@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\CustomerDebtPayment;
 use App\Models\Sale;
 use App\User;
-use Helper;
+use App\Helpers\Helper;
 
 class CustomerDebtPaymentRecordsDataTable extends DataTable
 {
@@ -29,17 +29,17 @@ class CustomerDebtPaymentRecordsDataTable extends DataTable
             
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$payment->id.'" data-original-title="Edit" id="edit-payment"
-              class="edit-btn edit-payment">
+              class="px-3 py-1 border border-success rounded mx-2 edit-payment">
              <span class="fa fa-pen pr-4"></span></a>';
               if(Gate::allows('isAdmin')){
             $btn .= '<a href="javascript:void(0);" id="delete-payment" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$payment->id.'" class="trash-btn pr-4"">
-            <span class="fa fa-trash-alt" ></span></a>';
+             data-id="'.$payment->id.'" class="px-3 py-1 border border-danger rounded mx-2 pr-4"">
+            <span class="fa fa-trash-alt text-danger" ></span></a>';
               }
            $btn .= '<a href="javascript:void(0);" id="view-payment" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$payment->id.'" class="text-info bolded">
+            data-id="'.$payment->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
            <i class="fa fa-eye" ></i></a>';
 
            return $btn;

@@ -24,17 +24,17 @@ class StockCatsDataTable extends DataTable
 
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"
             data-id="'.$pdt_category->id.'" data-original-title="Edit" id="edit-pdt-category"
-            class="edit-btn edit-stock pr-4">
+            class="px-3 py-1 border border-success rounded mx-2 edit-stock pr-4">
              <span class=" fa fa-pen"></span></a>';
 
             $btn .= '<a href="javascript:void(0);" id="view-pdt-category"
             data-toggle="tooltip" data-original-title="View"
-             data-id="'.$pdt_category->id.'" class="text-info bolded pr-4">
+             data-id="'.$pdt_category->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2 pr-4">
             <i class="fa fa-eye" ></i></a>';
 
             $btn .= '<a href="javascript:void(0);" id="delete-pdt-category"
-            data-toggle="tooltip" data-original-title="Delete" data-id="'.$pdt_category->id.'" class="trash-btn pl-3"">
-            <span class="fa fa-trash-alt" ></span></a>';
+            data-toggle="tooltip" data-original-title="Delete" data-id="'.$pdt_category->id.'" class="px-3 py-1 border border-danger rounded mx-2 pl-3"">
+            <span class="fa fa-trash-alt text-danger" ></span></a>';
 
            return $btn;
 

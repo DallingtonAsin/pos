@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Helper;
+use App\Helpers\Helper;
 
 class LogicHandler extends Controller
 {

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\LogsController;
 use App\Jobs\ProcessSendSms;
-use Helper;
+use App\Helpers\Helper;
 
 class SmsController extends Controller
 {

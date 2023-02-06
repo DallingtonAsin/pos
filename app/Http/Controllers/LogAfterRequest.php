@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\RequestResponse;
-use Helper;
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

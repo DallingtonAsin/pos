@@ -23,7 +23,7 @@ use App\DataTables\ActiveUserAccountsDataTable;
 use App\DataTables\InactiveUserAccountsDataTable;
 use App\User;
 use App\Models\Role;
-use Helper;
+use App\Helpers\Helper;
 use Constant;
 
 

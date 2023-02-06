@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\Stock;
-use Helper;
+use App\Helpers\Helper;
 use App\Imports\ImportCustomers;
 use App\Exports\ExportCustomers;
 use Illuminate\Support\Facades\DB;

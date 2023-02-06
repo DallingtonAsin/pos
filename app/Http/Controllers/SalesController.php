@@ -22,7 +22,7 @@ use App\Exports\DailySalesReport;
 use Illuminate\Support\Str;
 use Constant;
 use Excel;
-use Helper;
+use App\Helpers\Helper;
 use DataTable;
 
 

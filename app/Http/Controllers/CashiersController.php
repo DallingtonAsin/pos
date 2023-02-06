@@ -17,7 +17,7 @@ use App\Models\Role;
 use App\Jobs\MailRegistration;
 use App\User;
 use Excel;
-use Helper;
+use App\Helpers\Helper;
 use Constant;
 
 class CashiersController extends Controller
