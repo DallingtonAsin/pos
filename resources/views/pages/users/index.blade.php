@@ -82,7 +82,7 @@
 
 <!--Add user -->
 <div class="modal fade nunito-font" id="addusersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form mname="user" id="userForm">
@@ -100,39 +100,39 @@
         <div class="form-group">
          <input type="hidden" class="userId" name="id">
           <span><span class="text-danger">*</span> First Name</span>
-          <input type="text" class="form-control first_name bg-white" name="firstName" placeholder="Enter first name" Required autofocus>
+          <input type="text" class="form-control first_name " name="firstName" placeholder="Enter first name" Required autofocus>
         </div>
 
           <div class="form-group">
             <span><span class="text-danger">*</span> Last Name</span>
-            <input type="text" class="form-control last_name bg-white" name="lastName" placeholder="Enter last name" Required autofocus>
+            <input type="text" class="form-control last_name " name="lastName" placeholder="Enter last name" Required autofocus>
           </div>
       
 
         <div class="form-group">
           <span><span class="text-danger">*</span> Address</span>
-          <input type="text" class="form-control address bg-white" name="address" placeholder="Enter address" Required autofocus>
+          <input type="text" class="form-control address " name="address" placeholder="Enter address" Required autofocus>
         </div>
 
         <div class="form-group">
             <span>NationalID No.</span>
-            <input type="text" class="form-control national_id bg-white" name="NationalIDNo" placeholder="Enter NationalID number(optional)" Required autofocus>
+            <input type="text" class="form-control national_id " name="NationalIDNo" placeholder="Enter NationalID number(optional)" Required autofocus>
           </div>
 
         <div class="form-group">
           <span> Email</span>
-          <input type="email" class="form-control email bg-white" name="email" placeholder="Email (optional)">
+          <input type="email" class="form-control email " name="email" placeholder="Email (optional)">
         </div>
 
         <div class="row form-group">
             <div class="col-md-6">
               <span><span class="text-danger">*</span> Primary Tel No.</span>
-              <input type="text" class="form-control tel_no bg-white" name="tel_no" placeholder="Enter primary telephone number" Required autofocus>
+              <input type="text" class="form-control tel_no " name="tel_no" placeholder="Enter primary telephone number" Required autofocus>
             </div>
     
             <div class="col-md-6">
                 <span>Alternative Tel No.</span>
-                <input type="text" class="form-control alt_telno bg-white" name="alt_telno" placeholder="Enter alternative telephone number (optional)" >
+                <input type="text" class="form-control alt_telno " name="alt_telno" placeholder="Enter alternative telephone number (optional)" >
               </div>
     </div>
 
@@ -141,14 +141,14 @@
         <div class="col-md-6">
           <div class="form-group">
               <span><span class="text-danger">*</span> Role</span>
-              <select class="form-control role_section bg-white" name="role">
+              <select class="form-control role_section " name="role">
               <option value="">select role</option>
               </select>
             </div>
         </div>
           <div class="col-md-6">
             <span><span class="text-danger">*</span> Gender</span>
-            <select class="form-control gender bg-white" name="gender">
+            <select class="form-control gender " name="gender">
                 <option value="">select gender</option>
                 <option value="Female">Female</option>
                 <option value="Male">Male</option>
@@ -158,7 +158,7 @@
     </div>
 
         <div class="form-group">
-          <button type="button" class="btn btn-primary AdduserBtn" id="AdduserBtn"  name="AdduserBtn">Save</button>
+          <button type="button" class="btn btn-success AdduserBtn" id="AdduserBtn"  name="AdduserBtn">Save</button>
           <button type="reset" class="btn btn-danger">Clear</button>
           <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
         </div>
@@ -172,7 +172,7 @@
 
 <!--Import users -->
 <div class="modal fade nunito-font" id="importusers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form action="" method="post"
@@ -206,7 +206,7 @@
           @enderror
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="submit" class="btn btn-success">Upload</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -218,7 +218,7 @@
 
  <!--Modal Deleteusers -->
  <div class="modal fade" id="deleteusersModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete user</h5>
@@ -241,7 +241,7 @@
          </div>
 
          <div class="form-group">
-            <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+            <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
             <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
         </div>
       </div>

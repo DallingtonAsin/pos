@@ -124,7 +124,7 @@
 
 <!--Add new purchase -->
 <div class="modal fade nunito-font" id="addPurchaseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
 
         <form name="purchaseForm" id="purchaseForm">
@@ -143,75 +143,75 @@
          <div class="form-group">
             <span>Serial Number</span>
             <input type="hidden" class="purchaseId" name="id">
-            <input type="text" class="form-control bg-white serial_no" name="serial_no"
+            <input type="text" class="form-control  serial_no" name="serial_no"
              placeholder="Enter serial number of the purchased item">
           </div>
 
           <div class="form-group">
             <span>Receipt Number</span>
-            <input type="text" class="form-control bg-white receipt_no" name="receipt_no"
+            <input type="text" class="form-control  receipt_no" name="receipt_no"
              placeholder="Enter receipt number of the purchased item">
           </div>
 
            <div class="form-group">
             <span>Item ID</span>
-            <input type="text" class="form-control bg-white item_code" name="item_code"
+            <input type="text" class="form-control  item_code" name="item_code"
              placeholder="Enter item ID">
           </div>
 
     
           <div class="form-group">
             <span><span class="text-danger">*</span> Item</span>
-            <input type="text" class="form-control bg-white item-name" name="item"
+            <input type="text" class="form-control  item-name" name="item"
             placeholder="Enter item" Required autofocus>
           </div>
 
           <div class="form-group">
             <span><span class="text-danger">*</span> Quantity</span>
-            <input type="text" class="form-control bg-white quantity"
+            <input type="text" class="form-control  quantity"
              id="qty" name="quantity" placeholder="Enter Quantity" Required autofocus>
           </div>
 
           <div class="form-group">
             <span><span class="text-danger">*</span> Price per Item</span>
-            <input type="text" class="form-control bg-white cost_price" name="cost_price" placeholder="Enter original cost price of each item" Required autofocus>
+            <input type="text" class="form-control  cost_price" name="cost_price" placeholder="Enter original cost price of each item" Required autofocus>
           </div>
 
            <div class="form-group">
             <span><span class="text-danger">*</span> Retail selling price</span>
-            <input type="text" class="form-control bg-white retail_price" name="retail_price" placeholder="Enter retail price" Required autofocus>
+            <input type="text" class="form-control  retail_price" name="retail_price" placeholder="Enter retail price" Required autofocus>
           </div>
 
 
            <div class="form-group">
             <span>Wholesale selling price</span>
-            <input type="text" class="form-control bg-white wholesale_price" 
+            <input type="text" class="form-control  wholesale_price" 
             name="wholesale_price" placeholder="Enter wholesale price">
           </div>
 
         
           <div class="form-group">
             <span>Supplier</span>
-            <input class="form-control bg-white supplier "
+            <input class="form-control  supplier "
              id="supplier" name="supplier" placeholder="Enter supplier's name">
           </div>
 
           <div class="form-group">
             <span>Supplier's contact</span>
-            <input type="text" class="form-control bg-white supplier_contact"
+            <input type="text" class="form-control  supplier_contact"
              name="supplier_contact" placeholder="Enter supplier's contact">
           </div>
 
           <div class="form-group">
             <span>Date of purchase</span>
-            <input type="date" class="form-control bg-white date_of_purchase" 
+            <input type="date" class="form-control  date_of_purchase" 
              name="date_of_purchase" value="{{ date('Y-m-d')}}" placeholder="Enter date of purchase">
           </div>
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary addPurchaseBtn"  name="AddItemBtn">Save</button>
+            <button type="submit" class="btn btn-success addPurchaseBtn"  name="AddItemBtn">Save</button>
             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-            <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+            
           </div>
 
           <div class="form-group">
@@ -226,7 +226,7 @@
 
 <!--Import Purchases -->
  <div class="modal fade nunito-font" id="importPurchases" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
 
         <form action="{{ Route('purchases.import') }}" method="post"
@@ -260,7 +260,7 @@
           @enderror
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary"  name="AddItemBtn">Upload</button>
+            <button type="submit" class="btn btn-success"  name="AddItemBtn">Upload</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -271,7 +271,7 @@
 
    <!--Modal Deletepurchase -->
    <div class="modal fade" id="deletepurchaseModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 class="modal-title w-100 font-weight-bold">Delete Purchased Item</h5>
@@ -293,7 +293,7 @@
        </div>
 
        <div class="form-group">
-          <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+          <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
           <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
       </div>
     </div>
@@ -353,9 +353,9 @@
          e.preventDefault();
          NullifyFields();
          ShowHideBtns('show');
-        $('.addPurchaseBtn').text("Record purchase");
+        $('.addPurchaseBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('#purchaseForm').trigger("reset");
-        $('#modalHeading').html("Record new purchase");
+        $('#modalHeading').html("Add new purchase");
         DisableFormFields(false);
         $('#addPurchaseModal').modal('show');
 

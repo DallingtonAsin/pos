@@ -73,7 +73,7 @@ class CartController extends Controller
             $amount = DB::table('cart')->sum('amount');
             return view('pages.main.cart')->with(compact('cart_items','total','amount',
                 'number_of_cartItems', 'amount_due'));
-        }catch(Exception $ex)
+        }catch(\Exception $ex)
         {
             parent::report($ex);
         }

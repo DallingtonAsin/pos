@@ -73,7 +73,7 @@
 
   <!--Modal DeleteLog -->
 <div class="modal fade pt-5" id="deleteLogsModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content nunito-font border border-custom-dark rounded-0">
         <div class="modal-header main-color-bg  text-center">
           <h5 class="modal-title w-100 text-white font-weight-bold">
@@ -95,7 +95,7 @@
        <div class="form-group">
          <form>
           @csrf
-          <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+          <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
         </form>
       </div>
@@ -109,10 +109,10 @@
 
         <!-- View Log Details -->
         <div class="modal fade" id="LogsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 
             <div class="modal-content nunito-font border border-custom-dark rounded-0">
-              <div class="modal-header main-color-bg text-center">
+              <div class="modal-header  text-center">
                 <h5 class="modal-title w-100 nunito-font text-white  font-weight-bold">
                   <i class="fa fa-info-circle"></i>
                   Details of a logged activity
@@ -127,29 +127,29 @@
                 <div class="modal-body">
                   <div class="form-group">
                     <span class="text-left">User</span>
-                    <input type="text" class="form-control user bg-white text-dark" value="" readonly>
+                    <input type="text" class="form-control user  text-dark" value="" readonly>
                   </div>
 
                   <div class="form-group">
                     <span class="text-left">Role</span>
-                    <input type="text" class="form-control role bg-white text-dark"  value="" readonly>
+                    <input type="text" class="form-control role  text-dark"  value="" readonly>
 
                   </div>
 
                   <div class="form-group">
                     <span class="text-left">Action</span>
-                    <textarea class="form-control bg-white action text-dark" readonly></textarea>
+                    <textarea class="form-control  action text-dark" readonly></textarea>
 
                   </div>
 
                   <div class="form-group">
                     <span class="text-left">Ip Address</span>
-                    <input type="text" class="form-control ipAddress bg-white text-dark"  value="" readonly>
+                    <input type="text" class="form-control ipAddress  text-dark"  value="" readonly>
                   </div>
 
                   <div class="form-group">
                     <span class="text-left">Done on</span>
-                    <input type="text" class="form-control date bg-white text-dark"  value="" readonly>
+                    <input type="text" class="form-control date  text-dark"  value="" readonly>
                   </div>
 
                 </div>

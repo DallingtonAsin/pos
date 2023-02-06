@@ -61,6 +61,7 @@ class CustomLoginController extends Controller
 					$this->flushSessionData($request);
 				
 					return back()
+					->withInput()
 					->with('loginErr', 'Your account is inactivated, see admin');
 				}
 				if($status == 1){
@@ -74,6 +75,7 @@ class CustomLoginController extends Controller
 		{
                 $this->flushSessionData($request);
 				return back()
+				->withInput()
 				->with('loginErr', 'Invalid login credentials');
 		
 		}

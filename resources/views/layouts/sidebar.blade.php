@@ -228,26 +228,26 @@
 
       @can('isAdmin')
       <li class="nav-item">
+        <a href="" class="nav-link with-sub"><i class="typcn typcn-cloud-storage-outline"></i> Audit</a>
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link">Activity logs</a></li>
+        </ul>
+      </li>
+      @endcan
+
+      @can('isAdmin')
+      <li class="nav-item">
         <a href="" class="nav-link with-sub"><i class="typcn typcn-cog"></i>Settings</a>
         
         {{-- <ul class="nav-sub">
           <li class="nav-sub-item"><a href="{{ route('company.index') }}" class="nav-sub-link">Company details</a></li>
         </ul> --}}
         <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ route('companies.create') }}" class="nav-sub-link">Company details</a></li>
+          <li class="nav-sub-item"><a href="{{ route('company.register') }}" class="nav-sub-link">Company details</a></li>
         </ul>
       </li>
       @endcan
 
-
-      @can('isAdmin')
-      <li class="nav-item">
-        <a href="" class="nav-link with-sub"><i class="typcn typcn-cloud-storage-outline"></i>System Audit</a>
-        <ul class="nav-sub">
-          <li class="nav-sub-item"><a href="{{ route('logs.index') }}" class="nav-sub-link">Activity logs</a></li>
-        </ul>
-      </li>
-      @endcan
 
       <li class="nav-item">
         <a href="" class="nav-link with-sub"><i class="fa fa-comments"></i>Communication</a>
@@ -257,19 +257,6 @@
        </ul>
      </li>
      @endcannot
-
-     <li class="nav-item">
-      <a href="" class="nav-link with-sub"><i class="typcn typcn-info"></i>Information desk</a>
-      <ul class="nav-sub">
-        @can('isAdmin')
-        <li class="nav-sub-item"><a href="{{ route('userguide' )}}" class="nav-sub-link">Help</a></li>
-        @endcan
-        @can('isCashier')
-        <li class="nav-sub-item"><a href="{{ route('userguide' )}}" class="nav-sub-link">Help Desk</a></li>
-        @endcan
-        <li class="nav-sub-item"><a href="{{ route('aboutCST') }}" class="nav-sub-link">About CST</a></li>
-      </ul>
-    </li>
 
   </ul>
 </div>
@@ -286,13 +273,7 @@
     </div>
 
     <div class="az-header-center nunito-font">
-      <h5 class="nav-label colored-icon-1">
-        @if(isset($companyData))
-        {{ $companyData['company_name'] }}
-        @else
-        {{ env('APP_NAME') }}
-        @endif
-      </h5>
+      <h5 class="nav-label colored-icon-1">{{ $company->name }} </h5>
     </div>
 
           <!-- <smsnotification v-bind:smsnotifications="smsnotifications"></smsnotification>

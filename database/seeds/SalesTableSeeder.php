@@ -2,6 +2,8 @@
 
 // namespace Database\Seeders;
 use Illuminate\Database\Seeder;
+use App\Models\Sale;
+use Illuminate\Support\Facades\DB;
 
 class SalesTableSeeder extends Seeder
 {
@@ -12,7 +14,14 @@ class SalesTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Sale::factory()->count(200)->create();
+        Sale::factory()->count(200)->create();
+
+        $sales = Sale::get();
+        foreach($sales as $sale){
+            DB::update(
+                "UPDATE sales SET date=DATE_FORMAT(date,'2023-%m-%d %T')"
+            );
+        }
 
     }
 }

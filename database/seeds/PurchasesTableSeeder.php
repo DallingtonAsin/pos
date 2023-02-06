@@ -2,6 +2,8 @@
 
 // namespace Database\Seeders;
 use Illuminate\Database\Seeder;
+use App\Models\Purchase;
+use Illuminate\Support\Facades\DB;
 
 class PurchasesTableSeeder extends Seeder
 {
@@ -12,8 +14,16 @@ class PurchasesTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Purchase::factory()->count(10)->create();
-
+        Purchase::factory()->count(250)->create();
+        $purchases = Purchase::get();
+        foreach($purchases as $purchase){
+            DB::update(
+                "UPDATE purchases SET date=DATE_FORMAT(date,'2023-%m-%d %T')"
+            );
+            DB::update(
+                "UPDATE purchases SET date_of_purchase=DATE_FORMAT(date_of_purchase,'2023-%m-%d %T')"
+            );
+        }
 
     }
 }

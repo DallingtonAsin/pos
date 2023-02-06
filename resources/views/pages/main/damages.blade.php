@@ -115,7 +115,7 @@
 
               <!-- Add Damage Details -->
               <div class="modal fade" id="addDamagesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 
                   <div class="modal-content nunito-font rounded-0">
                     <form name="damagesForm" id="damagesForm">
@@ -135,46 +135,46 @@
                     <div class="modal-body">
 
                       <div class="form-group">
-                        <span>Item</span>
+                        <span><span class="text-danger pr-2">*</span>Item</span>
                         <input type="hidden" class="form-control damageId" name="id" id="id">
-                        <input type="text" class="form-control bg-white item-name" name="damage-item"
+                        <input type="text" class="form-control  item-name" name="damage-item"
                         id="item" placeholder="Enter item" autocomplete="off" spellcheck="false">
                       </div>
 
                       <div class="form-group">
-                        <span>Quantity</span>
-                        <input type="text" id="qty" class="form-control quantity bg-white" name="quantity" placeholder="Quantity" Required autofocus>
+                        <span><span class="text-danger pr-2">*</span>Quantity</span>
+                        <input type="text" id="qty" class="form-control quantity " name="quantity" placeholder="Quantity" Required autofocus>
                       </div>
 
 
                       <div class="form-group categoryDiv">
                         <span>Category</span>
-                        <input type="text" class="form-control bg-white text-dark item-category"
+                        <input type="text" class="form-control  text-dark item-category"
                         value="" placeholder="Enter item category">
                       </div>
 
                       <div class="form-group bpriceDiv">
                         <span>Buying Price</span>
-                        <input type="text" class="form-control bg-white text-dark bprice"
+                        <input type="text" class="form-control  text-dark bprice"
                         value="" readonly>
                       </div>
 
                       <div class="form-group lamountDiv">
                         <span>Lost amount</span>
-                        <input type="text" class="form-control bg-white text-danger lamount"
+                        <input type="text" class="form-control  text-danger lamount"
                         value="" readonly>
                       </div>
 
                       <div class="form-group record-date-div">
                         <span>Recorded on</span>
-                        <input type="text" class="form-control bg-white record-date"
+                        <input type="text" class="form-control  record-date"
                         value="" readonly>
                       </div>
 
                       <div class="form-group">
-                        <button type="submit" class="btn btn-primary addDamageBtn"  name="AdddamageBtn">Save</button>
+                        <button type="submit" class="btn btn-success addDamageBtn"  name="AdddamageBtn">Save</button>
                         <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                        <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+                        
                       </div>
 
                       <div class="form-group">
@@ -196,7 +196,7 @@
             <!--Modal DeleteDamage -->
             <div class="modal fade" id="deleteDamageModal" tabindex="-1" role="dialog"
             aria-labelledby="ModalLabel">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header text-center">
                   <h5 class="modal-title w-100 font-weight-bold">Delete damaged item</h5>
@@ -216,7 +216,7 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+                    <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
                     <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
                   </div>
                 </div>
@@ -226,7 +226,7 @@
 
           <!--Import Damaged Items -->
           <div class="modal fade nunito-font" id="importDamages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
               <div class="modal-content">
 
                 <form action="{{ Route('damages.import') }}" method="post"
@@ -259,7 +259,7 @@
                     @enderror
 
                     <div class="form-group">
-                      <button type="submit" class="btn btn-primary">Upload</button>
+                      <button type="submit" class="btn btn-success">Upload</button>
                       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                   </div>
@@ -350,10 +350,10 @@ $.ajaxSetup({
         ClearFormFields();
         ShowOnAddNewDamagedItem(false);
         ShowHideBtns('show');
-        $('.addDamageBtn').text("Record damage");
+        $('.addDamageBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('#damagesForm').trigger("reset");
         ShowHideContent('hide');
-        $('#modalHeading').html("Record new damage");
+        $('#modalHeading').html("Add new damage");
         $('#addDamagesModal').modal('show');
       });
 

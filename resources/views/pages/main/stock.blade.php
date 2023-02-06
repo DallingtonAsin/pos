@@ -118,7 +118,7 @@
 
   <!--Add new Stock -->
   <div class="modal fade nunito-font" id="addStockModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
 
         <form name="StockForm" id="StockForm">
@@ -136,20 +136,20 @@
           <div class="form-group">
             <span>Item ID</span>
             <input type="hidden" class="stockId" name="id">
-            <input type="text" class="form-control bg-white item_code" name="item_code"
+            <input type="text" class="form-control  item_code" name="item_code"
             placeholder="Enter item ID">
           </div>
 
           <div class="form-group">
-            <span>Item</span>
-            <input type="text" class="form-control bg-white item-name" name="item"
+            <span><span class="text-danger pr-2">*</span>Item</span>
+            <input type="text" class="form-control  item-name" name="item"
             placeholder="Enter item" Required autofocus>
 
           </div>
 
           <div class="form-group">
             <span>Category</span>
-            <select class="form-control bg-white category" name="category" Required autofocus id="category" >
+            <select class="form-control  category" name="category" Required autofocus id="category" >
               <option value="" selected="true">choose category</option>
               @foreach($categories as $category)
               <option value="{{ $category->item_category }}"> {{ $category->item_category }}</option>
@@ -159,7 +159,7 @@
 
           <div class="form-group">
             <span>Supplier</span>
-            <select class="form-control bg-white" id="supplier" name="supplier" Required autofocus>
+            <select class="form-control " id="supplier" name="supplier" Required autofocus>
               <option value="" selected="true">choose supplier</option>
               @foreach($suppliers as $supplier)
               <option value="{{ $supplier->name }}"> {{ $supplier->name }}</option>
@@ -168,35 +168,35 @@
           </div>
 
           <div class="form-group">
-            <span>Quantity</span>
-            <input type="text" class="form-control bg-white quantity"  id="qty" name="quantity" placeholder="Enter Quantity" Required autofocus>
+            <span><span class="text-danger pr-2">*</span>Quantity</span>
+            <input type="text" class="form-control  quantity"  id="qty" name="quantity" placeholder="Enter Quantity" Required autofocus>
           </div>
 
           <div class="form-group">
             <span>Threshold Quantity</span>
-            <input type="text" class="form-control bg-white thresholdQty"  id="thresholdQty" name="thresholdQty" placeholder="Enter threshold quantity">
+            <input type="text" class="form-control  thresholdQty"  id="thresholdQty" name="thresholdQty" placeholder="Enter threshold quantity">
           </div>
 
           <div class="form-group">
             <span>Expiry Date</span>
-            <input type="date" class="form-control bg-white expiry_date" name="expiry_date" placeholder="Enter who bought it">
+            <input type="date" class="form-control  expiry_date" name="expiry_date" placeholder="Enter who bought it">
           </div>
 
           <div class="form-group">
             <div class="row">
               <div class="col-lg-4">
-                <span>Buying Price</span>
-                <input type="text" class="form-control bg-white original_price" name="original_price" placeholder="Enter original price" Required autofocus>
+                <span><span class="text-danger pr-2">*</span>Buying Price</span>
+                <input type="text" class="form-control  original_price" name="original_price" placeholder="Enter original price" Required autofocus>
               </div>
 
               <div class="col-lg-4 form-group">
-                <span>Retail Price</span>
-                <input type="text" class="form-control bg-white selling_price" name="selling_price" placeholder="Enter selling price" Required autofocus>
+                <span><span class="text-danger pr-2">*</span>Retail Price</span>
+                <input type="text" class="form-control  selling_price" name="selling_price" placeholder="Enter selling price" Required autofocus>
               </div>
 
               <div class="col-lg-4 form-group">
                 <span>Wholesale Price</span>
-                <input type="text" class="form-control bg-white  wholesale_price" name="wholesale_price" placeholder="Enter wholesale price" Required autofocus>
+                <input type="text" class="form-control   wholesale_price" name="wholesale_price" placeholder="Enter wholesale price" Required autofocus>
               </div>
 
             </div>
@@ -204,9 +204,9 @@
 
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary addStockBtn"  name="AddItemBtn">Save</button>
+            <button type="submit" class="btn btn-success addStockBtn"  name="AddItemBtn">Save</button>
             <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-            <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+            
           </div>
 
           <div class="form-group">
@@ -221,7 +221,7 @@
 
 <!--Import Stock -->
 <div class="modal fade nunito-font" id="importStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form action="{{ Route('stock.import') }}" method="post"
@@ -255,7 +255,7 @@
         @enderror
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary"  name="AddItemBtn">Upload</button>
+          <button type="submit" class="btn btn-success"  name="AddItemBtn">Upload</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -266,7 +266,7 @@
 
 <!--Modal DeleteStock -->
 <div class="modal fade" id="deleteStockModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
         <h5 class="modal-title w-100 font-weight-bold">Delete Item</h5>
@@ -288,7 +288,7 @@
       </div>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+        <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
         <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
       </div>
     </div>
@@ -388,9 +388,9 @@
          e.preventDefault();
          NullifyFields();
          ShowHideBtns('show');
-         $('.addStockBtn').text("Record stock");
+         $('.addStockBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
          $('#StockForm').trigger("reset");
-         $('#modalHeading').html("Record new stock");
+         $('#modalHeading').html("Add new stock");
          DisableFormFields(false);
          $('#addStockModal').modal('show');
 

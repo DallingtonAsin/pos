@@ -105,7 +105,7 @@
 
             <!--Add expenses -->
             <div class="modal fade nunito-font" id="addExpensesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
 
                   <form name="expenses" id="ExpensesForm">
@@ -121,30 +121,30 @@
 
                         <div class="form-group">
                             {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-                            <input type="hidden" class="form-control expenseId bg-white expenseId" name="id"
+                            <input type="hidden" class="form-control expenseId  expenseId" name="id"
                              placeholder="Enter expense id"  Required autofocus>
                           </div>
 
                       <div class="form-group">
-                        <span>Expense</span>
-                        <input type="text" class="form-control expense bg-white" name="expense" placeholder="Enter expense" Required autofocus>
+                        <span><span class="text-danger pr-2">*</span>Expense</span>
+                        <input type="text" class="form-control expense " name="expense" placeholder="Enter expense" Required autofocus>
                       </div>
 
                       <div class="form-group">
-                        <span>Amount</span>
-                        <input type="text" class="form-control amount bg-white" name="expenditure_amount" placeholder="Amount in shs." Required autofocus>
+                        <span><span class="text-danger pr-2">*</span>Amount</span>
+                        <input type="text" class="form-control amount " name="expenditure_amount" placeholder="Amount in shs." Required autofocus>
 
                       </div>
 
                       <div class="form-group">
-                        <span>Date</span>
-                        <input type="date" class="form-control date bg-white" value="{{ date('Y-m-d') }}" name="date_of_expense" placeholder="Enter cost of expense" Required autofocus>
+                        <span><span class="text-danger pr-2">*</span>Date</span>
+                        <input type="date" class="form-control date " value="{{ date('Y-m-d') }}" name="date_of_expense" placeholder="Enter cost of expense" Required autofocus>
                       </div>
 
                       <div class="form-group">
-                        <button type="submit" class="btn btn-primary" id="addExpensesBtn"  name="AddExpenseBtn">Save</button>
+                        <button type="submit" class="btn btn-success" id="addExpensesBtn"  name="AddExpenseBtn">Save</button>
                         <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                        <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+                        
                       </div>
 
                       <div class="form-group">
@@ -159,7 +159,7 @@
 
             <!--Import Expenses -->
             <div class="modal fade nunito-font" id="importExpenses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
 
                   <form action="{{ Route('expenses.import') }}" method="post"
@@ -192,7 +192,7 @@
                       @enderror
 
                       <div class="form-group">
-                        <button type="submit" class="btn btn-primary"  name="AddItemBtn">Upload</button>
+                        <button type="submit" class="btn btn-success"  name="AddItemBtn">Upload</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                       </div>
 
@@ -206,7 +206,7 @@
 
             <!--Modal Deleteexpenses -->
  <div class="modal fade" id="deleteExpensesModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete expense</h5>
@@ -226,7 +226,7 @@
          </div>
 
          <div class="form-group">
-            <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+            <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
             <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
         </div>
       </div>
@@ -271,10 +271,10 @@
          e.preventDefault();
          DisableFormFields(false);
          ShowBtns();
-        $('#addExpensesBtn').text("Record expense");
+        $('#addExpensesBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('.expenseId').val('');
         $('#ExpensesForm').trigger("reset");
-        $('#modalHeading').html("Record new expense");
+        $('#modalHeading').html("Add new expense");
         $('#addExpensesModal').modal('show');
        });
 

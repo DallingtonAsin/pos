@@ -119,7 +119,7 @@
                                     <!--Modal DeleteCommand -->
                                     <div class="modal fade" id="removeCommand_{{ $cmd->id }}" tabindex="-1"
                                         role="dialog" aria-labelledby="ModalLabel">
-                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header text-center">
                                                     <h5 class="modal-title w-100 font-weight-bold">Delete Command</h5>
@@ -149,7 +149,7 @@
                                                             method="post">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-primary"
+                                                            <button type="submit" class="btn btn-success"
                                                                 name="ConfirmBtn">Yes</button>
                                                             <button type="button" class="btn btn-dark"
                                                                 data-dismiss="modal">No</button>
@@ -166,10 +166,10 @@
                                     <!-- View Command Details -->
                                     <div class="modal fade" id="viewCommand_{{ $cmd->id }}" tabindex="-1"
                                         role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 
                                             <div class="modal-content nunito-font border border-custom-dark rounded-0">
-                                                <div class="modal-header main-color-bg text-center">
+                                                <div class="modal-header  text-center">
                                                     <h5
                                                         class="modal-title w-100 nunito-font text-white  font-weight-bold">
                                                         <i class="fa fa-info-circle"></i>
@@ -186,13 +186,13 @@
                                                     <div class="modal-body">
                                                         <div class="form-group">
                                                             <span>Command</span>
-                                                            <input type="text" class="form-control bg-white text-dark"
+                                                            <input type="text" class="form-control  text-dark"
                                                                 value="{{ $cmd->chat_command }}" readonly>
                                                         </div>
 
                                                         <div class="form-group">
                                                             <span>Description</span>
-                                                            <textarea  class="form-control bg-white text-dark" readonly>{{ $cmd->chat_response }}
+                                                            <textarea  class="form-control  text-dark" readonly>{{ $cmd->chat_response }}
                                                             </textarea>
                                                         </div>
 
@@ -206,7 +206,7 @@
                                     <!-- Update Command Details -->
                                     <div class="modal fade nunito-font" id="updateCommand_{{ $cmd->id }}"
                                         tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header text-center">
                                                     <h5 class="modal-title w-100 font-weight-bold">
@@ -250,7 +250,7 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <button type="submit" class="btn btn-primary"
+                                                                <button type="submit" class="btn btn-success"
                                                                     name="UpdateCommandBtn">Update</button>
                                                                 <button type="button" class="btn btn-dark"
                                                                     data-dismiss="modal">Close</button>
@@ -274,7 +274,7 @@
 
         <!--Import Cashiers -->
 <div class="modal fade nunito-font" id="importCommands" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
 
             <form action="{{ Route('command.import') }}" method="post" enctype="multipart/form-data"
@@ -309,7 +309,7 @@
                     @enderror
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary" name="AddItemBtn">Upload</button>
+                        <button type="submit" class="btn btn-success" name="AddItemBtn">Upload</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -324,7 +324,7 @@
         <!--Command Registration form -->
         <div class="modal fade nunito-font" id="modalCommand" tabindex="-1" role="dialog"
             aria-labelledby="Modal-Label">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
 
                     <form action="{{ Route('command.store') }}" method="post" name="Commands">

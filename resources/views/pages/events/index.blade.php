@@ -65,10 +65,10 @@
 
         <!-- View Event Details -->
         <div class="modal fade" id="viewEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 
             <div class="modal-content nunito-font border border-custom-dark rounded-0">
-              <div class="modal-header main-color-bg text-center">
+              <div class="modal-header  text-center">
                 <h5 class="modal-title w-100 nunito-font text-white modalViewEventHeading  font-weight-bold">
                   <i class="fa fa-info-circle "></i>
                   Details of an event 
@@ -86,39 +86,39 @@
                     <div class="form-group">
                       <span>Title</span>
                       <input type="hidden" name="eventId"  class="eventId" />
-                      <input type="text" name="event-title" class="form-control title bg-white text-dark" value="" >
+                      <input type="text" name="event-title" class="form-control title  text-dark" value="" >
                     </div>
 
                     <div class="form-group">
                       <span>Details</span>
-                      <textarea name="event-message" class="form-control details bg-white text-dark" ></textarea>
+                      <textarea name="event-message" class="form-control details  text-dark" ></textarea>
                     </div>
 
                     <div class="form-group">
                       <span>Start Date</span>
-                      <input type="date" name="eventStart-date" class="form-control start_date bg-white text-dark"  value="" >
+                      <input type="date" name="eventStart-date" class="form-control start_date  text-dark"  value="" >
                     </div>
 
                     <div class="form-group">
                       <span>End Date</span>
-                      <input type="date" name="eventEnd-date" class="form-control end_date bg-white text-dark"  value="" >
+                      <input type="date" name="eventEnd-date" class="form-control end_date  text-dark"  value="" >
                     </div>
 
                     <div class="form-group">
                       <span>Start Time</span>
-                      <input type="text" name="event-time" class="form-control start_time bg-white text-dark"  
+                      <input type="text" name="event-time" class="form-control start_time  text-dark"  
                       value="" >
                     </div>
 
                     <div class="form-group">
                       <span>Recorded by</span>
-                      <input type="text" name="registra" class="form-control recordedBy bg-white text-dark" readonly value="" >
+                      <input type="text" name="registra" class="form-control recordedBy  text-dark" readonly value="" >
                     </div>
 
                     <div class="form-group">
-                      <button type="submit" class="btn btn-primary addEventBtn"  name="AddItemBtn">Save</button>
+                      <button type="submit" class="btn btn-success addEventBtn"  name="AddItemBtn">Save</button>
                       <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-                      <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+                      
                     </div>
 
                     <div class="form-group">
@@ -138,7 +138,7 @@
         
         <!--Modal DeleteEvent -->
         <div class="modal fade" id="deleteEventModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-          <div class="modal-dialog" role="document">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header text-center">
                 <h5 class="modal-title w-100 font-weight-bold">Delete Event</h5>
@@ -161,7 +161,7 @@
                </div>
 
                <div class="form-group">
-                <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+                <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
                 <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
               </div>
             </div>

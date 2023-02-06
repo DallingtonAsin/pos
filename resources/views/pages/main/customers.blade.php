@@ -139,7 +139,7 @@
 <!--Add customers -->
 <div class="modal fade nunito-font addCustomersModal" id="addCustomersModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form name="customers" id="CustomersForm">
@@ -155,19 +155,19 @@ role="dialog" aria-labelledby="myModalLabel">
 
         <div class="form-group">
             {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
-            <input type="hidden" class="form-control customerId bg-white customerId" name="id"
+            <input type="hidden" class="form-control customerId  customerId" name="id"
              placeholder="Enter customer id"  Required autofocus>
           </div>
 
         <div class="form-group">
           <span>Name</span>
-          <input type="text" class="form-control name bg-white" name="name" placeholder="Enter customer name" Required autofocus>
+          <input type="text" class="form-control name " name="name" placeholder="Enter customer name" Required autofocus>
         </div>
 
        
         <div class="form-group">
           <span>Contact</span>
-          <input type="text" class="form-control contact bg-white" name="contact" placeholder="Enter contact" Required autofocus>
+          <input type="text" class="form-control contact " name="contact" placeholder="Enter contact" Required autofocus>
         </div>
 
         <div class="form-group">
@@ -178,23 +178,23 @@ role="dialog" aria-labelledby="myModalLabel">
 
          <div class="form-group">
           <span>Debt</span>
-          <input type="text" class="form-control debt bg-white" name="debt" placeholder="Enter debt">
+          <input type="text" class="form-control debt " name="debt" placeholder="Enter debt">
         </div>
 
         <div class="form-group">
           <span>Credit</span>
-          <input type="text" class="form-control credit bg-white" name="credit" placeholder="Enter credit">
+          <input type="text" class="form-control credit " name="credit" placeholder="Enter credit">
         </div>
 
         <div class="form-group">
           <span>Taken on</span>
-          <input type="date" value="{{ date('Y-m-d') }}" class="form-control taken_on bg-white" id="taken_on" name="taken_on">
+          <input type="date" value="{{ date('Y-m-d') }}" class="form-control taken_on " id="taken_on" name="taken_on">
         </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary AddcustomerBtn"  name="AddcustomerBtn">Save</button>
+          <button type="submit" class="btn btn-success AddcustomerBtn"  name="AddcustomerBtn">Save</button>
           <button type="reset" class="btn btn-danger clearBtn">Clear</button>
-          <button type="button" class="btn btn-dark closeBtn" data-dismiss="modal">Close</button>
+          
         </div>
 
         <div class="form-group">
@@ -209,7 +209,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
 <!--Import Customers -->
 <div class="modal fade nunito-font" id="importCustomers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
 
       <form action="{{ Route('customers.import') }}" method="post"
@@ -243,7 +243,7 @@ role="dialog" aria-labelledby="myModalLabel">
           @enderror
 
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="submit" class="btn btn-success">Upload</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -255,7 +255,7 @@ role="dialog" aria-labelledby="myModalLabel">
 
  <!--Modal Deletecustomers -->
  <div class="modal fade" id="deleteCustomersModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
           <h5 class="modal-title delete-modal-title w-100 font-weight-bold">Delete customer</h5>
@@ -279,7 +279,7 @@ role="dialog" aria-labelledby="myModalLabel">
          </div>
 
          <div class="form-group">
-            <button type="submit" class="btn btn-primary delete-ok-btn"  name="ConfirmBtn">Yes</button>
+            <button type="submit" class="btn btn-success delete-ok-btn"  name="ConfirmBtn">Yes</button>
             <button type="button" class="btn btn-dark" data-dismiss="modal">No</button>
         </div>
       </div>
@@ -385,7 +385,7 @@ role="dialog" aria-labelledby="myModalLabel">
          e.preventDefault();
          DisableTableFields(false);
          ShowBtns();
-        $('.AddcustomerBtn').text("Add record");
+        $('.AddcustomerBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('.customerId').val('');
         $('#CustomersForm').trigger("reset");
         $('#modalHeading').html("Register new customer");

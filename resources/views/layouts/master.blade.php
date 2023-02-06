@@ -10,13 +10,7 @@
     <meta name="description" content="{{ config('app.name') }}">
     <meta name="author" content="DallingtonCompanies">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>
-        @if (isset($companyData))
-            {{ $companyData['company_name'] }}
-        @else
-            {{ env('APP_NAME') }}
-        @endif
-    </title>
+    <title>{{ $company->name }}</title>
 
     <script>
         window.Laravel = {
@@ -34,8 +28,6 @@
     <script src="{{ asset('vendors/datatables/vfs_fonts.js') }}"></script>
     <script src="{{ asset('vendors/datatables/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('vendors/datatables/dataTables.select.min.js') }}"></script>
-
-
 
     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
     <script src="{{ asset('vendors/js/bootstrap.min.js') }}"></script>
@@ -139,6 +131,21 @@
         ::-webkit-scrollbar {
             width: 0;
             height: 0;
+        }
+
+        .close {
+            background-color: red !important;
+            border-radius: 50px;
+            margin-right: 1px !important;
+            opacity: 1 !important;
+            filter: none !important;
+            padding: 5px !important;
+            margin-top: 1px !important
+        }
+
+        .close span {
+            color: #fff;
+            font-size: 25px !important;
         }
     </style>
 </head>

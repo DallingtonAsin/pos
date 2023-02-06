@@ -36,8 +36,8 @@ class CreateStockTable extends Migration
 
         Schema::create('stock', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('item_code')->nullable();
-            $table->string('item')->nullable();
+            $table->string('item_code')->unique()->nullable();
+            $table->string('item');
             $table->string('category')->nullable();
             $table->double('quantity');
             $table->float('threshold_qty')->default('0');

@@ -23,13 +23,7 @@
 
 
       <div class="row justify-content-center">
-    <label class="col-form-label text-dark font-weight-bold text-md-center">
-      @if(isset($companyData))
-     {{ $companyData['company_name'] }}
-     @else
-     {{ env('APP_NAME') }}
-     @endif
-   </label>
+    <label class="col-form-label text-dark font-weight-bold text-md-center">{{ $company->name }} </label>
       </div>
   </div>
 
@@ -52,8 +46,8 @@
         </div>
         </div>
 
-        <input id="password" type="password" class="password form-control  @error('pos_password') is-invalid @enderror nunito-font" name="pos_password" placeholder="Enter your password"
-        value="" autocomplete="off" required>
+        <input type="password" class="password form-control"  id="password"  @error('pos_password') is-invalid @enderror nunito-font" name="pos_password" placeholder="Enter your password"
+            value="{{old('pos_password')}}" autocomplete="off" required>
           <small class="text-decoration-none text-info showPwd">
           </small>
 

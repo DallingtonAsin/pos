@@ -140,7 +140,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <span><span class="text-danger">*</span> Role</span>
-                                    <select class="form-control role_section bg-white" name="role">
+                                    <select class="form-control role_section " name="role">
                                         <option value="">select role</option>
                                     </select>
                                     @error('role')
@@ -150,7 +150,7 @@
                             </div>
                             <div class="col-md-4">
                                 <span><span class="text-danger">*</span> Gender</span>
-                                <select class="form-control gender bg-white" name="gender">
+                                <select class="form-control gender " name="gender">
                                     <option value="">select gender</option>
                                     <option value="Female" {{ old('gender') == 'Female' ? 'checked' : '' }}>Female
                                     </option>

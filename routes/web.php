@@ -103,7 +103,7 @@ Route::get('StockCats/load/', 'StockCatsController@StockCatAjaxIndex')->name('ge
 
 
 
-Route::get('/create/company', 'SettingsController@showCreateCoForm')->name('companies.create');
+Route::get('/company/register', 'SettingsController@showCreateCoForm')->name('company.register');
 Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('companies.register');
 Route::get('/users/managers', 'UserController@fetchManagers')->name('managers.home');
 Route::get('/users/managers/ajax', 'UserController@GetManagers')->name('managers.index.ajax');
