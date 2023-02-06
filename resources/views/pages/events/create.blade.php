@@ -25,26 +25,26 @@
            <div class="col-lg-4">
              <span>Title</span>
              <input type="text" name="event-title" class="form-control" 
-             placeholder="Title of the Event" required autofocus="" autocomplete="off">
+             placeholder="Title of the Event" value="{{ old('event-title') }}" required autofocus="" autocomplete="off">
            </div>
 
 
            <div class="col-lg-3">
            <span>Start Date</span>
            <input type="date" name="eventStart-date" class="form-control"
-           placeholder="Start Date of the Event" required autofocus>
+           placeholder="Start Date of the Event" value="{{ old('eventStart-date') }}" required autofocus>
          </div>
 
          <div class="col-lg-3">
            <span>End Date</span>
            <input type="date" name="eventEnd-date" class="form-control"
-           placeholder="End Date of the Event">
+           placeholder="End Date of the Event" value="{{ old('eventEnd-date') }}">
          </div>
 
          <div class="col-lg-2">
            <span>Start Time</span>
            <input type="text" name="event-time" class="event-time form-control"
-           placeholder="Start time of the Event" required autofocus="">
+           placeholder="Start time of the Event" value="{{ old('event-time') }}" required autofocus="">
          </div>
 
          </div>
@@ -52,7 +52,8 @@
 
 
      <div class="form-group">
-      <textarea id="event-message" name="event-message" rows="5" class="form-control" required autofocus="" placeholder="Write your message.."></textarea>
+      <textarea id="event-message" name="event-message" rows="5" 
+       class="form-control" required autofocus="" placeholder="Write your message..">{{ old('event-message') }}</textarea>
     </div>
 
 
@@ -61,7 +62,7 @@
       <div class="row">
 
        <div class="col-lg-2">
-         <input type="submit" class="btn btn-success" name="submit" value="Save Event">
+         <input type="submit" class="btn btn-success" name="submit" value="Submit">
        </div>
        <div class="col-lg-9 text-center">
           @if(session()->get('success'))

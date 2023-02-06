@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,6 +64,7 @@ Route::get('/customers/with-debts/ajax', 'CustomersController@GetCustomersWithDe
 
 Route::get('/customers/debt-payments', 'CustomersController@customerDebtPaymentsIndex')->name('customers.debts.payments.index');
 Route::get('/customers/debt-payments/ajax', 'CustomersController@GetCustomerDebtPayments')->name('customers.debts.payments.ajax');
+Route::get('purchases/store', 'PurchasesController@store')->name('purchases.post');
 
 
 
@@ -99,7 +103,6 @@ Route::get('StockCats/load/', 'StockCatsController@StockCatAjaxIndex')->name('ge
 
 
 
-
 Route::get('/create/company', 'SettingsController@showCreateCoForm')->name('companies.create');
 Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('companies.register');
 Route::get('/users/managers', 'UserController@fetchManagers')->name('managers.home');
@@ -110,7 +113,7 @@ Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.aj
 
 Route::resources([
 	'stock' => 'StockController',
-	'cart' => 'CartController',
+	'pos' => 'CartController',
 	'sales' => 'SalesController',
 	'product-categories' => 'StockCatsController',
 	'cashiers' => 'CashiersController',
@@ -135,13 +138,13 @@ Route::get('/reports', 'ReportsController@index')->name('reports');
 Route::get('/reports/charts/purchases', 'ReportsController@purchaseReports')->name('reports.charts.purchases');
 
 
-Route::post('cart/session/update','CartController@updateItemInSession')->name('session.update');
-Route::post('cart/record','CartController@MakeSaleGateway')->name('sale.transact');
+Route::post('pos/session/update','CartController@updateItemInSession')->name('session.update');
+Route::post('pos/record','CartController@MakeSaleGateway')->name('sale.transact');
 Route::post('sale/transact','CartController@recordSale')->name('sale.record');
 
-Route::post('cart/barcode/getItem','CartController@GetCartData')->name('item.get');
-Route::post('cart/search','CartController@searchItem')->name('item.search');
-Route::post('cart/searchprice','CartController@getItemPrice')->name('cart.searchprice');
+Route::post('pos/barcode/getItem','CartController@GetCartData')->name('item.get');
+Route::post('pos/search','CartController@searchItem')->name('item.search');
+Route::post('pos/searchprice','CartController@getItemPrice')->name('cart.searchprice');
 Route::post('users/search/role','UserController@searchRole')->name('user.searchrole');
 
 Route::post('/sales/filtered-sales','SalesController@filterSales')->name('filtersales'); 
@@ -230,12 +233,12 @@ Route::get('about-CodeSolutionTech','DocumentationController@CompanyDetails')->n
 
 Route::get('sms','SmsController@index')->name('sms');
 Route::post('send-sms','SmsController@SendSMS')->name('sms.store');
-Route::post('cart/handler','CartController@PopulateCart')->name('cart.handle');
+Route::post('pos/handler','CartController@PopulateCart')->name('cart.handle');
 Route::get('events/event-form','EventsController@ShowEventForm')->name('events.showForm');
 
 
 Route::post('purchases/deleteAll','PurchasesController@deleteAllPurchases')->name('purchases.truncate');
-Route::post('cart/clear','CartController@ClearCart')->middleware('password.confirm');
+Route::post('pos/clear','CartController@ClearCart')->middleware('password.confirm');
 Route::post('stock/deleteAll','StockController@deleteAllStockItems')->name('stock.truncate');
 Route::post('suppliers/deleteAll','SuppliersController@deleteAllSuppliers')->name('suppliers.truncate');
 Route::post('expenses/deleteAll','ExpensesController@deleteAllExpenses')->name('expenses.truncate');

@@ -16,7 +16,7 @@ use App\DataTables\Reports\CashiersPerformanceDataTable;
 
 use App\Models\Stock;
 use App\Models\MonthlySale;
-use Helper;
+use App\Helpers\Helper;
 
 class ReportsController extends Controller
 {

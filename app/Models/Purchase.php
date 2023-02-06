@@ -20,8 +20,8 @@ class Purchase extends Model
         'wholesale_price',
         'supplier',
         'supplier_contact',
-        'recorded_by',
-        'date',      
+        'created_by',
+        'date_of_purchase'  
     ];
     public $timestamps = true;
 }
