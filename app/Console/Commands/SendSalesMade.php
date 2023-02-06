@@ -13,7 +13,7 @@ use App\Jobs\MailDailySalesReport;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Helpers\Helper;
-use Constant;
+use  App\Helpers\Constants as Constant;
 
 class SendSalesMade extends Command
 {

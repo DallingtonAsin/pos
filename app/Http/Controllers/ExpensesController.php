@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogAfterRequest;
 use App\DataTables\ExpensesDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use Excel;
 
 class ExpensesController extends Controller

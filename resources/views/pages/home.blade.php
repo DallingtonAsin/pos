@@ -1,4 +1,4 @@
-@extends('layouts.template')
+@extends('layouts.master')
 
 @can('isAdmin')
 @section('content')

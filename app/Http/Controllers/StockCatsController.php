@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\StockCatsDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use Excel;
 use App\Helpers\Helper;
 

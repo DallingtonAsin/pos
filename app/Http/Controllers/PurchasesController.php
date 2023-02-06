@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 use App\Imports\ImportPurchases;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use App\Helpers\Helper;
 
 class PurchasesController extends Controller

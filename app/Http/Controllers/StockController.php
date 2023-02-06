@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\DataTables\StockDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use App\Helpers\Helper;
 
 

@@ -14,7 +14,7 @@ use App\Imports\ImportSuppliers;
 use App\Exports\ExportSuppliers;
 use App\DataTables\SuppliersDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use DataTable;
 use Excel;
 use App\Helpers\Helper;
