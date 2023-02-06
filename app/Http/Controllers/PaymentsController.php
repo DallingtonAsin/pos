@@ -6,7 +6,7 @@ use Bmatovu\MtnMomo\Exceptions\CollectionRequestException;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\ExpressCheckout;
 use App\Models\Payment;
-use Helper;
+use App\Helpers\Helper;
 
 class PaymentsController extends Controller
 {

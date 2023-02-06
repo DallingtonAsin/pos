@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Models\Logs;
 use App\Models\Role;
-use Helper;
+use App\Helpers\Helper;
 use App\DataTables\LogsDataTable;
 
 class LogsController extends Controller

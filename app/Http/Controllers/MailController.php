@@ -16,7 +16,7 @@ use App\Models\Role;
 use App\Models\QueuedEmail;
 use App\Events\EmailQueued;
 use App\User;
-use Helper;
+use App\Helpers\Helper;
 
 
 class MailController extends Controller

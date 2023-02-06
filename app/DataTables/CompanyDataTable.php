@@ -7,29 +7,31 @@ use App\Models\Company;
 
 class CompanyDataTable extends DataTable
 {
+
     /**
      * Build DataTable class.
      *
      * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
+
     public function dataTable($query)
     {
         return datatables($query)->addIndexColumn()->addColumn('action', function ($company) {
             
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$company->id.'" data-original-title="Edit" id="edit-company"
-              class="edit-btn edit-company">
+              class="px-3 py-1 border border-success rounded mx-2 edit-company">
              <span class="glyphicon glyphicon-pencil"></span></a>';
           
             $btn .= '<a href="javascript:void(0);" id="delete-company" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$company->id.'" class="trash-btn pl-4"">
+             data-id="'.$company->id.'" class="px-3 py-1 border border-danger rounded mx-2 pl-4"">
             <span class="glyphicon glyphicon-trash" ></span></a>';
 
            $btn .= '<a href="javascript:void(0);" id="view-company" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$company->id.'" class="text-info bolded pl-4">
+            data-id="'.$company->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2 pl-4">
            <i class="fa fa-eye" ></i></a>';
 
            return $btn;

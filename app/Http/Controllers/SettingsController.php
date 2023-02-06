@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\DataTables\CompanyDataTable;
 use App\Http\Controllers\LogsController;
-use Helper;
+use App\Helpers\Helper;
 
 class SettingsController extends Controller
 {

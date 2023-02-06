@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Stock;
 use App\Models\Purchase;
 use Carbon\Carbon;
-use Helper;
+use App\Helpers\Helper;
 use DateTime;
 
 class ImportPurchases extends DefaultValueBinder implements ToCollection, WithHeadingRow,WithCustomValueBinder

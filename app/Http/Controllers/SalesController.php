@@ -20,9 +20,9 @@ use App\DataTables\TodaySalesDataTable;
 use App\DataTables\TodaySalesWithDebtsDataTable;
 use App\Exports\DailySalesReport;
 use Illuminate\Support\Str;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use Excel;
-use Helper;
+use App\Helpers\Helper;
 use DataTable;
 
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Helper;
+use App\Helpers\Helper;
 class DocumentationController extends Controller
 {
 

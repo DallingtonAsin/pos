@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Expense;
-use Helper;
+use App\Helpers\Helper;
 use App\Imports\ImportExpenses;
 use App\Exports\ExportExpenses;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogAfterRequest;
 use App\DataTables\ExpensesDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use Excel;
 
 class ExpensesController extends Controller

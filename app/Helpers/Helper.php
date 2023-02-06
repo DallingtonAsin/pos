@@ -18,7 +18,7 @@ use App\Http\Controllers\LogsController;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
 use App\User;
-use Constant;
+use  App\Helpers\Constants as Constant;
 
 class Helper
 {

@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use Helper;
+use App\Helpers\Helper;
 
 class ManagersDataTable extends DataTable
 {
@@ -30,17 +30,17 @@ class ManagersDataTable extends DataTable
             
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$user->id.'" data-original-title="Edit" id="edit-user"
-              class="edit-btn edit-user pr-4">
-             <span class="fa fa-pen"></span></a>';
+              class="px-3 py-1 border border-success rounded mx-2 edit-user pr-4">
+             <span class="fa fa-pen text-success"></span></a>';
           
             $btn .= '<a href="javascript:void(0);" id="delete-user" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$user->id.'" class="trash-btn pr-4"">
-            <span class="fa fa-trash-alt" ></span></a>';
+             data-id="'.$user->id.'" class="px-3 py-1 border border-danger rounded mx-2 pr-4"">
+            <span class="fa fa-trash-alt text-danger" ></span></a>';
 
            $btn .= '<a href="javascript:void(0);" id="view-user" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$user->id.'" class="text-info bolded">
+            data-id="'.$user->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
            <i class="fa fa-eye" ></i></a>';
 
            return $btn;

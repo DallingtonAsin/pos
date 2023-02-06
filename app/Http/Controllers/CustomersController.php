@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\Stock;
-use Helper;
+use App\Helpers\Helper;
 use App\Imports\ImportCustomers;
 use App\Exports\ExportCustomers;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +20,7 @@ use App\DataTables\CustomersWithDebtsDataTable;
 use App\DataTables\CustomerDebtPaymentRecordsDataTable;
 use App\Services\CustomerDebtPaymentService;
 use Illuminate\Support\Str;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use DataTable;
 use Excel;
 

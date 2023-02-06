@@ -13,9 +13,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\DamagesDataTable;
 use Illuminate\Support\Str;
-use Constant;
+use  App\Helpers\Constants as Constant;
 use Excel;
-use Helper;
+use App\Helpers\Helper;
 
 class DamagesController extends Controller
 {

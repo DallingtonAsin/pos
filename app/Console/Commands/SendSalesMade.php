@@ -12,8 +12,8 @@ use App\Models\Role;
 use App\Jobs\MailDailySalesReport;
 use Illuminate\Support\Facades\DB;
 use App\User;
-use Helper;
-use Constant;
+use App\Helpers\Helper;
+use  App\Helpers\Constants as Constant;
 
 class SendSalesMade extends Command
 {

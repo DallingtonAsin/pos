@@ -23,12 +23,12 @@ class LogsDataTable extends DataTable
 
             // $btn = '<a href="javascript:void(0);" id="delete-log" 
             // data-toggle="tooltip" data-original-title="Delete" 
-            // data-id="'.$log->id.'" class="trash-btn pl-3"">
+            // data-id="'.$log->id.'" class="px-3 py-1 border border-danger rounded mx-2 pl-3"">
             // <span class="glyphicon glyphicon-trash pr-4" ></span></a>';
 
            $btn = '<a href="javascript:void(0);" id="view-log" 
            data-toggle="tooltip" data-original-title="View" 
-           data-id="'.$log->id.'" class="text-info bolded pl-3">
+           data-id="'.$log->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2 pl-3">
            <i class="fa fa-eye" ></i></a>';
 
            return $btn;
