@@ -18,9 +18,9 @@ class StockDataTable extends DataTable
     {
 
         return datatables($query)
-        // ->order(function($query){
-        //        $query->orderBy('date_of_entry', 'desc');
-        // })
+        ->order(function($query){
+               $query->orderBy('id', 'desc');
+        })
         ->addIndexColumn()
         ->addColumn('action', function ($stock) {
 
