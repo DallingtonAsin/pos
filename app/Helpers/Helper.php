@@ -457,5 +457,12 @@ class Helper
       public static function getCustomer($customer_id){
         return Customer::find($customer_id);
       }
+
+      public static function isCashier()
+      {
+    
+        $cashier_role_id = Role::where('name', 'like', '%cashier%')->first()->id;
+        return Auth::user()->role_id === $cashier_role_id;
+      }
       
     }

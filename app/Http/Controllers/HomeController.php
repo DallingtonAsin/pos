@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Helpers\Helper;
+use App\Models\Customer;
+
 
 class HomeController extends Controller
 {
@@ -20,10 +24,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+
         if (Auth::check()) {
-            return view('pages.home');
+            $customers = Customer::select(['id', 'name'])->get();
+            return view('pages.home')->with(compact('customers'));
         }
         return redirect('/');
     }
