@@ -14,8 +14,9 @@ class CreateStockcategoriesTable extends Migration
     public function up()
     {
         Schema::create('stockcategories', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('item_category');        
+            $table->id();
+            $table->string('item_category');  
+            $table->timestamps();
         });
     }
 

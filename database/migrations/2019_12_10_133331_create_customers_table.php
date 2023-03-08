@@ -4,8 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
-use App\Customer;
-use Carbon\Carbon;
 
 class CreateCustomersTable extends Migration
 {
@@ -17,16 +15,15 @@ class CreateCustomersTable extends Migration
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name');
             $table->string('contact');
-            $table->unsignedBigInteger('item_taken');
-            $table->double('debt')->nullable();
-            $table->double('credit')->nullable();
-            $table->string('added_by');
-            $table->date('taken_on')->nullable();
+            $table->string('address')->nullable();
+            $table->unsignedBigInteger('added_by');
             $table->timestamps();
-            $table->foreign('item_taken')->references('id')->on('stock')->onDelete('cascade');
+
+            $table->foreign('added_by')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 

@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class MonthlySale extends Model
 {
     protected $table = "monthlysales";
-    public $timestamps = false;
+    public $timestamps = true;
 }

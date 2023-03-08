@@ -10,10 +10,10 @@
             <div class="row nunito-font">
               <span class="response"></span>
 
-              <div class="col-lg-2">
+              <div class="col-lg-6">
                 <h6 class="text-dark">
                   <i class="fa fa-home text-success"> /</i>
-                  <strong>Records</strong>
+                  <strong>Customers</strong>
                   <span class="badge nunito-font  totl_customers">
                       @isset($number_of_customers)
                       {{ number_format($number_of_customers) }}
@@ -22,59 +22,12 @@
                 </h6>
               </div>
 
-
-              @can('isAdmin')
-              <div class="col-lg-3">
-                <h5>
-                  Credit: shs.<strong class="text-success totl_credit">
-                      @isset($total_credit)
-                      {{ number_format($total_credit) }}
-                      @endisset
-
-                    </strong>
-                </h5>
-              </div>
-
-              <div class="col-lg-3">
-                <h5>
-                  Debts: shs.<label class="text-danger totl_debt">
-                      @isset($total_debts)
-                      {{ number_format($total_debts) }}
-                      @endisset
-
-                    </label>
-                </h5>
-              </div>
-              @endcan
-
-              <div class="col-lg-2">
+              <div class="col-lg-4">
                 <h5>
                     <a class="text-info bolded" href="javascript:void(0)"
                      id="createNewCustomer"> Add customer</a>
                 </h5>
               </div>
-
-            @can('isAdmin')
-              <div class="col-lg-2">
-               <div class="btn-group">
-                <button type="button" class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Action
-               </button>
-               <ul class="dropdown-menu">
-                   <li><a href=""  class="add-link text-dark text-decoration-none"
-                     data-toggle="modal" data-target="#importCustomers"><strong>Import customers</strong>
-                   </a></li>
-                 <li>
-                <a class="text-decoration-none text-dark
-                nunito-font"
-                href="javascript:void(0)"
-                id="removeAllCustomers"> Delete all customers</a>
-                 </li>
-                </ul>
-              </div>
-            </div>
-            @endcan
-
           </div>
 
         </div>
@@ -114,16 +67,12 @@
                 @can('isCashier') 
                 <th>No</th>
                 @endcan
-                {{-- <th class="td-sm">No</th> --}}
                 <th>Name</th>
                 <th>Contact</th>
-                <th>Item taken</th>
-                <th>Credit</th>
-                <th>Debt</th>
+                {{-- <th>Address</th> --}}
                 @can('isAdmin')
                 <th>Added by</th>
                 @endcan
-                <th>Taken on</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -156,39 +105,23 @@ role="dialog" aria-labelledby="myModalLabel">
         <div class="form-group">
             {{-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}"> --}}
             <input type="hidden" class="form-control customerId  customerId" name="id"
-             placeholder="Enter customer id"  Required autofocus>
+             placeholder="Enter customer id" autofocus>
           </div>
 
         <div class="form-group">
-          <span>Name</span>
-          <input type="text" class="form-control name " name="name" placeholder="Enter customer name" Required autofocus>
+          <span><span class="text-danger pr-1">*</span>Name</span>
+          <input type="text" class="form-control name " name="name" placeholder="Enter customer name" required autofocus>
         </div>
 
        
         <div class="form-group">
-          <span>Contact</span>
-          <input type="text" class="form-control contact " name="contact" placeholder="Enter contact" Required autofocus>
+          <span><span class="text-danger pr-1">*</span>Contact</span>
+          <input type="text" class="form-control contact " name="contact" placeholder="Enter contact" required autofocus>
         </div>
 
         <div class="form-group">
-          <span>Item taken</span>
-          <input name="item_taken" class="form-control item_taken" id="item_taken" placeholder="Enter item taken on credit" >
-          </select>
-        </div>
-
-         <div class="form-group">
-          <span>Debt</span>
-          <input type="text" class="form-control debt " name="debt" placeholder="Enter debt">
-        </div>
-
-        <div class="form-group">
-          <span>Credit</span>
-          <input type="text" class="form-control credit " name="credit" placeholder="Enter credit">
-        </div>
-
-        <div class="form-group">
-          <span>Taken on</span>
-          <input type="date" value="{{ date('Y-m-d') }}" class="form-control taken_on " id="taken_on" name="taken_on">
+          <span><span class="text-danger pr-1">*</span>Address</span>
+          <input type="text" class="form-control address" name="address" placeholder="Enter address" required autofocus>
         </div>
 
         <div class="form-group">
@@ -231,7 +164,7 @@ role="dialog" aria-labelledby="myModalLabel">
         </div>
 
         <div class="form-group">
-          <input type="file" class="form-control-file @error('select_file') is-invalid @enderror" name="select_file" Required autofocus>
+          <input type="file" class="form-control-file @error('select_file') is-invalid @enderror" name="select_file" required autofocus>
         </div>
 
         @error('select_file')
@@ -315,11 +248,7 @@ role="dialog" aria-labelledby="myModalLabel">
          // {data: 'id', name:'id'},
          {data: 'name', name:'name'},
          {data: 'contact', name:'contact'},
-         {data: 'item_taken', name:'item_taken'},
-         {data: 'credit', name:'credit'},
-         {data: 'debt', name:'debt'},
          {data: 'added_by', name:'added_by'},
-         {data: 'taken_on', name:'taken_on'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
       makeDataTable(table, title, columns, dataColumns);
@@ -334,10 +263,6 @@ role="dialog" aria-labelledby="myModalLabel">
          // {data: 'id', name:'id'},
          {data: 'name', name:'name'},
          {data: 'contact', name:'contact'},
-         {data: 'item_taken', name:'item_taken'},
-         {data: 'credit', name:'credit'},
-         {data: 'debt', name:'debt'},
-         {data: 'taken_on', name:'taken_on'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
       makeDataTable2(table, title, columns, dataColumns);
@@ -388,7 +313,7 @@ role="dialog" aria-labelledby="myModalLabel">
         $('.AddcustomerBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('.customerId').val('');
         $('#CustomersForm').trigger("reset");
-        $('#modalHeading').html("Register new customer");
+        $('#modalHeading').html("Add new customer");
         $('#addCustomersModal').modal('show');
         });
 

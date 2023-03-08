@@ -14,7 +14,7 @@ class CreateChatboxTable extends Migration
     public function up()
     {
         Schema::create('chatbox', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->text("chat_command");
             $table->text("chat_response");
         });

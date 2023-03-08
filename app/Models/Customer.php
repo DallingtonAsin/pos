@@ -9,7 +9,7 @@ class Customer extends Model
 {
     use HasFactory;
 	protected $table = 'customers';
-	// public $timestamps = false;
+	// public $timestamps = true;
 	// protected $dateFormat = 'U';
 	// const CREATED_AT = 'creattion_date';
 	// const UPDATED_AT = 'last_update';

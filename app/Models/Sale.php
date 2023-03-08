@@ -12,5 +12,5 @@ class Sale extends Model
     protected $fillable=['id', 'item', 'quantity', 'selling_price', 
                           'total_cost', 'discount','amount', 'customer', 
                           'date_of_sale,cashier'];
-    public $timestamps = false;
+    public $timestamps = true;
 }

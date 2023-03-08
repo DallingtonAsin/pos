@@ -9,7 +9,7 @@ class StockCat extends Model
 {
     use HasFactory;
     protected $table = 'stockcategories';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
       'item_category'
     ];

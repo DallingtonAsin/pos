@@ -87,6 +87,7 @@
         <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
           Expenses
         </a></li>
+        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link"> Customers</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
       

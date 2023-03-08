@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class DebtorsSupplier extends Model
 {
     protected $table = 'debtors_suppliers';
-    public $timestamps = false;
+    public $timestamps = true;
 }

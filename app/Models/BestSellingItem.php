@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class BestSellingItem extends Model
 {
     protected $table = "bestsellingitems";
-    public $timestamps = false;
+    public $timestamps = true;
 }

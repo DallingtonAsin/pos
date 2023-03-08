@@ -29,7 +29,7 @@ class CreatePurchasesTable extends Migration
         //  )");
 
         Schema::create('purchases', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('serial_no')->nullable();
             $table->string('receipt_no')->nullable();
             $table->string('item_code')->nullable();
@@ -44,6 +44,8 @@ class CreatePurchasesTable extends Migration
             $table->string('recorded_by');
             $table->date('date_of_purchase')->nullable();
             $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamps();
+
         });
 
 

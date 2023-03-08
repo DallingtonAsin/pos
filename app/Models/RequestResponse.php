@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class RequestResponse extends Model
 {
    protected $table = "requests";
-   public $timestamps = false;
+   public $timestamps = true;
    protected $fillable = [
                 'request',
                 'response',

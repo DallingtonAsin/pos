@@ -14,7 +14,7 @@ class CreateQueuedSmsTable extends Migration
     public function up()
     {
         Schema::create('queued_sms', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->text('sender_telno');
             $table->string('receiver_telno');
             $table->text('message');

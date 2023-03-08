@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class TopCashier extends Model
 {
     protected $table = 'top_cashiers';
-    public $timestamps = false;
+    public $timestamps = true;
 }

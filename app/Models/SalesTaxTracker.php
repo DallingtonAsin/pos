@@ -8,7 +8,7 @@ class SalesTaxTracker extends Model
 {
   protected $table = 'salestaxtracker';
   protected $fillable=['id', 'item_id', 'item', 'quantity','amount', 'tax'];
-  public $timestamps = false;
+  public $timestamps = true;
 
 
 }

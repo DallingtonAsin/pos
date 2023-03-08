@@ -14,7 +14,7 @@ class CreateQueuedEmailsTable extends Migration
     public function up()
     {
         Schema::create('queued_emails', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
 			$table->text('received_data');
             $table->string('email');
             $table->text('description');
