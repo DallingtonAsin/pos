@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
 
 class UserFactory extends Factory
 {
@@ -23,6 +24,9 @@ class UserFactory extends Factory
   */
   public function definition()
   {
+
+    $role_id =  Role::inRandomOrder()->first()->id;
+
     return [
       'first_name' => $this->faker->firstName,
       'last_name' => $this->faker->lastName,
@@ -30,7 +34,7 @@ class UserFactory extends Factory
       'username' => $this->faker->unique()->lastName,
       'gender' => 'Male',
       'email' => $this->faker->unique()->safeEmail,
-      'user_role' => $this->faker->randomElement([1, 2]),
+      'role_id' => $role_id,
       'tel_no' => $this->faker->phoneNumber,
       'alt_telno' => $this->faker->phoneNumber,
       'address' => $this->faker->state,

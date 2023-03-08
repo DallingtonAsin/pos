@@ -33,7 +33,8 @@ class CreateSalesTable extends Migration
         //  )");
 
         Schema::create('sales', function (Blueprint $table) {
-            $table->bigIncrements('id');
+
+            $table->id();
             $table->string('item_id')->nullable();
             $table->string('item');
             $table->double('quantity');
@@ -48,12 +49,16 @@ class CreateSalesTable extends Migration
             $table->double('extra_money')->default(0);
             $table->boolean('is_credit')->default('0');
             $table->boolean('fully_paid')->default('1');
-            $table->string('customer')->nullable();
             $table->double('tax')->default('0');
             $table->date('date');
             $table->time('time');
-            $table->string('cashier', 45);
-            $table->string('workedon_by')->nullable();
+            $table->unsignedBigInteger('customer_id')->nullable();
+            $table->unsignedBigInteger('cashier_id');
+            $table->timestamps();
+            
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('cashier_id')->references('id')->on('users')->onDelete('cascade');
+
         });
        
 

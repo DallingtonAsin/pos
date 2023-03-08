@@ -25,10 +25,10 @@ class DebtorsCustomersTable extends Migration
 
  // MYSQL SERVER QUERY
 
-            DB::statement("CREATE OR REPLACE VIEW `debtors_customers` AS select `name` AS `name`,
-            `contact` AS `contact`, sum(`debt`) AS `debts` 
-            from `customers` group by `name`,`contact` order by
-            sum(`debt`) desc");
+            // DB::statement("CREATE OR REPLACE VIEW `debtors_customers` AS select `name` AS `name`,
+            // `contact` AS `contact`, sum(`debt`) AS `debts` 
+            // from `customers` group by `name`,`contact` order by
+            // sum(`debt`) desc");
 
     }
 

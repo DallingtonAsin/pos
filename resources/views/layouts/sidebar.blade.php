@@ -87,6 +87,7 @@
         <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
           Expenses
         </a></li>
+        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link"> Customers</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link"> Customers with debts</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
       
@@ -96,12 +97,13 @@
       @can('isCashier')
       <ul class="nav-sub">
 
-        <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damages</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sale Transactions</a></li>
+      
+        <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a></li>
         <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Credit Transactions</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link">Customers with debts</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link">List of registered customers</a></li>
+
        
 
         
@@ -112,7 +114,17 @@
 
     @can('isCashier')
     <li><a href="{{ Route('pos.index') }}" class="nav-link">
-      <i class="typcn typcn-shopping-bag"></i>Transaction</a></li>
+      <i class="typcn typcn-shopping-bag"></i>Point of Sale</a></li>
+      @endcan
+
+      @can('isCashier')
+      <li class="nav-item">
+        <a href="" class="nav-link with-sub"><i class="typcn typcn-location"></i>Inventory</a>
+        <ul class="nav-sub">
+          <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
+          <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damages</a></li>
+        </ul>
+      </li>
       @endcan
 
 
@@ -213,8 +225,6 @@
                <li class="nav-sub-item"><a href="{{ Route('events.index') }}" class="nav-sub-link">Events</a></li>
               <li class="nav-sub-item"><a href="{{ Route('calendar.index') }}" class="nav-sub-link">Calendar</a></li>
               <li class="nav-sub-item"><a href="{{ Route('events.create') }}" class="nav-sub-link">Add Event</a></li>
-             
-
             </ul>
           </li>
 

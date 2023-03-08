@@ -33,36 +33,43 @@
 
                 <div class="row">
 
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-md-2">
                         <label>Tendered Amount</label>
                         <input type="text" class="form-control tendered" id='tendered' placeholder="Tendered amount">
                     </div>
 
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-md-2">
                         <label>Balance</label>
                         <input type="text" class="form-control  balance" readonly placeholder="Customer balance">
                     </div>
 
-                    <div class="form-group col-lg-2">
+                    <div class="form-group col-md-2">
                         <label>Extra Money Paid</label>
                         <input type="text" class="form-control  extra_money" value="" id="extra_money"
                             placeholder="0">
                     </div>
 
-                    <div class="form-group col-lg-2">
-                        <label>Workedon By</label>
-                        <input type="text" class="form-control  workedon_by" id="workedon_by" name="workedon_by"
-                            value="{{ Auth::user()->name }}" placeholder="WorkedOn By">
+                    <div class="form-group col-md-2">
+                        <label>Cashier</label>
+                        <input type="text" class="form-control  cashier" id="cashier" name="cashier"
+                            value="{{ Auth::user()->name }}" placeholder="WorkedOn By" readonly>
                     </div>
 
-                    <div class="form-group col-lg-4 mt-4 pt-3">
+                    <div class="form-group col-md-2">
+                        <label>Customer</label>
+                        <select name="customer" id="customer" class="form-control customer">
+                            <option value="">Select customer</option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-2 mt-4 pt-3">
                         <a href="javascript:void(0)" id="emptyCart" class="btn btn-sm btn-danger">
-                            <i class="fa f-10 fa-minus-circle"></i>Empty cart
+                            <i class="fa f-10 fa-times-circle pr-2"></i>Empty cart
                         </a>
 
-                        <a id="printBtn" class="btn btn-sm btn-success text-white ml-3">
-                            <i class="fa fa-print"></i> <strong class="f-15 print-btn-text">Print Receipt</strong>
-                        </a>
                     </div>
 
 
@@ -94,11 +101,6 @@
                     </div>
 
                     <div class="form-group col">
-                        <label>Customer</label>
-                        <input type="text" name="customer" id="customer" class="form-control" placeholder="customer">
-                    </div>
-
-                    <div class="form-group col">
                         <label>Price category</label>
                         <select name="priceCategory" class="form-control" id="priceCategory">
                             <option value="retail">retail</option>
@@ -116,8 +118,8 @@
 
                     <div class="form-group col mt-4 pt-2">
                         <label></label>
-                        <button type="button" id="addToCartBtn" class="btn btn-sm btn-info pb-2 custom-family"
-                            name="AddToCart">Add to cart</button>
+                        <button type="button" id="addToCartBtn" class="btn btn-sm btn-secondary pb-2 custom-family"
+                            name="AddToCart"><i class="fa f-10 fa-plus-circle pr-2"></i>Add to cart</button>
                     </div>
                 </div>
             </form>
@@ -161,15 +163,28 @@
                                 <th>total</th>
                                 <th>Discount/Item</th>
                                 <th>Amount</th>
-                                <th>Amt to Pay/Paid</th>
+                                <th>Amount Paid</th>
                                 <th>Is Credit</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
 
-                        <tbody id="CartTableBody">
+                        <tbody id="cart-table-body">
                         </tbody>
+
+                      <tfoot>
+                        <tr>
+                            <td colspan="10"></td> <!-- empty cells for column spacing -->
+                            <td>
+                                <a id="printBtn" class="btn btn-sm btn-primary text-white col-md-12">
+                                    <i class="fa fa-check-circle pr-2"></i> <strong class="f-15 print-btn-text">Submit Sale</strong>
+                                </a>
+                            </td>
+                        </tr>
+                      </tfoot>
+
+
 
                     </table>
                 </div>
@@ -351,7 +366,7 @@
                         });
 
                         if (inc == 0) {
-                            $("#CartTableBody").append(bodyData);
+                            $("#cart-table-body").append(bodyData);
                             $('.barcode').val('');
                             $('.item-name').val("");
                             $('#qty').val("");
@@ -389,7 +404,7 @@
 
             $(this).parents('tr').find('td:eq(2)').html(
                 '<input name="edit_quantity" class="edit_quantity" value="' + quantity + '" style="width:80px">'
-                );
+            );
             $(this).parents('tr').find('td:eq(5)').html(
                 '<input name="edit_discount" class="edit_discount" value="' + discount +
                 '"  style="width:80px"> ');
@@ -402,7 +417,7 @@
                 date_of_sale + '" style="width:135px">');
             $(this).parents('tr').find('td:eq(10)').prepend(
                 '<button class="btn btn-info btn-xs btn-update">Update</button><button class="btn btn-warning ml-3 btn-xs btn-cancel">Cancel</button>'
-                );
+            );
             // $('#is_credit').prop('checked', status);
             $(this).parents('tr').find('input[type="checkbox"]').prop('checked', status);
 
@@ -536,8 +551,8 @@
 
 
         $('#printBtn').on('click', function() {
-            let table = document.getElementById('cart-table');
-            let rowCount = (table.rows.length - 1);
+            let table = document.getElementById('cart-table-body');
+            let rowCount = table.rows.length;
             if (rowCount > 0) {
                 if (confirm("Are you sure you want to submit this sale?")) {
                     PrintReceipt();
@@ -587,7 +602,7 @@
             });
 
             let customer = $("#customer").val();
-            let workedon_by = $("#workedon_by").val();
+            let cashier = $("#cashier").val();
             let extra_money = $("#extra_money").val();
 
             if (extra_money) {
@@ -596,7 +611,7 @@
 
             if (credit_arr.includes(true) && !customer) {
                 alert("Enter the customer name to cater for the items being taken on credit.");
-            } else if (!workedon_by) {
+            } else if (!cashier) {
                 alert("Enter the person who has worked on the sale");
             } else {
 
@@ -604,24 +619,24 @@
                 console.log("Table data", cart_data);
                 $('.print-btn-text').html("saving...");
 
-                var postUrl = '{{ route('sale.record') }}';
+                var postUrl = "{{ route('sale.record') }}";
                 $.ajax({
                     type: 'POST',
                     url: postUrl,
                     data: {
                         tabledata: cart_data,
                         customer: customer,
-                        workedon_by: workedon_by,
+                        cashier: cashier,
                         extra_money: extra_money,
                     },
                     success: function(data) {
                         EmptyCartTable();
                         $("#customer").val('');
                         $("#extra_money").val('');
-                        var worker = "{{ Auth::user()->name }}";
-                        $("#workedon_by").val(worker);
+                        var user = "{{ Auth::user()->name }}";
+                        $("#cashier").val(user);
                         var message = data.response;
-                        $('.print-btn-text').html("Print Receipt");
+                        $('.print-btn-text').html("Submit Sale");
                         updateSubTotal();
                     },
                     error: function(data) {
@@ -729,8 +744,8 @@
         //Computation of how much the customer must pay
 
         function updateSubTotal() {
-            var table = document.getElementById('cart-table');
-            let subTotal = Array.from(table.rows).slice(1).reduce((total, row) => {
+            var table = document.getElementById('cart-table-body');
+            let subTotal = Array.from(table.rows).reduce((total, row) => {
                 var Total = row.cells[7].innerHTML;
                 var subTotl = Total.replace(/,/g, '').trim();
                 return total + parseFloat(subTotl);

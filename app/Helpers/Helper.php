@@ -11,9 +11,8 @@ use App\Models\Sale;
 use App\Models\Expense;
 use App\Models\Damage;
 use App\Models\Supplier;
-use Illuminate\Support\Facades\Log;
+use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
 use App\Http\Controllers\LogsController;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
@@ -70,7 +69,7 @@ class Helper
   
   public static function getRoleId($role){
     try{
-      $roleId = Role::where('role', 'like', '%'.$role.'%')->value('role_id');
+      $roleId = Role::where('name', 'like', '%'.$role.'%')->value('id');
       return $roleId;
     }catch(\Exception $ex){
       dd($ex->getMessage());
@@ -79,7 +78,7 @@ class Helper
   
   public static function getRole($roleId){
     try{
-      $role = Role::where('role_id', $roleId)->value('role');
+      $role = Role::where('id', $roleId)->value('name');
       return $role;
     }catch(\Exception $ex){
       dd($ex->getMessage());
@@ -303,8 +302,8 @@ class Helper
       public static function getUserRoleId($role)
       {
         try {
-          $roleId = Role::where('role', 'like', '%'.$role.'%')
-          ->value('role_id');
+          $roleId = Role::where('name', 'like', '%'.$role.'%')
+          ->value('id');
           return $roleId;
         } catch (\Exception $ex) {
           $data = array(
@@ -325,8 +324,8 @@ class Helper
       {
         try {
           $role_id = Helper::getUserRoleId($role);
-          $users_list = User::where('user_role', $role_id)->get();
-          $number_of_users = User::where('user_role', $role_id)->count();
+          $users_list = User::where('role_id', $role_id)->get();
+          $number_of_users = User::where('role_id', $role_id)->count();
           $data = array(
             'totl' => $number_of_users,
             'list' => $users_list
@@ -451,5 +450,12 @@ class Helper
         return is_numeric($n) && floor($n) != $n;
       }
       
+      public static function getUser($user_id){
+        return User::find($user_id);
+      }
+
+      public static function getCustomer($customer_id){
+        return Customer::find($customer_id);
+      }
       
     }

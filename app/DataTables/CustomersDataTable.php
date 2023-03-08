@@ -4,7 +4,6 @@ namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Facades\Gate;
-
 use App\Models\Customer;
 use App\Helpers\Helper;
 
@@ -28,7 +27,7 @@ class CustomersDataTable extends DataTable
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$customer->id.'" data-original-title="Edit" id="edit-customer"
               class="px-3 py-1 border border-success rounded mx-2 edit-customer">
-             <span class="fa fa-pen pr-4"></span></a>';
+             <span class="fa fa-pen text-success"></span></a>';
               if(Gate::allows('isAdmin')){
             $btn .= '<a href="javascript:void(0);" id="delete-customer" 
             data-toggle="tooltip" data-original-title="Delete"
@@ -42,15 +41,12 @@ class CustomersDataTable extends DataTable
 
            return $btn;
 
+        })->editColumn('added_by', function($customer){
+            $user = Helper::getUser($customer->added_by);
+            return $user->first_name. ' '.$user->last_name;
         })->addColumn('checkbox', function ($customer) {
               $checkBox = '<input type="checkbox" id="'.$customer->id.'"/>';
              return $checkBox;
-        })->editColumn('credit', function ($data) {
-            return number_format($data->credit);
-        })->editColumn('debt', function ($data) {
-            return number_format($data->debt);
-        })->editColumn('item_taken', function ($data) {
-            return Helper::GetItemName($data->item_taken);
         })->rawColumns(['action', 'checkbox']);
 
 
@@ -80,11 +76,8 @@ class CustomersDataTable extends DataTable
         return [
             'id',
             'name',
-            'item_taken',
             'contact',
-            'credit',
-            'debt',
-            'taken_on',
+            'address',
         ];
     }
 

@@ -3,8 +3,6 @@
 namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Support\Facades\Gate;
-
 use App\Models\Sale;
 use App\Helpers\Helper;
 
@@ -28,7 +26,7 @@ class CustomersWithDebtsDataTable extends DataTable
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$sale->id.'" data-original-title="Edit" id="edit-sale"
               class="px-3 py-1 border border-success rounded mx-2 edit-sale">
-             <span class="fa fa-pen pr-4"></span></a>';
+             <span class="fa fa-pen text-success"></span></a>';
             //   if(Gate::allows('isAdmin')){
             // $btn .= '<a href="javascript:void(0);" id="delete-sale" 
             // data-toggle="tooltip" data-original-title="Delete"
@@ -45,6 +43,16 @@ class CustomersWithDebtsDataTable extends DataTable
         })->addColumn('checkbox', function ($sale) {
               $checkBox = '<input type="checkbox" id="'.$sale->id.'"/>';
              return $checkBox;
+        })->addColumn('cashier', function ($sale) {
+            $cashier = Helper::getUser($sale->cashier_id);
+            return $cashier->first_name . ' ' . $cashier->last_name;
+        })->addColumn('customer', function ($sale) {
+            $customer_name = null;
+            if ($sale->customer_id) {
+                $customer = Helper::getCustomer($sale->customer_id);
+                $customer_name = $customer->name;
+            }
+            return $customer_name;
         })->editColumn('amount', function ($data) {
             return number_format($data->amount);
         })->editColumn('paid_amount', function ($data) {
@@ -79,7 +87,16 @@ class CustomersWithDebtsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-         
+            'id',
+            'item_id',
+            'item',
+            'quantity',
+            'selling_price',
+            'discount',
+            'amount',
+            'date',
+            'customer_id',
+            'cashier_id'
         ];
     }
 

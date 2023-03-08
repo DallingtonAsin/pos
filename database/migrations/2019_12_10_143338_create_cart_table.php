@@ -31,7 +31,7 @@ class CreateCartTable extends Migration
 //          )");
 
         Schema::create('cart', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('item_id')->nullable();
             $table->string('item');
             $table->double('quantity');
@@ -40,8 +40,9 @@ class CreateCartTable extends Migration
             $table->double('discount');
             $table->double('amount');
             $table->boolean('got_sold')->default(0)->change();
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('date_of_sale');
+            $table->timestamps();
+
              });
 
 

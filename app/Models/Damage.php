@@ -9,7 +9,7 @@ class Damage extends Model
 {
     use HasFactory;
     protected $table = 'damages';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
       'item',
       'item_id',

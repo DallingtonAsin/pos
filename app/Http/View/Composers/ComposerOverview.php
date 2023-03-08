@@ -4,10 +4,8 @@
 namespace App\Http\View\Composers;
 
 use Illuminate\View\View;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use App\User;
 use App\Models\Stock;
 use App\Models\Sale;
 use App\Models\Damage;
@@ -19,6 +17,7 @@ use App\Models\TopCashier;
 use App\Models\DebtorsCustomer;
 use App\Models\DebtorsSupplier;
 use App\Models\Company;
+use App\User;
 
 
 class ComposerOverview
@@ -33,13 +32,13 @@ class ComposerOverview
     $total_suppliers = Supplier::count();
     $total_customers = Customer::count();
     $total_expenses = Expense::count();
-    $top_cashiers = TopCashier::paginate(5);
-    $debtorsCustomers = DebtorsCustomer::paginate(4);
-    $total_customersDebts = DebtorsCustomer::sum('debts');
+    $top_cashiers = Customer::paginate(5);
+    $debtorsCustomers = Customer::paginate(4);
+    $total_customersDebts = 1; // DebtorsCustomer::sum('debts');
     $total_suppliersDebts = DebtorsSupplier::sum('debts');
-    $totlSystemUsers = DB::table("users")->count();
-    $totlActiveUsers = DB::table("users")->where('isActive', true)->count();
-    $totlLockedUsers = DB::table("users")->where('isActive', false)->count();
+    $totlSystemUsers = User::count();
+    $totlActiveUsers =User::where('isActive', true)->count();
+    $totlLockedUsers = User::where('isActive', false)->count();
     $fiveSuperAdmin = User::limit(5)->get();
 
 
@@ -99,23 +98,20 @@ class ComposerOverview
 
   public function getRoles()
   {
-    $roles = DB::table('roles')
-      ->get();
+    $roles =Role::get();
     return $roles;
   }
 
 
   public function getUserRole()
   {
-    $userRole = DB::table('roles')
-      ->where('role_id', Auth::user()->user_role)
-      ->value('role');
+    $userRole = Role::where('id', Auth::user()->role_id)->value('name');
     return $userRole;
   }
 
   public function getRoleId($role)
   {
-    $role_id = Role::where("role", $role)->value("role_id");
+    $role_id = Role::where("name", $role)->value("id");
     return $role_id;
   }
 
@@ -123,7 +119,7 @@ class ComposerOverview
   {
     $role = "SuperAdministrator";
     $userRoleId = $this->getRoleId($role);
-    $totl = User::where("user_role", $userRoleId)->count();
+    $totl = User::where("role_id", $userRoleId)->count();
     return $totl;
   }
 }

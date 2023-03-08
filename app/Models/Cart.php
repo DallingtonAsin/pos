@@ -10,7 +10,7 @@ class Cart extends Model
 {
 	use HasFactory;
 	protected $table = 'cart';
-	// public $timestamps = false;
+	// public $timestamps = true;
 	// protected $dateFormat = 'U';
 	// const CREATED_AT = 'creattion_date';
 	// const UPDATED_AT = 'last_update';
@@ -24,7 +24,7 @@ class Cart extends Model
          'amount'
     ];
 
-   public $timestamps = false; //Indicates if the model should not be timestamped.
+   public $timestamps = true; //Indicates if the model should not be timestamped.
 	// protected $primaryKey = 'id';
 	//public $incrementing = false;
 	//protected $keyType = 'string'; //primary key is a string

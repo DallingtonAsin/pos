@@ -16,19 +16,21 @@ class CreateCustomerDebtPaymentsTable extends Migration
     public function up()
     {
         Schema::create('customer_debt_payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
+            $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('sale_id');
             $table->double('amount_paid');
             $table->double('balance');
             $table->date('date');
-            $table->integer('recorded_by')->unsigned();
+            $table->unsignedBigInteger('recorded_by');
             $table->timestamps();
-        });
 
-        Schema::table('customer_debt_payments', function($table){
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
             $table->foreign('recorded_by')->references('id')->on('users')->onDelete('cascade');
         });
+
+    
     }
 
     /**

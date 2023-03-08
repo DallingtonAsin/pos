@@ -18,5 +18,5 @@ class Event extends Model
         'start_time',
         'event_registra'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 }

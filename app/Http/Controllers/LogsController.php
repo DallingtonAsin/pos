@@ -202,7 +202,7 @@ public static function logger(Request $request, $action, $date){
 
     $newLog = new Logs();
     $newLog->name =$name =  $request->user()->name;
-    $newLog->role = $userPosition = LogsController::getRole($request->user()->user_role);
+    $newLog->role = $userPosition = LogsController::getRole($request->user()->role_id);
     $newLog->logged_action = $action;
     $newLog->ip_address = \Request::getClientIp();
     $newLog->date = $date;
@@ -214,8 +214,7 @@ public static function logger(Request $request, $action, $date){
 
 protected static function getRole($id)
 {
-  $role = Role::where('role_id', $id)->value('role');
-  return $role;
+  return Role::where('id', $id)->value('name');
 }
 
 

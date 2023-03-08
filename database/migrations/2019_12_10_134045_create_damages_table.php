@@ -30,7 +30,7 @@ class CreateDamagesTable extends Migration
 
 
         Schema::create('damages', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('item_id')->nullable();
             $table->string('item');
             $table->string('category')->nullable();
@@ -38,6 +38,8 @@ class CreateDamagesTable extends Migration
             $table->double('buying_price');
             $table->double('total_cost')->storedAs('quantity * buying_price')->nullable();
             $table->timestamp('recordedOn')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamps();
+
         });
 
     }

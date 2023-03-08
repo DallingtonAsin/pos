@@ -8,7 +8,7 @@ class Payment extends Model
 {
 
 	protected $table = 'payments';
-	public $timestamps = false;
+	public $timestamps = true;
 	protected $fillable = [
 		'transaction_id',
 		'currency_code',

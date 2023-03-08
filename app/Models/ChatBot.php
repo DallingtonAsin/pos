@@ -11,5 +11,5 @@ class ChatBot extends Model
                 'chat_command',
                 'chat_response',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 }

@@ -15,8 +15,10 @@ class CreateExpenseCategoriesTable extends Migration
     public function up()
     {
         Schema::create('expense_categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('expense_type');
+            $table->timestamps();
+
         });
     }
 

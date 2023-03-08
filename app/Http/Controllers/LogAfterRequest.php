@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\RequestResponse;
-use App\Helpers\Helper;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class LogAfterRequest extends Controller
 {

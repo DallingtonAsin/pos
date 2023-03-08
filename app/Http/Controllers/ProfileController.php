@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,8 +15,8 @@ use App\Helpers\Helper;
 class ProfileController extends Controller
 {
 
-    public function __construct(){
-      
+    public function __construct()
+    {
     }
     /**
      * Display a listing of the resource.
@@ -25,7 +26,6 @@ class ProfileController extends Controller
     public function index()
     {
         return view('pages.main.profile');
-        
     }
 
     public function accountSettings()
@@ -51,7 +51,6 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-       
     }
 
     /**
@@ -80,10 +79,10 @@ class ProfileController extends Controller
 
     public function is_inArr($dataArr, $item)
     {
-        if(count($dataArr) > 0){
+        if (count($dataArr) > 0) {
             (in_array($item, $dataArr))
-            ? $bool = true
-            : $bool = false;
+                ? $bool = true
+                : $bool = false;
         }
 
         return $bool;
@@ -91,135 +90,118 @@ class ProfileController extends Controller
 
     protected function getUserRoleId($role)
     {
-      $roleId = Role::where('role', $role)->value('role_id');
-      return $roleId;
-  }
+        $roleId = Role::where('name', $role)->value('id');
+        return $roleId;
+    }
 
-  protected function getRole($id)
-  {
-      $role = Role::where('role_id', $id)->value('role');
-      return $role;
-  }
+    protected function getRole($id)
+    {
+        $role = Role::where('id', $id)->value('name');
+        return $role;
+    }
 
-
-
-/**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-public function updates(Request $request, $id)
-{
-  
-    $user = User::find($id);
-    $old_username = $user->username;
-    $user->username = $new_username = $request->input('Username');
-    $user->email = $request->input('Email');
-    $user->tel_no = $request->input('Contact');
-    $user->address = $request->input('Address');
-    $OldPassword = $request->input('OldPassword');
-    $NewPassword = $request->input('NewPassword');
-    $ConfirmPassword = $request->input('PasswordConfirm');
+    public function updates(Request $request, $id)
+    {
 
-    if($request->hasfile('image')){
+        $user = User::find($id);
+        $old_username = $user->username;
+        $user->username = $new_username = $request->input('Username');
+        $user->email = $request->input('Email');
+        $user->tel_no = $request->input('Contact');
+        $user->address = $request->input('Address');
+        $OldPassword = $request->input('OldPassword');
+        $NewPassword = $request->input('NewPassword');
+        $ConfirmPassword = $request->input('PasswordConfirm');
 
-        $this->validate($request, [
-           'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-       ]);
+        if ($request->hasfile('image')) {
+
+            $this->validate($request, [
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
 
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension(); //getting image extension
-            $filename = time().'.'.$extension;
-            $file->move("uploads/images/".$this->getRole(Auth::user()->user_role)."",$filename);
+            $filename = time() . '.' . $extension;
+            $file->move("uploads/images/" . $this->getRole(Auth::user()->role_id) . "", $filename);
             $user->image = $filename;
-        }
-        else
-        {
+        } else {
             //$user->image = '';
         }
 
         $arr =  $this->getUsernamesArr();
 
 
-        if(in_array($old_username, $arr))
-        {
-            for($i=0; $i<count($arr); $i++){
-               if($arr[$i] == $old_username){
-                  $index = $i;
-                  break;
-              }
-              else{
-                $index = -1;
+        if (in_array($old_username, $arr)) {
+            for ($i = 0; $i < count($arr); $i++) {
+                if ($arr[$i] == $old_username) {
+                    $index = $i;
+                    break;
+                } else {
+                    $index = -1;
+                }
+            }
+
+            $newArr = Arr::except($arr, $index);
+        } else {
+            $newArr = $arr;
+        }
+
+        $bool = $this->is_inArr($newArr, $new_username);
+
+        if ($bool === true) {
+            $sessionVariable = 'error';
+            $message = "this username " . $new_username . " is already taken up, please enter a different one!";
+        } else if ($bool === false) {
+
+            if ($request->filled('OldPassword') && $request->filled('NewPassword') && isset($ConfirmPassword)) {
+                //   dd("Whatsap");
+                if (Hash::check($OldPassword, Auth::user()->password)) {
+                    if ($NewPassword == $ConfirmPassword) {
+                        $user->password = Hash::make($ConfirmPassword);
+                    } else {
+                        $sessionVariable = 'error';
+                        $message = "Your new passwords don't match, please enter matching passwords";
+                        return response()->json([$sessionVariable => $message]);
+                    }
+                } else {
+                    $sessionVariable = 'error';
+                    $message = "You have entered old password that doesn't match the current stored password, please try again!";
+                    return response()->json([$sessionVariable => $message]);
+                }
+            } else {
+                $user->password = Auth::user()->password;
+            }
+
+            $result = $user->save();
+            if ($result) {
+                $gender = $this->getGender(Auth::user()->id);
+                $action = "updated " . $gender . " profile";
+                LogsController::logger($request, $action, now());
+                $actionx = Str::replaceFirst($gender, 'your', $action);
+                $sessionVariable = 'success';
+                $message = $this->ActionMessage($actionx);
+            } else {
+                $sessionVariable = 'error';
+                $message = 'Profile update failed';
             }
         }
 
-        $newArr = Arr::except($arr, $index);
-
-    }
-    else {
-        $newArr = $arr;
+        return response()
+            ->json([$sessionVariable => $message]);
     }
 
-    $bool = $this->is_inArr($newArr, $new_username);
 
-    if($bool === true){
-        $sessionVariable = 'error';
-        $message = "this username ".$new_username." is already taken up, please enter a different one!";
-    }
-    else if($bool === false) {
 
-    if($request->filled('OldPassword') && $request->filled('NewPassword') && isset($ConfirmPassword) ){
-//   dd("Whatsap");
-        if(Hash::check($OldPassword, Auth::user()->password)){
-         if($NewPassword == $ConfirmPassword){
-             $user->password = Hash::make($ConfirmPassword);
-         }
-       else{
-        $sessionVariable = 'error';
-        $message = "Your new passwords don't match, please enter matching passwords";
-        return response()->json([$sessionVariable => $message]);
-        }
-    }
-    else
+    public function update(Request $request, $id)
     {
-         $sessionVariable = 'error';
-         $message = "You have entered old password that doesn't match the current stored password, please try again!";
-         return response()->json([$sessionVariable => $message]);
-        }
-}
-else
-{
-    $user->password = Auth::user()->password;
-}
 
-$result = $user->save();
-if($result) {
-    $gender = $this->getGender(Auth::user()->id);
-    $action = "updated ".$gender." profile";
-    LogsController::logger($request, $action, now());
-    $actionx = Str::replaceFirst($gender, 'your', $action);
-    $sessionVariable = 'success';
-    $message = $this->ActionMessage($actionx);
-}
-else
-{
-    $sessionVariable = 'error';
-    $message = 'Profile update failed';
-}
-
-}
-
-return response()
-    ->json([$sessionVariable => $message]);
-
-}
-
-
-
-   public function update(Request $request, $id){
-        
         $this->validate($request, [
             'Username' => 'required',
             'Email' => 'required',
@@ -227,11 +209,11 @@ return response()
             'Address' => 'required'
         ]);
 
-        try{
-            
+        try {
+
             $user = User::find($id);
             $old_username = $user->username;
-            $user->username = $new_username = $request->input('Username'); 
+            $user->username = $new_username = $request->input('Username');
             $user->email = $request->input('Email');
             $user->tel_no = $request->input('Contact');
             $user->address = $request->input('Address');
@@ -239,9 +221,9 @@ return response()
             $OldPassword = $request->input('OldPassword');
             $NewPassword = $request->input('NewPassword');
             $ConfirmPassword = $request->input('PasswordConfirm');
-            
-            if($request->hasfile('image')){
-        
+
+            if ($request->hasfile('image')) {
+
                 // $this->validate($request, [
                 //     'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 // ]);
@@ -251,97 +233,79 @@ return response()
                 // $user->image = $filePath;
 
 
-                 $this->validate($request, [
-                   'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                 ]);
+                $this->validate($request, [
+                    'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
 
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension(); //getting image extension
-                $filename = time().'.'.$extension;
-                $file->move("uploads/images/".$this->getRole(Auth::user()->user_role)."",$filename);
+                $filename = time() . '.' . $extension;
+                $file->move("uploads/images/" . $this->getRole(Auth::user()->role_id) . "", $filename);
                 $user->image = $filename;
-
-
-               
             }
-            
+
             $arr =  $this->getUsernamesArr();
-            
-            if(in_array($old_username, $arr))
-            {
-                for($i=0; $i<count($arr); $i++){
-                    if($arr[$i] == $old_username){
+
+            if (in_array($old_username, $arr)) {
+                for ($i = 0; $i < count($arr); $i++) {
+                    if ($arr[$i] == $old_username) {
                         $index = $i;
                         break;
-                    }
-                    else{
+                    } else {
                         $index = -1;
                     }
                 }
-                
+
                 $newArr = Arr::except($arr, $index);
-                
-            }
-            else {
+            } else {
                 $newArr = $arr;
             }
-            
-            $bool = $this->is_inArr($newArr, $new_username);
-            
-            if($bool === true){
-                $sessionVariable = 'error';
-                $message = "Username ".$new_username." is already taken up, please enter a different one!";
-            }
-            else if($bool === false) {
-                
-                if($request->filled('OldPassword') && $request->filled('NewPassword') && isset($ConfirmPassword)){
 
-                    if(Hash::check($OldPassword, Auth::user()->password)){
-                        if($NewPassword == $ConfirmPassword){
+            $bool = $this->is_inArr($newArr, $new_username);
+
+            if ($bool === true) {
+                $sessionVariable = 'error';
+                $message = "Username " . $new_username . " is already taken up, please enter a different one!";
+            } else if ($bool === false) {
+
+                if ($request->filled('OldPassword') && $request->filled('NewPassword') && isset($ConfirmPassword)) {
+
+                    if (Hash::check($OldPassword, Auth::user()->password)) {
+                        if ($NewPassword == $ConfirmPassword) {
                             $user->password = Hash::make($ConfirmPassword);
-                        }
-                        else{
+                        } else {
                             $sessionVariable = 'error';
                             $message = "Your new passwords do not match, please enter matching passwords";
                             return back()->with('error', $message);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         $sessionVariable = 'error';
                         $message = "You have entered old password that does not match the current stored password, please try again!";
                         return back()->with('error', $message);
                     }
-                }
-                else
-                {
+                } else {
                     $user->password = Auth::user()->password;
                 }
-                
-                if($user->save()) {
-                        $gender = $this->getGender(Auth::user()->id);
-                        $action = "updated ".$gender." profile";
-                        LogsController::logger($request, $action, now());
-                        $actionx = Str::replaceFirst($gender, 'your', $action);
-                        $sessionVariable = 'success';
-                        $message = $this->ActionMessage($actionx);
-                }
-                else{
+
+                if ($user->save()) {
+                    $gender = $this->getGender(Auth::user()->id);
+                    $action = "updated " . $gender . " profile";
+                    LogsController::logger($request, $action, now());
+                    $actionx = Str::replaceFirst($gender, 'your', $action);
+                    $sessionVariable = 'success';
+                    $message = $this->ActionMessage($actionx);
+                } else {
                     $sessionVariable = 'error';
                     $message = 'Profile update failed';
                 }
-                
             }
-            
+
             return back()->with([$sessionVariable => $message]);
-            
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
             $exception_message = $ex->getMessage();
             return back()->with('error', $exception_message);
         }
-        
     }
-    
 
 
 
@@ -359,28 +323,27 @@ return response()
 
 
 
-protected function getUsernamesArr()
-{
 
-  $usernames = User::pluck('username');
-  $dataArr = array();
-  foreach($usernames as $username)
-  {
-    $dataArr[] = $username;
-}
-return $dataArr;
+    protected function getUsernamesArr()
+    {
 
-}
+        $usernames = User::pluck('username');
+        $dataArr = array();
+        foreach ($usernames as $username) {
+            $dataArr[] = $username;
+        }
+        return $dataArr;
+    }
 
-public function getGender($id){
+    public function getGender($id)
+    {
 
-   $gender = User::where('id', $id)->value('gender');
-   (strtolower($gender) == 'male')
-   ? $value = 'his'
-   : $value = 'her';
-   return $value;
-
-}
+        $gender = User::where('id', $id)->value('gender');
+        (strtolower($gender) == 'male')
+            ? $value = 'his'
+            : $value = 'her';
+        return $value;
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -395,11 +358,8 @@ public function getGender($id){
 
 
     protected function ActionMessage($action)
-{
-  $message = "You have successfully ".$action."";
-  return $message;
-}
-
-
-
+    {
+        $message = "You have successfully " . $action . "";
+        return $message;
+    }
 }

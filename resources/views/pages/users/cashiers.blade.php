@@ -21,12 +21,12 @@
         </h5>
       </div>
 
-      <div class="col-lg-3">
+      {{-- <div class="col-lg-3">
        <h5 class="text-dark">
         <a href="javascript:void(0)" id="createNewCashier"
         class="add-link text-decoration-none bolded">
       Add cashier</a></h5>
-    </div>
+    </div> --}}
 
   </div>
 

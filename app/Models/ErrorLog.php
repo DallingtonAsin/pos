@@ -16,5 +16,5 @@ class ErrorLog extends Model
          'method',   
     ];
 
-public $timestamps = false;
+public $timestamps = true;
 }

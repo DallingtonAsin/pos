@@ -14,12 +14,14 @@ class CreateLogsTable extends Migration
     public function up()
     {
         Schema::create('activity_logs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name');
             $table->string('role');
             $table->text('logged_action');
             $table->ipAddress('ip_address');
             $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamps();
+
           
         });
     }

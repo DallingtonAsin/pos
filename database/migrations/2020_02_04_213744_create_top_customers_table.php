@@ -24,11 +24,11 @@ class CreateTopCustomersTable extends Migration
 
         // MYSQL SERVER 
 
-        DB::statement("CREATE OR REPLACE VIEW `top_customers` AS
-        select `customer` AS `customer`, sum(`amount`) AS `volumeofsales`,
-        round(((sum(`amount`) * 100) / (select sum(`monthlysales`.`TotalSales`) 
-        from `monthlysales`)),2)
-        AS `percent` from `sales` group by `customer` order by sum(`amount`) desc limit 10");
+        // DB::statement("CREATE OR REPLACE VIEW `top_customers` AS
+        // select `customer` AS `customer`, sum(`amount`) AS `volumeofsales`,
+        // round(((sum(`amount`) * 100) / (select sum(`monthlysales`.`TotalSales`) 
+        // from `monthlysales`)),2)
+        // AS `percent` from `sales` group by `customer` order by sum(`amount`) desc limit 10");
    
 }
     

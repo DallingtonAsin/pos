@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\LogsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Http\Controllers\LogAfterRequest;
-use App\Http\Controllers\SmsController;
 use App\Notifications\UserRegistration;
 use App\Jobs\MailRegistration;
 use App\DataTables\ManagersDataTable;
@@ -22,6 +20,7 @@ use App\User;
 use App\Models\Role;
 use App\Helpers\Helper;
 use  App\Helpers\Constants as Constant;
+use Carbon\Carbon;
 
 
 class UserController extends Controller
@@ -341,9 +340,7 @@ class UserController extends Controller
   protected function getRole($id)
   {
 
-    $role = DB::table('roles')->where('role_id', $id)
-      ->value('role');
-    return $role;
+    return  Role::where('id', $id)->value('name');
   }
 
 
@@ -358,13 +355,13 @@ class UserController extends Controller
     try {
       if (!empty($role)) {
         $id = Helper::getRoleId($role);
-        $number_of_users = User::where('user_role', '=', $id)->count();
+        $number_of_users = User::where('role_id', '=', $id)->count();
       } else {
         $number_of_users = User::count();
       }
       return $number_of_users;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+      throw $ex;
     }
   }
 
@@ -404,8 +401,8 @@ class UserController extends Controller
         $user_alt_telno = trim($request->input('alt_telno'));
         $user_nin = trim($request->input('NationalIDNo'));
         $user_gender = trim($request->input('gender'));
-        $user_role = $request->input('role');
-        $user_position = Helper::getRole($user_role);
+        $role_id = $request->input('role');
+        $user_position = Helper::getRole($role_id);
         $registra = $request->user()->name;
         $name = $user_fname . " " . $user_lname;
         $defaultPwd = '12345678';
@@ -430,6 +427,7 @@ class UserController extends Controller
             "message" => $message,
             "method" =>  $method
           );
+
           LogAfterRequest::LogRequest($request, $dataArr);
           return back()->with('fail', $message);
         } else {
@@ -441,7 +439,7 @@ class UserController extends Controller
           $user->username = $username;
           $user->gender = $user_gender;
           $user->email = $user_email;
-          $user->user_role = $user_role;
+          $user->role_id = $role_id;
           $user->tel_no = $user_telno;
           $user->alt_telno = $user_alt_telno;
           $user->address = $user_address;
@@ -455,15 +453,15 @@ class UserController extends Controller
 
             $subject = 'User Registration';
             $userEmail = $request->email;
-            $registraPosition = $this->getRole($request->user()->user_role);
+            $registraPosition = $this->getRole($request->user()->role_id);
             $registraEmail = $request->user()->email;
             $default_password = $defaultPwd;
-            $now = now();
+            $now = Carbon::now();
 
             $action = "registered user " . $name . "";
             $sendAction = "You have been registered as a
                       " . $user_position . " today at " . $now . "";
-            LogsController::logger($request, $action, now());
+            LogsController::logger($request, $action, $now);
 
             $data = array(
               'name' => $name,
@@ -480,18 +478,6 @@ class UserController extends Controller
               'activity' => 'registration',
             );
 
-            // if ($this->is_connectedToInternet() == 1) {
-
-            //   $text_message = "Hey " . $name . "";
-            //   $text_message .= "" . $sendAction . "";
-            //   $text_message .= "Your username is
-            // " . $username . " and password is " . $default_password . "";
-
-            // } else {
-            //   $message = "" . ucwords($user_position) . " registration failed";
-            //   $sessionVariable = 'fail';
-            // }
-
             $message = "User " . $name . " has been registered successfully";
             $dataArr = array(
               "code" => '201',
@@ -503,8 +489,7 @@ class UserController extends Controller
 
             $statArr = Helper::GetUserStats($user_position);
 
-            return back() ->with('success', $message);
-
+            return back()->with('success', $message);
           } else {
             $message = "User registration failed!";
             $dataArr = array(
@@ -563,9 +548,8 @@ class UserController extends Controller
 
   protected function getUserRoleId($role)
   {
-    $roleId = DB::table('roles')
-      ->where('role', $role)
-      ->value('role_id');
+    $roleId = Role::where('name', $role)
+      ->value('id');
     return $roleId;
   }
 
@@ -624,12 +608,12 @@ class UserController extends Controller
     $user->tel_no = $primary_telno;
     $user->alt_telno = $alt_telno;
     $user->email = $email;
-    $user->user_role = $roleId;
+    $user->role_id = $roleId;
 
     $registra = $request->user()->name;
     $userEmail = $request->email;
     $user_position = $this->getRole($roleId);
-    $registraPosition = $this->getRole($request->user()->user_role);
+    $registraPosition = $this->getRole($request->user()->role_id);
     $registraEmail = $request->user()->email;
     $default_password = "didn't change your password";
     $now = now();
@@ -698,7 +682,7 @@ class UserController extends Controller
     $user = User::find($id);
     $name = $user->name;
 
-    $user_position = Helper::getRole($user->user_role);
+    $user_position = Helper::getRole($user->role_id);
     if ($hasRights->allowed() || $hasRights1->allowed()) {
 
       $method = "UserController@destroy";
@@ -816,7 +800,7 @@ class UserController extends Controller
 
       if (count($ids) > 0) {
         $extUser = User::find($ids[0]);
-        $user_position = Helper::getRole($extUser->user_role);
+        $user_position = Helper::getRole($extUser->role_id);
         foreach ($ids as $id) {
           $user = User::find($id);
           $user->delete();
@@ -868,15 +852,6 @@ class UserController extends Controller
     $message = "You have successfully " . $action . "";
     return $message;
   }
-
-  private function getUserRole($userRoleId)
-  {
-    $userRole = DB::table('roles')
-      ->where('role_id', $userRoleId)
-      ->value('role');
-    return $userRole;
-  }
-
 
   //method to check if there is internet connection
 

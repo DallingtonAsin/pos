@@ -9,7 +9,7 @@ class Expense extends Model
 {
     use HasFactory;
     protected $table = 'expenses';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
         'expense_type',
         'amount',

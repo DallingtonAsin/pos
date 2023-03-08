@@ -94,7 +94,7 @@ class UsersDataTable extends DataTable
             'username',
             'gender',
             'email',
-            'user_role',
+            'role_id',
             'tel_no',
             'alt_telno',
             'address',

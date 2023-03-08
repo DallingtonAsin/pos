@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Customer;
-use Illuminate\Support\Str;
+use App\User;
 
 class CustomerFactory extends Factory
 {
@@ -22,13 +22,14 @@ class CustomerFactory extends Factory
   */
   public function definition()
   {
+
+    $added_by = User::inRandomOrder()->first()->id;
+
     return [
       'name' => $this->faker->name,
       'contact' => $this->faker->unique()->phoneNumber,
-      'item_taken' => $this->faker->randomElement([1,2,3,4]),
-      'debt' => $this->faker->numberBetween($min=1000, $max=5000),
-      'credit' => $this->faker->numberBetween($min=5000, $max=9500),
-      'added_by' => $this->faker->firstName,
+      'address' => $this->faker->city,
+      'added_by' => $added_by,
     ];
   }
 }
