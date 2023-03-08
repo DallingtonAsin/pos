@@ -11,9 +11,7 @@ use App\Models\Sale;
 use App\Models\Expense;
 use App\Models\Damage;
 use App\Models\Supplier;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
 use App\Http\Controllers\LogsController;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
@@ -451,5 +449,8 @@ class Helper
         return is_numeric($n) && floor($n) != $n;
       }
       
+      public static function getUser($user_id){
+        return User::find($user_id);
+      }
       
     }

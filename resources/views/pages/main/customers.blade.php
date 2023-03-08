@@ -69,7 +69,7 @@
                 @endcan
                 <th>Name</th>
                 <th>Contact</th>
-                {{-- <th>Address</th> --}}
+                <th>Address</th>
                 @can('isAdmin')
                 <th>Added by</th>
                 @endcan
@@ -245,9 +245,9 @@ role="dialog" aria-labelledby="myModalLabel">
   var dataColumns = [
         {data: 'checkbox', name:'checkbox'},
         //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-         // {data: 'id', name:'id'},
          {data: 'name', name:'name'},
          {data: 'contact', name:'contact'},
+         {data: 'address', name:'address'},
          {data: 'added_by', name:'added_by'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
@@ -258,11 +258,10 @@ role="dialog" aria-labelledby="myModalLabel">
 @can('isCashier')
 <script>
   var dataColumns = [
-        // {data: 'checkbox', name:'checkbox'},
          {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-         // {data: 'id', name:'id'},
          {data: 'name', name:'name'},
          {data: 'contact', name:'contact'},
+         {data: 'address', name:'address'},
          {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
       makeDataTable2(table, title, columns, dataColumns);
