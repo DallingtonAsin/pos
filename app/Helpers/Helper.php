@@ -11,6 +11,7 @@ use App\Models\Sale;
 use App\Models\Expense;
 use App\Models\Damage;
 use App\Models\Supplier;
+use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogsController;
 use Illuminate\Support\Facades\Auth;
@@ -451,6 +452,10 @@ class Helper
       
       public static function getUser($user_id){
         return User::find($user_id);
+      }
+
+      public static function getCustomer($customer_id){
+        return Customer::find($customer_id);
       }
       
     }

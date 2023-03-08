@@ -133,13 +133,11 @@
         <th>Amount</th>
         <th>Bal.</th>
         <th>Customer</th>
-        <th>Workedon By</th>
+        <th>Cashier</th>
         <th>Date</th>
         @can('isAdmin') 
         <th>Action</th>
         @endcan
-        
-
       </tr>
     </thead>
     
@@ -349,7 +347,7 @@
         {data: 'paid_amount', name:'paid_amount'},
         {data: 'balance', name:'balance'},
         {data: 'customer', name:'customer'},
-        {data: 'workedon_by', name:'workedon_by'},
+        {data: 'cashier', name:'cashier'},
         {data: 'date', name:'date'},
         {data: 'action', name:'action',orderable: false,searchable: false},
         ];
