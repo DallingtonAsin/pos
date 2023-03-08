@@ -48,6 +48,16 @@ class TodaySalesWithDebtsDataTable extends DataTable
         })->addColumn('checkbox', function ($sale) {
               $checkBox = '<input type="checkbox" id="'.$sale->id.'"/>';
              return $checkBox;
+        })->addColumn('cashier', function ($sale) {
+            $cashier = Helper::getUser($sale->cashier_id);
+            return $cashier->first_name . ' ' . $cashier->last_name;
+        })->addColumn('customer', function ($sale) {
+            $customer_name = null;
+            if ($sale->customer_id) {
+                $customer = Helper::getCustomer($sale->customer_id);
+                $customer_name = $customer->name;
+            }
+            return $customer_name;
         })->editColumn('quantity', function ($data) {
             return Helper::convertNumber($data->quantity);
         })->editColumn('selling_price', function ($data) {
@@ -101,7 +111,8 @@ class TodaySalesWithDebtsDataTable extends DataTable
             'discount',
             'amount',
             'date',
-            'cashier'
+            'customer_id',
+            'cashier_id'
         ];
     }
 

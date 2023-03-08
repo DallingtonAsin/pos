@@ -368,7 +368,7 @@
         {data: 'paid_amount', name:'paid_amount'},
         {data: 'balance', name:'balance'},
         {data: 'customer', name:'customer'},
-        {data: 'workedon_by', name:'workedon_by'},
+        {data: 'cashier', name:'cashier'},
         {data: 'date', name:'date'},
          ];
          makeDataTable2(table, title, columns, dataColumns);

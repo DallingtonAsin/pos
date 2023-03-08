@@ -76,9 +76,6 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::post('update/customer/debts', 'CustomersController@updateCustomerDebts')->name('customer.debt.update');
 
 
-
-
-
 	Route::get('/stock/get-data', 'StockController@GetStock')->name('get-stock');
 	Route::get('/suppliers/home', 'SuppliersController@GetSuppliers')->name('suppliers.home');
 	Route::get('/expenses/get-data', 'ExpensesController@GetExpenses')->name('get-expenses');
