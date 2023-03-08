@@ -34,7 +34,7 @@ class ComposerOverview
     $total_expenses = Expense::count();
     $top_cashiers = Customer::paginate(5);
     $debtorsCustomers = Customer::paginate(4);
-    $total_customersDebts = 0; // DebtorsCustomer::sum('debts');
+    $total_customersDebts = 1; // DebtorsCustomer::sum('debts');
     $total_suppliersDebts = DebtorsSupplier::sum('debts');
     $totlSystemUsers = User::count();
     $totlActiveUsers =User::where('isActive', true)->count();
