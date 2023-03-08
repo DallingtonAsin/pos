@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerDebtPayment extends Model
 {
     protected $table = "customer_debt_payments";
+    
     protected $fillable = [
-        'sale_id',
-        'amount_paid',
+        'customer_id',
+        'paid_amount',
         'balance',
         'date',
         'recorded_by'
     ];
+
     public $timestamps = true;
 
 }

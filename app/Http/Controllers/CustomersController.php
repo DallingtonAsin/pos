@@ -6,22 +6,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Sale;
-use App\Models\Stock;
 use App\Helpers\Helper;
 use App\Imports\ImportCustomers;
 use App\Exports\ExportCustomers;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use App\DataTables\CustomersDataTable;
-use App\DataTables\CustomersWithDebtsDataTable;
-use App\DataTables\CustomerDebtPaymentRecordsDataTable;
 use App\Services\CustomerDebtPaymentService;
 use Illuminate\Support\Str;
 use  App\Helpers\Constants as Constant;
-use DataTable;
 use Excel;
 
 class CustomersController extends Controller
@@ -50,30 +43,6 @@ class CustomersController extends Controller
   {
     return $dataTable->render('pages.main.customers');
   }
-
-  public function customerDebtPaymentsIndex()
-  {
-    return view('pages.main.customer-debt-payment-records');
-  }
-
-  public function GetCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable)
-  {
-    return $dataTable->render('pages.main.customer-debt-payment-records');
-  }
-
-
-  public function customersWithDebtsIndex()
-  {
-    $total_debtors = Sale::where('balance', '>', 0)->where('fully_paid', 0)->count();
-    $total_debts = Sale::where('balance', '>', 0)->where('fully_paid', 0)->sum('balance');
-    return view('pages.main.customers-with-debts')->with(compact('total_debtors', 'total_debts'));
-  }
-
-  public function GetCustomersWithDebts(CustomersWithDebtsDataTable $dataTable)
-  {
-    return $dataTable->render('pages.main.customers-with-debts');
-  }
-
 
 
   /**

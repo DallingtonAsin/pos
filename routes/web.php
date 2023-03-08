@@ -60,10 +60,13 @@ Route::get('users/locked/fetch', 'UserController@LockedUsersAjax')->name('locked
 
 Route::get('reports/ajax/top-customers', 'ReportsController@GetTopCustomersDT')->name('top-customers.ajax');
 Route::get('reports/ajax/debtors/customers', 'ReportsController@GetCustomerDebtorsDT')->name('debtors-customers.ajax');
-Route::get('/customers/with-debts/ajax', 'CustomersController@GetCustomersWithDebts')->name('customers.with.debts.ajax');
 
-Route::get('/customers/debt-payments', 'CustomersController@customerDebtPaymentsIndex')->name('customers.debts.payments.index');
-Route::get('/customers/debt-payments/ajax', 'CustomersController@GetCustomerDebtPayments')->name('customers.debts.payments.ajax');
+Route::get('/customers/with-debts/ajax', 'CustomerDebtPaymentController@GetCustomersWithDebts')->name('customers.with.debts.ajax');
+Route::get('/customers/debt-payments', 'CustomerDebtPaymentController@index')->name('customers.debts.payments.index');
+Route::get('/customers/debt-payments/ajax', 'CustomerDebtPaymentController@GetCustomerDebtPayments')->name('customers.debts.payments.ajax');
+Route::get('/customers/debt/{customer_id}', 'CustomerDebtPaymentController@getCustomerDebt')->name('customer.debt.ajax');
+
+
 Route::get('purchases/store', 'PurchasesController@store')->name('purchases.post');
 
 
@@ -126,6 +129,7 @@ Route::group(["middleware" => "restricted"], function () {
 		'calendar' => 'CalendarController',
 		'command' => 'ChatBotController',
 		'company' => 'SettingsController',
+		'customer-debt-payments' => 'CustomerDebtPaymentController',
 	]);
 
 	Route::get('/email', 'MailController@MailWelcome');

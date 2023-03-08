@@ -4,10 +4,7 @@ namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Facades\Gate;
-
 use App\Models\CustomerDebtPayment;
-use App\Models\Sale;
-use App\User;
 use App\Helpers\Helper;
 
 class CustomerDebtPaymentRecordsDataTable extends DataTable
@@ -47,16 +44,16 @@ class CustomerDebtPaymentRecordsDataTable extends DataTable
         })->addColumn('checkbox', function ($payment) {
               $checkBox = '<input type="checkbox" id="'.$payment->id.'"/>';
              return $checkBox;
-        })->editColumn('amount_paid', function ($data) {
-            return number_format($data->amount_paid);
+        })->editColumn('paid_amount', function ($data) {
+            return number_format($data->paid_amount);
         })->editColumn('balance', function ($data) {
             return number_format($data->balance);
         })->editColumn('recorded_by', function ($data) {
-            return User::where('id', $data->recorded_by)->value('name');
-        })->addColumn('item', function ($data) {
-            return Sale::where('id', $data->sale_id)->value('item');
+            $user = Helper::getUser($data->recorded_by);
+            return $user->first_name. ' '.$user->last_name;
         })->addColumn('customer', function ($data) {
-            return Sale::where('id', $data->sale_id)->value('customer');
+            $customer = Helper::getCustomer($data->customer_id);
+            return $customer->name;
         })->rawColumns(['action', 'checkbox']);
 
 
@@ -85,9 +82,10 @@ class CustomerDebtPaymentRecordsDataTable extends DataTable
     {
         return [
             'id',
-            'sale_id',
-            'amount_paid',
+            'customer_id',
+            'paid_amount',
             'balance',
+            'date',
             'recorded_by',
         ];
     }
