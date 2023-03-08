@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Stock;
+use App\Models\Sale;
+use App\Models\Customer;
 use App\Models\Tax;
-use App\Helpers\Helper;
 use App\Models\SalesTaxTracker;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
-use Illuminate\Support\Carbon;
 use App\Services\ReceiptGenerator;
 
 class CartController extends Controller
@@ -64,18 +63,11 @@ class CartController extends Controller
     */
        public function index()
        {
-        // $carts = DB::select('select * from carts');
         try{
-            $cart_items = Cart::all();
-            $total = DB::table('cart')->sum('total_cost');
-            $number_of_cartItems = DB::table('cart')->count();
-            $amount_due = DB::table('cart')->sum('amount');
-            $amount = DB::table('cart')->sum('amount');
-            return view('pages.main.cart')->with(compact('cart_items','total','amount',
-                'number_of_cartItems', 'amount_due'));
-        }catch(\Exception $ex)
-        {
-            parent::report($ex);
+            $customers = Customer::select(['id', 'name'])->get();
+            return view('pages.main.cart')->with(compact('customers'));
+        }catch(\Exception $ex) {
+           dd($ex->getMessage());
         }
     }
 
@@ -449,11 +441,12 @@ class CartController extends Controller
         public function recordSale(Request $req){
 
             $method = "CartController@recordSale";
-            $cashier = $req->user()->name;
+
             $data = $req->input('tabledata');
-            $customer = $req->input('customer');
-            $workedon_by = $req->input('workedon_by');
+            $customer_id = $req->input('customer');
+            $cashier_id = $req->user()->id;
             $extra_money = $req->input('extra_money');
+
             if(!empty($extra_money)){
                 $extra_money = floatval($extra_money);
             }else{
@@ -500,15 +493,16 @@ class CartController extends Controller
                     $original_price = $arr['bprice'];
                     $this->total_amount_of_sales += floatval($subtotal);
 
-                            // Get new quantity of item after sale
+                    // Get new quantity of item after sale
                     $qty_beforeSale = $this->getQtyBeforeSale($item);
                     $newqty = ( $qty_beforeSale - $quantity );
                     $date = isset($date_of_sale) ? $date_of_sale : date('Y-m-d');
                     $time = date('H:i:s');
 
                     $taxAmount = $this->GetTax($total);
-                            // insert cart data into database
-                    $hasInsertedInSalesTbl = DB::table('sales')->insert([
+
+                     // insert cart data into database
+                    $hasInsertedInSalesTbl = Sale::insert([
                         'item_code' => $item_code,
                         'item' => $item,
                         'quantity' => $quantity,
@@ -521,15 +515,11 @@ class CartController extends Controller
                         'fully_paid' => $fully_paid,
                         'balance' => $balance,
                         'extra_money' => $extra_money,
-                        'customer' => $customer,
                         'tax' => $taxAmount,
                         'date' => $date,
                         'time' => $time,
-                        'cashier' => $cashier,
-                        'workedon_by' => $workedon_by,
-
-
-
+                        'customer_id' => $customer_id,
+                        'cashier_id' => $cashier_id
                     ]);
 
                     $datetime = $date." ".$time;
@@ -539,7 +529,7 @@ class CartController extends Controller
                                 //If insertion is OK, reduce stock levels and clear cart
                     if($hasInsertedInSalesTbl){
 
-                        $hasUpdatedStock = DB::table('stock')->where('item', $item)
+                        $hasUpdatedStock = Stock::where('item', $item)
                         ->update(['quantity' => $newqty ]);
                                         //message the user about state of sale
                         if($hasUpdatedStock){
@@ -650,11 +640,10 @@ class CartController extends Controller
                         $stockIdArr = $arr['itemsIds'];
 
                         if(in_array($item, $stockArr) || in_array($item, $stockIdArr)){
-                            $data = DB::table("stock")
-                            ->where("item_code", "like", "%".$item."%")
+                            $data = Stock::where("item_code", "like", "%".$item."%")
                             ->orWhere("item", "like", "%".$item."%")
                             ->get();
-                        //$data = DB::select('select quantity from stock where item = ?',[$item]);
+               
                             foreach ($data as $value) {
                                 $qty = $value->quantity;
                             }
@@ -671,7 +660,7 @@ class CartController extends Controller
 
                     protected function getCartItems()
                     {
-                        $items = DB::table('cart')->get();
+                        $items =  Cart::get();
                         return $items;
                     }
 
@@ -679,7 +668,7 @@ class CartController extends Controller
 
                     public function ClearCart()
                     {
-                        DB::table('cart')->truncate();
+                         Cart::truncate();
                         return back();
                     }
 
@@ -689,8 +678,7 @@ class CartController extends Controller
                         if($request->input('query')){
                             $query = $request->input('query');
                             $data = array();
-                            $items = DB::table("stock")
-                            ->where("item_code", "like", "%".$query."%")
+                            $items = Stock::where("item_code", "like", "%".$query."%")
                             ->orWhere("item", "like", "%".$query."%")
                             ->get();
 
@@ -708,8 +696,7 @@ class CartController extends Controller
                         if($request->input('item')){
                             $query = $request->input('item');
                             $data = array();
-                            $items = DB::table("stock")
-                            ->where("item_code", "like", "%".$query."%")
+                            $items = Stock::where("item_code", "like", "%".$query."%")
                             ->orWhere("item", "like", "%".$query."%")
                             ->get();
                             foreach($items as $item){
@@ -728,7 +715,7 @@ class CartController extends Controller
                     protected function getListOfStockItemsData()
                     {
 
-                        $items = DB::table('stock')->get();
+                        $items = Stock::get();
                         $itemsArr = $itemsIdArr = array();
                         foreach($items as $item)
                         {
@@ -751,13 +738,11 @@ class CartController extends Controller
                         $stockIdsList = $arr['itemsIds'];
 
                         if(in_array($item, $stockList)){
-                            $ref = DB::table("stock")
-                            ->where('item', $item)->value('item_code');
+                            $ref =Stock::where('item', $item)->value('item_code');
                             $refId = 'name';
                         }
                         else if(in_array($item, $stockIdsList)){
-                            $ref = DB::table("stock")
-                            ->where('item_code', $item)->value('item');
+                            $ref = Stock::where('item_code', $item)->value('item');
                             $refId = 'id';
                         }
                         else{

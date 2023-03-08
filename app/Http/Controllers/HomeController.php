@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Helpers\Helper;
 
 class HomeController extends Controller
 {
@@ -15,7 +13,6 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-       
     }
 
     /**
@@ -25,23 +22,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(Auth::check())
-        {
-        return view('pages.home');
-        }else{
-            return redirect('/');
+        if (Auth::check()) {
+            return view('pages.home');
         }
+        return redirect('/');
     }
 
     public function overview()
     {
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             return view('pages.main.overview');
-            }else{
-                return redirect('/');
-            }
-       
+        }
+        return redirect('/');
     }
-    
 }
