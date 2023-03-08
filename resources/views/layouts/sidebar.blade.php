@@ -63,8 +63,8 @@
                             <a href="" class="nav-link with-sub">Stock</a>
                             <ul class="nav-sub">
 
-                                <li class="nav-sub-item"><a href="{{ Route('stock.index') }}"
-                                        class="nav-sub-link">Stock</a></li>
+                                <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a>
+                                </li>
                                 <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}"
                                         class="nav-sub-link">Purchases</a></li>
                                 <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}"
@@ -74,19 +74,16 @@
                             </ul>
                         </li>
 
-                        <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">
-                                Suppliers
-                            </a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">
-                                Expenses
-                            </a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link">
-                                Customers</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link">
-                                Customers with debts</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}"
+                        <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}"
+                                class="nav-sub-link">Suppliers</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">Expenses</a>
+                        </li>
+                        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}"
+                                class="nav-sub-link">Customers</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}"
+                                class="nav-sub-link">Customers with debts</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('customer-debt-payments.index') }}"
                                 class="nav-sub-link">Customer debt payments</a></li>
-
                     </ul>
                 @endcan
 
@@ -286,7 +283,8 @@
 
             <div class="dropdown az-profile-menu">
                 <a href="" class="text-decoration-none nunito-font username text-cap">
-                    <span class="mt-5 pr-1">{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}</span>
+                    <span
+                        class="mt-5 pr-1">{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}</span>
                     <i class="dropdown-toggle"></i></a>
                 <div class="dropdown-menu">
                     <div class="az-dropdown-header d-sm-none">
@@ -298,11 +296,13 @@
                     <div class="az-header-profile nunito-font">
                         <div class="az-img-user ">
                             @isset(Auth::user()->image)
-                                <img src="{{ asset('uploads/images/' . $user_role . '/' . Auth::user()->image . '') }}" alt="">
+                                <img src="{{ asset('uploads/images/' . $user_role . '/' . Auth::user()->image . '') }}"
+                                    alt="">
                             @endisset
 
                             @empty(Auth::user()->image)
-                                <img src="{{ asset('uploads/images/' . $user_role . '/default/user.png') }}" alt="{{ Auth::user()->name }}" class="az-img-user pull-right">
+                                <img src="{{ asset('uploads/images/' . $user_role . '/default/user.png') }}"
+                                    alt="{{ Auth::user()->name }}" class="az-img-user pull-right">
                             @endempty
                         </div>
                         <div class="text-center">
