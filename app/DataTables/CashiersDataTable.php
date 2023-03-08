@@ -3,9 +3,6 @@
 namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Helpers\Helper;
 
@@ -20,54 +17,47 @@ class CashiersDataTable extends DataTable
     public function dataTable($query)
     {
 
-    
         return datatables($query)
-        ->order(function($query){
-               $query->orderBy('created_at', 'desc');
-        })->addIndexColumn()
-        ->addColumn('action', function ($user) {
-            
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-            data-id="'.$user->id.'" data-original-title="Edit" id="edit-user"
+            ->order(function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })->addIndexColumn()
+            ->addColumn('action', function ($user) {
+
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
+            data-id="' . $user->id . '" data-original-title="Edit" id="edit-user"
               class="px-3 py-1 border border-success rounded mx-2 edit-user pr-4">
              <span class="fa fa-pen text-success"></span></a>';
-          
-            $btn .= '<a href="javascript:void(0);" id="delete-user" 
+
+                $btn .= '<a href="javascript:void(0);" id="delete-user" 
             data-toggle="tooltip" data-original-title="Delete"
-             data-id="'.$user->id.'" class="px-3 py-1 border border-danger rounded mx-2 pr-4"">
+             data-id="' . $user->id . '" class="px-3 py-1 border border-danger rounded mx-2 pr-4"">
             <span class="fa fa-trash-alt text-danger" ></span></a>';
 
-           $btn .= '<a href="javascript:void(0);" id="view-user" 
+                $btn .= '<a href="javascript:void(0);" id="view-user" 
            data-toggle="tooltip" data-original-title="View"
-            data-id="'.$user->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
+            data-id="' . $user->id . '" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
            <i class="fa fa-eye" ></i></a>';
 
-           return $btn;
-
-        })->addColumn('checkbox', function ($user) {
-              $checkBox = '<input type="checkbox" id="'.$user->id.'"/>';
-             return $checkBox;
-        })->editColumn('isActive', function ($data) {
-           return ($data->isActive)
-             ? '<span class="text-success">active</span>' 
-             : '<span class="text-danger">inactive</span>';
-        })->editColumn('accountAction', function ($data) {
-            $status = $data->isActive;
-           return ($status)
-             ? '<a class="bg-danger text-white changeAccountBtn" data-id="'.$data->id.'" data-name="'.$data->name.'" data-status="'.$status.'" id="changeAccountBtn"   >Deactive</a>' 
-             : '<a class="bg-success text-white changeAccountBtn" data-id="'.$data->id.'" data-name="'.$data->name.'"  data-status="'.$status.'" id="changeAccountBtn" >Activate</a>';
-        })->rawColumns(['action', 'isActive', 'accountAction', 'checkbox']);
-
-
-
+                return $btn;
+            })->addColumn('checkbox', function ($user) {
+                $checkBox = '<input type="checkbox" id="' . $user->id . '"/>';
+                return $checkBox;
+            })->editColumn('isActive', function ($data) {
+                return ($data->isActive)
+                    ? '<span class="text-success">active</span>'
+                    : '<span class="text-danger">inactive</span>';
+            })->editColumn('accountAction', function ($data) {
+                $status = $data->isActive;
+                return ($status)
+                    ? '<a class="bg-danger text-white changeAccountBtn p-2 rounded" data-id="' . $data->id . '" data-name="' . $data->name . '" data-status="' . $status . '" id="changeAccountBtn"><small>Deactivate</small></a>'
+                    : '<a class="bg-success text-white changeAccountBtn p-2 rounded" data-id="' . $data->id . '" data-name="' . $data->name . '"  data-status="' . $status . '" id="changeAccountBtn" ><small>Activate</small></a>';
+            })->rawColumns(['action', 'isActive', 'accountAction', 'checkbox']);
     }
 
     public function query(User $model)
     {
-               $CashierRoleId = Helper::getRoleId('cashier');
-               return $model->newQuery()
-               ->select('*')
-               ->where('user_role', '=', intval($CashierRoleId));
+        $cashier_role_id = Helper::getRoleId('cashier');
+        return $model->newQuery()->select('*')->where('role_id', '=', $cashier_role_id);
     }
 
     /**
@@ -79,12 +69,11 @@ class CashiersDataTable extends DataTable
     {
 
         return $this->builder()
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->addAction(['width' => '80px'])
-        ->dom('Bfrtip')
-        ->orderBy(1)->parameters($this->getBuilderParameters());
-       
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->addAction(['width' => '80px'])
+            ->dom('Bfrtip')
+            ->orderBy(1)->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -102,7 +91,7 @@ class CashiersDataTable extends DataTable
             'username',
             'gender',
             'email',
-            'user_role',
+            'role_id',
             'tel_no',
             'alt_telno',
             'address',
@@ -122,4 +111,3 @@ class CashiersDataTable extends DataTable
         return 'Cashiers' . date('YmdHis');
     }
 }
-

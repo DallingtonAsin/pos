@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Auth\Access\Response;
-use App\User;
 use App\Models\Role;
 
 
@@ -34,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
 
       Gate::define('isSuperAdmin', function($user){
 
-        $arr = $this->getPermissions($user->user_role);
+        $arr = $this->getPermissions($user->role_id);
         $permitX = $arr['isAdmin'];
         $permitY = $arr['isSuperAdmin'];
  
@@ -46,7 +45,7 @@ class AuthServiceProvider extends ServiceProvider
 
       Gate::define('isAdmin', function($user){
 
-       $arr = $this->getPermissions($user->user_role);
+       $arr = $this->getPermissions($user->role_id);
        $permitX = $arr['isAdmin'];
        $permitY = $arr['isSuperAdmin'];
 
@@ -58,7 +57,7 @@ class AuthServiceProvider extends ServiceProvider
 
       Gate::define('isCashier', function($user){
 
-       $arr = $this->getPermissions($user->user_role);
+       $arr = $this->getPermissions($user->role_id);
        $permitX = $arr['isAdmin'];
        $permitY = $arr['isSuperAdmin'];
 
@@ -103,15 +102,15 @@ class AuthServiceProvider extends ServiceProvider
 
     }
 
-    public function getPermissions($user_role){
+    public function getPermissions($role_id){
 
       $isAdmin = DB::table('roles')
-      ->where('role_id', $user_role)
+      ->where('id', $role_id)
       ->value('is_admin');
 
       $isSuperAdmin = DB::table('roles')
-      ->where('role_id', $user_role)
-      ->value('is_SuperAdmin');
+      ->where('id', $role_id)
+      ->value('is_super_admin');
 
       $dataArr = array(
         'isAdmin' => $isAdmin,
@@ -124,7 +123,7 @@ class AuthServiceProvider extends ServiceProvider
 
     protected function getUserRole($id)
     {
-      $role = Role::where('role_id',$id)->value('role');
+      $role = Role::where('id', $id)->value('name');
       return Str::singular($role);
     }
 

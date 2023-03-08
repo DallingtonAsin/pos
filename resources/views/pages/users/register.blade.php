@@ -204,8 +204,8 @@
                     success: function(resp) {
                         var obj = JSON.parse(resp);
                         for (var i = 0; i < obj.length; i++) {
-                            let role_id = obj[i]['role_id'];
-                            let role_name = obj[i]['role'];
+                            let role_id = obj[i]['id'];
+                            let role_name = obj[i]['name'];
                             $('.role_section').append('<option value=' + role_id + '>' + role_name +
                                 '</option>');
                         }

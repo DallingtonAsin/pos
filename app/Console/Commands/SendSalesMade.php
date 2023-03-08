@@ -119,9 +119,8 @@ class SendSalesMade extends Command
 
    
     protected function GetManagerEmails(){
-        $roleId = Role::where('is_admin', 1)->where('is_SuperAdmin', 0)
-        ->value('role_id');
-        $rows = User::where('user_role', $roleId)->get();
+        $roleId = Role::where('is_admin', 1)->where('is_super_admin', 0)->value('id');
+        $rows = User::where('role_id', $roleId)->get();
         $managersEmails = array();
         foreach ($rows as $row) {
             array_push($managersEmails, $row->email);

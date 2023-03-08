@@ -43,19 +43,19 @@ class MailController extends Controller
 
     protected function getRole($role_id)
     {
-        $role = Role::where('role_id', $role_id)->value('role');
+        $role = Role::where('id', $role_id)->value('name');
         return $role;
     }
 
     protected function GetRoleId($role)
     {
-        $role_id = Role::where('role', $role)->value('role_id');
+        $role_id = Role::where('name', $role)->value('id');
         return $role_id;
     }
 
     protected function GetUserData($UserRoleId)
     {
-        $userEmails = User::where('user_role', $UserRoleId)->get();
+        $userEmails = User::where('role_id', $UserRoleId)->get();
         return $userEmails;
     }
 
@@ -162,7 +162,7 @@ class MailController extends Controller
 
     }
 
-        $position = $this->getRole($request->user()->user_role); //position of the person sending the email
+        $position = $this->getRole($request->user()->role_id); //position of the person sending the email
         
         $data = array(
             'type' => 'mail',

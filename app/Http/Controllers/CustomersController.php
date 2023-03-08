@@ -44,9 +44,7 @@ class CustomersController extends Controller
     // $customers = DB::select('select * from customers');
     $customers = Customer::all();
     $number_of_customers = Customer::count();
-    $total_credit = DB::table('customers')->sum('credit');
-    $total_debts = DB::table('customers')->sum('debt');
-    return view('pages.main.customers')->with(compact('customers','total_credit','total_debts','number_of_customers'));
+    return view('pages.main.customers')->with(compact('customers', 'number_of_customers'));
     
   }
   

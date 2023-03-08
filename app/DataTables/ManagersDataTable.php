@@ -67,7 +67,7 @@ class ManagersDataTable extends DataTable
                $adminRoleId = Helper::getRoleId('Administrator');
                $res = $model->newQuery()
                ->select('*')
-               ->where('user_role', '=', intval($adminRoleId))
+               ->where('role_id', '=', intval($adminRoleId))
                ->where('id', '!=', Auth::user()->id);
                return $res;
     }
@@ -104,7 +104,7 @@ class ManagersDataTable extends DataTable
             'username',
             'gender',
             'email',
-            'user_role',
+            'role_id',
             'tel_no',
             'alt_telno',
             'address',

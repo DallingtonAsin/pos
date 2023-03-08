@@ -35,8 +35,7 @@ class CashiersController extends Controller
     protected function getUserRoleId($role)
     {
         try {
-            $roleId = Role::where('role', 'like', '%'.$role.'%')
-                     ->value('role_id');
+            $roleId = Role::where('name', 'like', '%'.$role.'%')->value('id');
             return $roleId;
         } catch (\Exception $ex) {
             $data = array(
@@ -55,8 +54,7 @@ class CashiersController extends Controller
     protected function getRole($id)
     {
         try {
-            $role = Role::where('role_id', $id)
-                   ->value('role');
+            $role = Role::where('id', $id)->value('name');
             return $role;
         } catch (\Exception $ex) {
             $data = array(
@@ -77,8 +75,8 @@ class CashiersController extends Controller
         try {
             $role = 'Cashier';
             $role_id = $this->getUserRoleId($role);
-            $cashiers_list = User::where('user_role', $role_id)->get();
-            $number_of_cashiers = User::where('user_role', $role_id)->count();
+            $cashiers_list = User::where('role_id', $role_id)->get();
+            $number_of_cashiers = User::where('role_id', $role_id)->count();
             $data = array(
         'totl' => $number_of_cashiers,
         'list' => $cashiers_list
@@ -215,7 +213,7 @@ class CashiersController extends Controller
                 if ($save_status) {
                     $subject = 'User Registration';
                     $CashierEmail = $request->email;
-                    $registraPosition = $this->getRole($request->user()->user_role);
+                    $registraPosition = $this->getRole($request->user()->role_id);
                     $registraEmail = $request->user()->email;
                     $default_password = $defaultPwd;
                     $now = now();
@@ -523,7 +521,7 @@ class CashiersController extends Controller
             if ($res) {
                 $subject = 'Update about User Details Change';
                 $CashierEmail = $request->email;
-                $registraPosition = $this->getRole($request->user()->user_role);
+                $registraPosition = $this->getRole($request->user()->role_id);
                 $registraEmail = $request->user()->email;
                 $now = now();
 
@@ -668,7 +666,7 @@ class CashiersController extends Controller
     {
         try {
             $CashierRoleId = $this->getUserRoleId('Cashier');
-            $result = User::where('user_role', $CashierRoleId)->delete();
+            $result = User::where('role_id', $CashierRoleId)->delete();
 
             if ($result) {
                 $action = "removed all cashiers from the system";
