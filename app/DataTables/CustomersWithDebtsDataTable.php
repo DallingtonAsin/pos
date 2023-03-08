@@ -26,7 +26,7 @@ class CustomersWithDebtsDataTable extends DataTable
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
             data-id="'.$sale->id.'" data-original-title="Edit" id="edit-sale"
               class="px-3 py-1 border border-success rounded mx-2 edit-sale">
-             <span class="fa fa-pen pr-4"></span></a>';
+             <span class="fa fa-pen text-success"></span></a>';
             //   if(Gate::allows('isAdmin')){
             // $btn .= '<a href="javascript:void(0);" id="delete-sale" 
             // data-toggle="tooltip" data-original-title="Delete"
