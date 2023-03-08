@@ -50,12 +50,11 @@
             <thead>
               <tr>
                 <th></th>
-                <th>Name</th>
-                <th>Item</th>
-                <th>Paid Amt</th>
+                <th>Date</th>
+                <th>Customer Name</th>
+                <th>Amount Paid</th>
                 <th>Balance</th>
                 <th>Recorded By</th>
-                <th>Date</th>
                 {{-- <th>Action</th> --}}
               </tr>
             </thead>
@@ -188,12 +187,11 @@ role="dialog" aria-labelledby="myModalLabel">
 <script>
   var dataColumns = [
          {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+         {data: 'date', name:'date'},
          {data: 'customer', name:'customer'},
-         {data: 'item', name:'item'},
-         {data: 'amount_paid', name:'amount_paid'},
+         {data: 'paid_amount', name:'paid_amount'},
          {data: 'balance', name:'balance'},
          {data: 'recorded_by', name:'recorded_by'},
-         {data: 'date', name:'date'},
 
         //  {data: 'action', name: 'action',orderable: false,searchable: false},
      ];
@@ -205,12 +203,11 @@ role="dialog" aria-labelledby="myModalLabel">
 <script>
   var dataColumns = [
          {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
+         {data: 'date', name:'date'},
          {data: 'customer', name:'customer'},
-         {data: 'item', name:'item'},
-         {data: 'amount_paid', name:'amount_paid'},
+         {data: 'paid_amount', name:'paid_amount'},
          {data: 'balance', name:'balance'},
          {data: 'recorded_by', name:'recorded_by'},
-         {data: 'date', name:'date'},
      ];
       makeDataTable2(table, title, columns, dataColumns);
 </script>

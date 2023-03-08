@@ -102,7 +102,7 @@
         <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Credit Transactions</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}" class="nav-sub-link">Customers with debts</a></li>
         <li class="nav-sub-item"><a href="{{ Route('customers.debts.payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
-        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link">List of registered customers</a></li>
+        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link">List of recorded customers</a></li>
 
        
 
@@ -119,7 +119,7 @@
 
       @can('isCashier')
       <li class="nav-item">
-        <a href="" class="nav-link with-sub"><i class="typcn typcn-location"></i>Inventory</a>
+        <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Inventory</a>
         <ul class="nav-sub">
           <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
           <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damages</a></li>
