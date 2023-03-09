@@ -37,7 +37,7 @@ class SalesController extends Controller
   protected function GetSalesExcelFileReport()
   {
     try {
-      $excelFile = Excel::download(new DailySalesReport, 'daily-sales-report.xlsx');
+      return Excel::download(new DailySalesReport, 'daily-sales-report.xlsx');
     } catch (\Exception $ex) {
       dd($ex->getMessage());
     }
@@ -301,9 +301,10 @@ class SalesController extends Controller
       ? $net_title = "Net Profit made: shs"
       : $net_title = "Losses made: shs";
 
-    if ($request->ajax()) {
-      $this->GetSales();
-    }
+    // if ($request->ajax()) {
+    //   $this->GetSales();
+    // }
+
     $menu_selected = 'sales';
 
     return view('pages.main.sales')->with(
@@ -346,9 +347,9 @@ class SalesController extends Controller
       ? $net_title = "Net Profit made: shs"
       : $net_title = "Losses made: shs";
 
-    if ($request->ajax()) {
-      $this->GetSales();
-    }
+    // if ($request->ajax()) {
+    //   $this->GetSales();
+    // }
 
     return view('pages.main.sales')->with(
       compact(
@@ -385,9 +386,9 @@ class SalesController extends Controller
       ? $net_title = "Net Profit made: shs"
       : $net_title = "Losses made: shs";
 
-    if ($request->ajax()) {
-      $this->GetSales();
-    }
+    // if ($request->ajax()) {
+    //   $this->GetSales();
+    // }
 
     return view('pages.main.sales-with-debts')->with(
       compact(

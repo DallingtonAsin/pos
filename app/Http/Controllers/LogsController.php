@@ -131,7 +131,7 @@ class LogsController extends Controller
             $responseInfo  = 'log has not been deleted';
        }
 
-            return response()>json([
+            return response()->json([
                 $sessionVariable => $responseInfo,
                 'totl' => $this->GetLogsStats(),
             ]);
@@ -199,7 +199,7 @@ public static function logger(Request $request, $action, $date){
     $newLog->name =$name =  $request->user()->name;
     $newLog->role = $userPosition = LogsController::getRole($request->user()->role_id);
     $newLog->logged_action = $action;
-    $newLog->ip_address = \Request::getClientIp();
+    $newLog->ip_address = $request->getClientIp();
     $newLog->date = $date;
 
     $newLog->save();
