@@ -4,19 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
-use App\Notifications\NewEmailNotifier;
 use App\Jobs\SendingEmail;
 use App\Models\Role;
-use App\Models\QueuedEmail;
-use App\Events\EmailQueued;
 use App\User;
-use App\Helpers\Helper;
 
 
 class MailController extends Controller

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Sale;
 use App\Models\Supplier;
-use App\Models\Damage;
 use App\Models\Expense;
 use App\Models\Customer;
 use App\Exports\ExportSales;

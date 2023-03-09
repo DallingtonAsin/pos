@@ -8,7 +8,6 @@ use App\DataTables\CustomerDebtPaymentRecordsDataTable;
 use App\DataTables\CustomersWithDebtsDataTable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use App\Models\Sale;
 use App\Helpers\Helper;
 
 

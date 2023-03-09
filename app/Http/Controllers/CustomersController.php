@@ -7,15 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Sale;
 use App\Helpers\Helper;
-use App\Imports\ImportCustomers;
-use App\Exports\ExportCustomers;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
 use App\DataTables\CustomersDataTable;
 use App\Services\CustomerDebtPaymentService;
 use Illuminate\Support\Str;
 use  App\Helpers\Constants as Constant;
-use Excel;
 
 class CustomersController extends Controller
 {

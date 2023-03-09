@@ -3,14 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Route;
 use App\Models\Logs;
 use App\Models\Role;
-use App\Helpers\Helper;
 use App\DataTables\LogsDataTable;
 
 class LogsController extends Controller
