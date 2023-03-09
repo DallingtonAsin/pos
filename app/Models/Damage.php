@@ -11,10 +11,9 @@ class Damage extends Model
     protected $table = 'damages';
     public $timestamps = true;
     protected $fillable = [
-      'item',
       'item_id',
       'quantity',
-      'category',
-      'buying_price',
+      'recorded_on',
+      'recorded_by',
     ];
 }

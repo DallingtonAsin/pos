@@ -97,12 +97,14 @@
                             @can('isCashier')
                                 <th>No</th>
                             @endcan
-                            <th>item code</th>
                             <th>Item</th>
-                            {{-- <th>Category</th> --}}
                             <th>Qty</th>
-                            <th>Cost price</th>
-                            <th>Total Cost</th>
+                            @can('isAdmin')
+                                <th>Buying Price</th>
+                            @endcan
+                            @can('isAdmin')
+                                <th>Lost Amount</th>
+                            @endcan
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
@@ -299,10 +301,6 @@
                     name: 'checkbox'
                 },
                 {
-                    data: 'item_id',
-                    name: 'item_id'
-                },
-                {
                     data: 'item',
                     name: 'item'
                 },
@@ -315,12 +313,12 @@
                     name: 'buying_price'
                 },
                 {
-                    data: 'total_cost',
-                    name: 'total_cost'
+                    data: 'lost_amount',
+                    name: 'lost_amount'
                 },
                 {
-                    data: 'recordedOn',
-                    name: 'recordedOn'
+                    data: 'recorded_on',
+                    name: 'recorded_on'
                 },
                 {
                     data: 'action',
@@ -341,11 +339,6 @@
                     orderable: false,
                     searchable: false
                 },
-
-                {
-                    data: 'item_id',
-                    name: 'item_id'
-                },
                 {
                     data: 'item',
                     name: 'item'
@@ -356,16 +349,8 @@
                     name: 'quantity'
                 },
                 {
-                    data: 'buying_price',
-                    name: 'buying_price'
-                },
-                {
-                    data: 'total_cost',
-                    name: 'total_cost'
-                },
-                {
-                    data: 'recordedOn',
-                    name: 'recordedOn'
+                    data: 'recorded_on',
+                    name: 'recorded_on'
                 },
                 {
                     data: 'action',
@@ -456,11 +441,8 @@
                         $('#addDamagesModal').modal('show');
                         $('.damageId').val(damage_id);
                         $('.item-name').val(data.item);
-                        $('.item-category').val(data.category);
                         $('.quantity').val(data.quantity);
-                        $('.bprice').val(data.buying_price);
-                        $('.lamount').val(data.total_cost);
-                        $('.record-date').val(data.recordedOn);
+                        $('.record-date').val(data.recorded_on);
                         DisableFormFields(false);
                         ShowHideBtns('show');
                         $('#addDamagesModal').modal('show');
@@ -486,11 +468,8 @@
                     $('#addDamagesModal').modal('show');
                     $('.damageId').val(damage_id);
                     $('.item-name').val(data.item);
-                    $('.item-category').val(data.category);
                     $('.quantity').val(data.quantity);
-                    $('.bprice').val(FormatNumber(data.buying_price));
-                    $('.lamount').val(FormatNumber(data.total_cost));
-                    $('.record-date').val(data.recordedOn);
+                    $('.record-date').val(data.recorded_on);
                     ShowHideContent('show');
                     DisableFormFields(true);
                     ShowHideBtns('hide');
