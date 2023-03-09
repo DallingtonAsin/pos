@@ -408,7 +408,7 @@ class SalesController extends Controller
     $total_number_of_sales = Sale::where('fully_paid', 1)->where('balance', 0)->count();
     $total_sales = Sale::sum('paid_amount');
     $total_expenses = Expense::sum('amount');
-    $cost_of_damages = Damage::sum('total_cost');
+    $cost_of_damages = Helper::getDamageCost();
     $total_initial_cost = Sale::sum('total_buying_cost');
     $supplier_debts = (Supplier::sum('credit')) - (Supplier::sum('debt'));
     $customer_debts = Sale::where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
@@ -431,7 +431,7 @@ class SalesController extends Controller
       $total_number_of_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->count();
       $total_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
       $total_expenses = Expense::sum('amount');
-      $cost_of_damages = Damage::sum('total_cost');
+      $cost_of_damages = Helper::getDamageCost();
       $total_initial_cost = Sale::sum('total_buying_cost');
       $supplier_debts = (Supplier::sum('credit')) - (Supplier::sum('debt'));
       $customer_debts = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');

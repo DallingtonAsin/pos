@@ -168,7 +168,6 @@ class PurchasesController extends Controller
       $purchase->item = $item->item;
       $purchase->item_code = $item->item_code;
       return $purchase;
-
     } catch (\Exception $ex) {
       throw $ex;
     }

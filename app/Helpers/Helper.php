@@ -512,4 +512,19 @@ class Helper
       throw $ex;
     }
   }
+
+  public static function getDamageCost(){
+    $damaged_items = Damage::all();
+    $total_damage_cost = 0;
+    
+    foreach ($damaged_items as $damaged_item) {
+        $stock = Stock::findOrFail($damaged_item->item_id);
+        $damage_cost = $stock->buying_price * $damaged_item->quantity;
+        $total_damage_cost += $damage_cost;
+    }
+    
+    return $total_damage_cost;
+  }
+
+
 }
