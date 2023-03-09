@@ -146,7 +146,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
 
-                <form action="{{ Route('customers.import') }}" method="post" enctype="multipart/form-data"
+                <form action="" method="post" enctype="multipart/form-data"
                     name="inportCustomersForm">
                     @csrf
 
