@@ -339,10 +339,7 @@ $.ajaxSetup({
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
-
-    
-    
-
+      
       OnclickingSubmitBtn();
      
       $('#createNewDamage').click(function (e) {
@@ -353,7 +350,7 @@ $.ajaxSetup({
         $('.addDamageBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
         $('#damagesForm').trigger("reset");
         ShowHideContent('hide');
-        $('#modalHeading').html("Add new damage");
+        $('#modalHeading').html("Record new damage");
         $('#addDamagesModal').modal('show');
       });
 
