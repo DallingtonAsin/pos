@@ -114,7 +114,7 @@
                             @can('isAdmin')
                                 <th>B. Price</th>
                             @endcan
-                            <th>Retail Price</th>
+                            <th>R. Price</th>
                             <th>W. Price</th>
                             @can('isAdmin')
                                 <th>Supplier</th>

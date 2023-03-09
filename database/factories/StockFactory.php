@@ -29,7 +29,7 @@ class StockFactory extends Factory
     $category_id = StockCat::inRandomOrder()->first()->id;
 
     return [
-      'item_code' => $this->faker->numberBetween(100000000, 900000000),
+      'item_code' => $this->faker->numberBetween(10000000000, 90000000000),
       'item' => Str::random(7),
       'category_id' => $category_id,
       'quantity' => $this->faker->numberBetween(150, 300),
