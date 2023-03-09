@@ -526,5 +526,18 @@ class Helper
     return $total_damage_cost;
   }
 
+  public static function getPeriodicDamageCost($start_date, $end_date){
+    $damaged_items = Damage::whereBetween('recorded_on', [$start_date, $end_date])->get();
+    $total_damage_cost = 0;
+    
+    foreach ($damaged_items as $damaged_item) {
+        $stock = Stock::findOrFail($damaged_item->item_id);
+        $damage_cost = $stock->buying_price * $damaged_item->quantity;
+        $total_damage_cost += $damage_cost;
+    }
+    
+    return $total_damage_cost;
+  }
+
 
 }

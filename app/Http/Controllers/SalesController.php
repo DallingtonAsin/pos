@@ -53,7 +53,7 @@ class SalesController extends Controller
     $total_sales = $value2 = Sale::whereBetween('date', [$startDate, $endDate])->sum('paid_amount');
 
     $total_expenses = Expense::whereBetween('date_of_expenditure', [$startDate, $endDate])->sum('amount');
-    $cost_of_damages = Damage::whereBetween('recordedOn', [$startDate, $endDate])->sum('total_cost');
+    $cost_of_damages = Helper::getPeriodicDamageCost($startDate, $endDate);
 
     $value3 = (Supplier::whereDate('created_at', ">=", $startDate)
       ->whereDate('created_at', "<=", $endDate)
@@ -267,7 +267,7 @@ class SalesController extends Controller
     $value1 = Sale::where('date', Date('Y-m-d'))->sum('total_buying_cost');
     $total_sales = $value2 = Sale::where('date', Date('Y-m-d'))->sum('paid_amount');
     $total_expenses = Expense::where('date_of_expenditure', Date('Y-m-d'))->sum('amount');
-    $cost_of_damages = Damage::whereDate('recordedOn', Date('Y-m-d'))->sum('total_cost');
+    $cost_of_damages = Helper::getPeriodicDamageCost(Date('Y-m-d'), Date('Y-m-d'));
     $value3 = (Supplier::whereDate('created_at', Date('Y-m-d'))->sum('credit')) - (Supplier::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
     $value4 = (Customer::whereDate('created_at', Date('Y-m-d'))->sum('credit')) - (Customer::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
 
