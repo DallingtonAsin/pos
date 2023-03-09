@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Sale;
+use App\Models\Customer;
 use App\Helpers\Helper;
 
 class CustomersWithDebtsDataTable extends DataTable
@@ -17,10 +18,8 @@ class CustomersWithDebtsDataTable extends DataTable
     public function dataTable($query)
     {
 
-        return datatables($query)
-        ->order(function($query){
-               $query->orderBy('date', 'desc');
-        })->addIndexColumn()
+        return datatables($query) 
+        ->addIndexColumn()
         ->addColumn('action', function ($sale) {
             
             $btn = "";
@@ -41,27 +40,9 @@ class CustomersWithDebtsDataTable extends DataTable
 
            return $btn;
 
-        })->addColumn('checkbox', function ($sale) {
-              $checkBox = '<input type="checkbox" id="'.$sale->id.'"/>';
-             return $checkBox;
-        })->addColumn('cashier', function ($sale) {
-            $cashier = Helper::getUser($sale->cashier_id);
-            return $cashier->first_name . ' ' . $cashier->last_name;
-        })->addColumn('customer', function ($sale) {
-            $customer_name = null;
-            if ($sale->customer_id) {
-                $customer = Helper::getCustomer($sale->customer_id);
-                $customer_name = $customer->name;
-            }
-            return $customer_name;
-        })->editColumn('amount', function ($data) {
-            return number_format($data->amount);
-        })->editColumn('paid_amount', function ($data) {
-            return number_format($data->paid_amount);
-        })->editColumn('balance', function ($data) {
-            $bal = number_format($data->balance);
-            return '<span class="text-danger" >'.$bal.'</span>';
-        })->rawColumns(['action', 'checkbox', 'balance']);
+        })->editColumn('debt', function ($data) {
+            return number_format(Helper::customerDebt($data->customer_id));
+        })->rawColumns(['action']);
 
 
     }
@@ -70,7 +51,12 @@ class CustomersWithDebtsDataTable extends DataTable
     public function query(Sale $model)
     {
         
-        return $model->newQuery()->select('*')->where('balance', '>', 0)->where('fully_paid', 0);
+       // return $model->newQuery()->select('*')->where('balance', '>', 0)->where('fully_paid', 0);
+
+       return Customer::distinct()
+            ->join('sales', 'customers.id', '=', 'sales.customer_id')
+            ->select('customers.id as customer_id', 'customers.contact as customer_contact', 'customers.name as customer_name')
+            ->get();
     }
 
     

@@ -470,12 +470,24 @@ class Helper
     return Auth::user()->role_id === $cashier_role_id;
   }
 
+  public static function customerDebt($customer_id)
+  {
+    try {
+      $debt = Sale::where('customer_id', $customer_id)->sum('amount')
+        - Sale::where('customer_id', $customer_id)->sum('paid_amount')
+        - CustomerDebtPayment::where('customer_id', $customer_id)->sum('paid_amount');
+      return $debt;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
   public static function getTotalCustomerDebt()
   {
     try {
       $total_debt = Sale::sum('amount')
-                   - Sale::sum('paid_amount')
-                   - CustomerDebtPayment::sum('paid_amount');
+        - Sale::sum('paid_amount')
+        - CustomerDebtPayment::sum('paid_amount');
       return $total_debt;
     } catch (\Exception $ex) {
       throw $ex;

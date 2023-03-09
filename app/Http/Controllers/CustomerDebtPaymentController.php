@@ -69,7 +69,7 @@ class CustomerDebtPaymentController extends Controller
                 $customer_id = $request->input('customer');
                 $paid_amount = $request->input('paid_amount');
                 $paid_amount =  Helper::Numberize($paid_amount);
-                $balance = $this->customerDebt($customer_id) - $paid_amount;
+                $balance = Helper::customerDebt($customer_id) - $paid_amount;
                 $payment_date = $request->input('payment_date');
 
                 $recorded_by = $request->user()->id;
@@ -98,22 +98,11 @@ class CustomerDebtPaymentController extends Controller
         }
     }
 
-    private function customerDebt($customer_id)
-    {
-        try {
-            $debt = Sale::where('customer_id', $customer_id)->sum('amount')
-                - Sale::where('customer_id', $customer_id)->sum('paid_amount')
-                - CustomerDebtPayment::where('customer_id', $customer_id)->sum('paid_amount');
-            return $debt;
-        } catch (\Exception $ex) {
-            throw $ex;
-        }
-    }
-
+  
     public function getCustomerDebt($customer_id)
     {
         try {
-            $debt = $this->customerDebt($customer_id);
+            $debt = Helper::customerDebt($customer_id);
             return response()->json(['success' => 'OK', 'data' => $debt]);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()]);
@@ -179,7 +168,7 @@ class CustomerDebtPaymentController extends Controller
                     $customer_id = $request->input('customer');
                     $paid_amount = $request->input('paid_amount');
                     $payment_date = $request->input('payment_date');
-                    $balance = $this->customerDebt($customer_id) - intval($paid_amount);
+                    $balance = Helper::customerDebt($customer_id) - intval($paid_amount);
 
                     $created_by = $request->user()->id;
                     $data = [

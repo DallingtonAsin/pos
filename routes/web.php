@@ -179,8 +179,6 @@ Route::group(["middleware" => "restricted"], function () {
 
 
 	Route::get('/customers/home', 'CustomersController@GetCustomers')->name('customers.home');
-	Route::post('/customers/import-customers', 'CustomersController@importCustomers')->name('customers.import');
-	Route::get('/customers/export-customers', 'CustomersController@exportCustomers')->name('customers.export');
 
 	Route::post('suppliers/import-suppliers', 'SuppliersController@importSuppliers')->name('suppliers.import');
 	Route::get('suppliers/export-suppliers', 'SuppliersController@exportSuppliers')->name('suppliers.export');

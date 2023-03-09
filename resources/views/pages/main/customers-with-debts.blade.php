@@ -59,16 +59,9 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Name</th>
-                            <th>Item</th>
-                            <th>Qty</th>
-                            <th>Total</th>
-                            <th>Discount</th>
-                            <th>Amount</th>
-                            <th>Paid Amt</th>
-                            <th>Balance</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th>Customer Name</th>
+                            <th>Phone Number</th>
+                            <th>Debt</th>
                         </tr>
                     </thead>
                 </table>
@@ -182,7 +175,7 @@
         const token = "{{ csrf_token() }}";
         var table = $('#customers-with-debts-table');
         var title = "List of customers with debts in the system";
-        var columns = [0, 1, 2, 3, 4];
+        var columns = [0, 1, 2];
     </script>
 
 
@@ -195,47 +188,17 @@
                     searchable: false
                 },
                 {
-                    data: 'customer',
-                    name: 'customer'
+                    data: 'customer_name',
+                    name: 'customer_name'
                 },
                 {
-                    data: 'item',
-                    name: 'item'
+                    data: 'customer_contact',
+                    name: 'customer_contact'
                 },
                 {
-                    data: 'quantity',
-                    name: 'quantity'
-                },
-                {
-                    data: 'total_cost',
-                    name: 'total_cost'
-                },
-                {
-                    data: 'discount',
-                    name: 'discount'
-                },
-                {
-                    data: 'amount',
-                    name: 'amount'
-                },
-                {
-                    data: 'paid_amount',
-                    name: 'paid_amount'
-                },
-                {
-                    data: 'balance',
-                    name: 'balance'
-                },
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
+                    data: 'debt',
+                    name: 'debt'
+                }
             ];
             makeDataTable2(table, title, columns, dataColumns);
         </script>
@@ -250,46 +213,16 @@
                     searchable: false
                 },
                 {
-                    data: 'customer',
-                    name: 'customer'
+                    data: 'customer_name',
+                    name: 'customer_name'
                 },
                 {
-                    data: 'item',
-                    name: 'item'
+                    data: 'customer_contact',
+                    name: 'customer_contact'
                 },
                 {
-                    data: 'quantity',
-                    name: 'quantity'
-                },
-                {
-                    data: 'total_cost',
-                    name: 'total_cost'
-                },
-                {
-                    data: 'discount',
-                    name: 'discount'
-                },
-                {
-                    data: 'amount',
-                    name: 'amount'
-                },
-                {
-                    data: 'paid_amount',
-                    name: 'paid_amount'
-                },
-                {
-                    data: 'balance',
-                    name: 'balance'
-                },
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
+                    data: 'debt',
+                    name: 'debt'
                 },
             ];
             makeDataTable2(table, title, columns, dataColumns);
