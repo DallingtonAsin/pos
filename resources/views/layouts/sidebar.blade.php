@@ -63,12 +63,7 @@
                         </li>
                         <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">Expenses</a>
                         </li>
-                        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}"
-                                class="nav-sub-link">Customers</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('customers.with.debts') }}"
-                                class="nav-sub-link">Customers with debts</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('customer-debt-payments.index') }}"
-                                class="nav-sub-link">Customer debt payments</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link">Customers</a></li>
                     </ul>
                 @endcan
 
@@ -165,20 +160,10 @@
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
                     <ul class="nav-sub">
-
-                        <li class="nav-item">
-                            <a href="" class="nav-link with-sub">Debtors</a>
-                            <ul class="nav-sub">
-                                <li class="nav-sub-item"><a href="{{ route('debtors-suppliers') }}"
-                                        class="nav-sub-link">Suppliers</a></li>
-                                <li class="nav-sub-item"><a href="{{ route('debtors-customers') }}"
-                                        class="nav-sub-link">Customers</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-sub-item"><a href="{{ route('top-cashiers') }}" class="nav-sub-link">Cashiers report</a></li>
-
-                        {{-- <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Top Customers</a></li> --}}
+                        <li class="nav-sub-item"><a href="{{ route('debtors-suppliers') }}" class="nav-sub-link">Supplier debts</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('top-cashiers') }}" class="nav-sub-link">Cashier performance</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('customers.with.debts') }}" class="nav-sub-link">Customer debts</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('customer-debt-payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
 
                         <li class="nav-item">
                             <a href="" class="nav-link with-sub">Stock</a>
