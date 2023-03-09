@@ -4,17 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use BotMan\BotMan\BotMan;
-use BotMan\BotMan\BotManFactory;
-use BotMan\BotMan\Drivers\DriverManager;
-use BotMan\BotMan\Messages\Message;
-use App\Helpers\Helper;
 use BotMan\BotMan\Messages\Incoming\Answer;
-use Illuminate\Support\Carbon;
 use App\Http\Controllers\LogAfterRequest;
 use App\Models\ChatBot;
-use App\Imports\ImportCommands;
-use Excel;
+
 
 class ChatBotController extends Controller
 {
@@ -231,43 +224,6 @@ class ChatBotController extends Controller
 
   }
 
-  public function importChatBotCommands(Request $request)
-  {
-    $this->validate($request,
-     ['select_file' => 'required|mimes:xls,xlsx'],
-     ['select_file.mimes' => 'Please select only excel files to import commands']
-   );
-
-    $method = "ChatBotController@importChatBotCommands";
-    $isImported = Excel::import(new ImportCommands, request()->file('select_file'));
-   
-    if($isImported){
-
-     $action = "imported an excel file of commands into the system";
-     LogsController::logger($request, $action, now());
-     
-     $dataArr = array("code" => '200',
-     "message" => $action,
-     "method" => $method);
-     LogAfterRequest::LogRequest($request, $dataArr);
-
-     return back()
-                ->with('success', $this->ActionMessage($action));
-   }
-   else
-   {
-
-     $error_message = "Excel file of commands data has not been imported!";
-     $dataArr = array("code" => '101',
-     "message" => $error_message,
-     "method" => $method);
-     LogAfterRequest::LogRequest($request, $dataArr);
-     return back()
-                 ->with('fail', $error_message);
-
-  }
-
-}
 
     /**
      * Place your BotMan logic here.

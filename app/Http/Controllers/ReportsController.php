@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 use App\DataTables\Reports\TopCustomersDataTable;
 use App\DataTables\Reports\MonthlySalesDataTable;
@@ -15,7 +14,6 @@ use App\DataTables\Reports\BestSellingItemsDataTable;
 use App\DataTables\Reports\CashiersPerformanceDataTable;
 
 use App\Models\Stock;
-use App\Models\MonthlySale;
 use App\Helpers\Helper;
 
 class ReportsController extends Controller

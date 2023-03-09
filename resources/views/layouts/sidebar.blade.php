@@ -166,10 +166,6 @@
                     <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
                     <ul class="nav-sub">
 
-                        <li class="nav-sub-item"><a href="{{ route('top-cashiers') }}" class="nav-sub-link">Cashiers
-                                report</a></li>
-
-
                         <li class="nav-item">
                             <a href="" class="nav-link with-sub">Debtors</a>
                             <ul class="nav-sub">
@@ -180,8 +176,9 @@
                             </ul>
                         </li>
 
-                        <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Top
-                                Customers</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('top-cashiers') }}" class="nav-sub-link">Cashiers report</a></li>
+
+                        {{-- <li class="nav-sub-item"><a href="{{ route('top-customers') }}" class="nav-sub-link">Top Customers</a></li> --}}
 
                         <li class="nav-item">
                             <a href="" class="nav-link with-sub">Stock</a>

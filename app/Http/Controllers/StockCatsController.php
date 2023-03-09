@@ -8,8 +8,6 @@ use App\Exports\ExportStockCats;
 use Illuminate\Http\Request;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use App\DataTables\StockCatsDataTable;
 use Illuminate\Support\Str;
 use  App\Helpers\Constants as Constant;

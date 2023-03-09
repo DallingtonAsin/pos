@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Notifications\NotifyUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\EventNotifier;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use App\Models\Event;
-use App\Helpers\Helper;
 use App\Jobs\MailEvent;
 use App\DataTables\EventsDataTable;
 use App\User;

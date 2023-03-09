@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\LogsController;
 use App\Models\Role;
 use App\User;
-use App\Helpers\Helper;
+
 
 class ProfileController extends Controller
 {

@@ -2,50 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Helpers\Helper;
 
 class LogicHandler extends Controller
 {
 
-
 	public function is_connectedToInternet()
 	{
 		$connected = @fsockopen('www.google.com', 80);
-		if($connected){
+		if ($connected) {
 			$is_conn = 1;
 			fclose($connected);
-		}
-		else{
+		} else {
 			$is_conn = 0;
 		}
 
 		return $is_conn;
 	}
 
-	protected function sendMail($mailContentPage, $receiverEmail, 
-		                        $dataX, $dataY){
+	protected function sendMail(
+		$mailContentPage,
+		$receiverEmail,
+		$dataX,
+		$data
+	) {
 
-		$mailState = 0; 
-		
-		if($this->is_connectedToInternet() == 1)
-		 {
+		$mailState = 0;
+
+		if ($this->is_connectedToInternet() == 1) {
 			$senderEmail = config('app.companyEmail');
-			Mail::send($mailContentPage, $dataX, 
-				   function($message) use ($dataY)
-			{   
-				$message->from($senderEmail, 'Dallington');
-				$message->to($receiverEmail)->subject($subject);
-			}); 
+			Mail::send(
+				$mailContentPage,
+				$dataX,
+				function ($message) use ($data) {
+					$message->from($data['senderEmail'], 'Dallington');
+					$message->to($data['receiverEmail'])->subject($data['subject']);
+				}
+			);
 
 			(Mail::failures())
-			  ? $mailState = 1
-			  : $mailState = -1;
+				? $mailState = 1
+				: $mailState = -1;
 
-              return $mailState;
+			return $mailState;
 		}
-		
-    }
-    
+	}
 }
