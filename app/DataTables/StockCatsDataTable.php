@@ -3,7 +3,6 @@
 namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Support\Facades\Gate;
 use App\Models\StockCat;
 
 class StockCatsDataTable extends DataTable
@@ -74,7 +73,7 @@ class StockCatsDataTable extends DataTable
     {
         return [
             'id',
-            'item_category',
+            'name',
         ];
     }
 

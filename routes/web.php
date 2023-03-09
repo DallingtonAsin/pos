@@ -237,6 +237,7 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::post('damaged-stock-items/deleteAll', 'DamagesController@deleteAllDamages')->name('damages.truncate');
 	Route::post('logs/truncate', 'LogsController@truncateLogs')->name('logs.truncate');
 
+	Route::get('stock/find/{id}', 'StockController@findStockItem')->name('stock.item.find');
 
 	Route::get('users/active/remove', 'UserController@RemoveAllActiveUsers')->name('active-users.remove')->middleware('password.confirm');
 	Route::get('users/locked/remove', 'UserController@RemoveAllLockedUsers')->name('locked-users.remove')->middleware('password.confirm');

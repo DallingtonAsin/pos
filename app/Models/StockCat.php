@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class StockCat extends Model
 {
     use HasFactory;
-    protected $table = 'stockcategories';
+
+    protected $table = 'stock_categories';
+    
     public $timestamps = true;
+
     protected $fillable = [
-      'item_category'
+      'name'
     ];
 }

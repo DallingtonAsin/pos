@@ -23,7 +23,7 @@ class StockCatFactory extends Factory
   public function definition()
   {
     return [
-        'item_category' => Str::random(8)
+        'name' => Str::random(8)
     ];
   }
 }

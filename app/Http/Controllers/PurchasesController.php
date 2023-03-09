@@ -41,14 +41,19 @@ class PurchasesController extends Controller
   public function index()
   {
     $purchases = Purchase::all();
-    $suppliers = Supplier::all();
+
+    $stock =Stock::select(['id', 'item_code', 'item'])->get();
+    $suppliers = Supplier::select(['id', 'name'])->get();
+
     $arr = $this->GetPurchaseDetails();
     $no_of_purchases = $arr['totl_no'];
     $totl_cost_of_purchases = $arr['totl_purchases'];
+
     return view(
       'pages.main.purchases',
       compact(
         'purchases',
+        'stock',
         'suppliers',
         'no_of_purchases',
         'totl_cost_of_purchases'

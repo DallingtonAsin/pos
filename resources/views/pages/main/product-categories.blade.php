@@ -242,7 +242,7 @@
     {data: 'checkbox', name:'checkbox'},
         //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
          // {data: 'id', name:'id'},
-         {data: 'item_category', name:'item_category'},
+         {data: 'name', name:'name'},
          {data: 'action', name:'action',orderable: false,searchable: false},
          ];
 
@@ -291,9 +291,9 @@ $('body').on('click', '#edit-pdt-category', function (event) {
     dataType: 'json',
     success: function (data) {
 
-      $('#modalHeading').html("Edit details of product category item " + data.item_category + "");
+      $('#modalHeading').html("Edit details of product category item " + data.name + "");
       $('.PdtCategoryId').val(data.id);
-      $('.PdtCategory').val(data.item_category);
+      $('.PdtCategory').val(data.name);
       DisableFormFields(false);
     },
     error: function (data) {
@@ -375,10 +375,10 @@ function recordPdtCategory(){
     $.get("{{ route('product-categories.index') }}" +'/' + PdtCategory_id +'', function (data) {
       var bprice = data.buying_price;
       var sprice = data.selling_price;
-      $('#modalHeading').html("Details of product category " + data.item_category + "");
+      $('#modalHeading').html("Details of product category " + data.name + "");
       $('#addItemCategoryModal').modal('show');
       $('.PdtCategoryId').val(data.id);
-      $('.PdtCategory').val(data.item_category);
+      $('.PdtCategory').val(data.name);
       DisableFormFields(true);
 
     })

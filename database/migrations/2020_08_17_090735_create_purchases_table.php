@@ -16,40 +16,26 @@ class CreatePurchasesTable extends Migration
     public function up()
     {
 
-        // DB::statement("CREATE TABLE purchases(
-        //     id BIGINT PRIMARY KEY IDENTITY,
-        //     item_code NVARCHAR(255),
-        //     item NVARCHAR(255),
-        //     quantity FLOAT NOT NULL,
-        //     cost_price_per_item money NOT NULL,
-        //     total_cost_price AS quantity*cost_price_per_item PERSISTED,
-        //     supplier NVARCHAR(255),
-        //     recorded_by NVARCHAR(40),
-        //     date DATETIME DEFAULT CURRENT_TIMESTAMP,
-        //  )");
-
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->string('serial_no')->nullable();
-            $table->string('receipt_no')->nullable();
-            $table->string('item_code')->nullable();
-            $table->string('item')->nullable();
+            $table->unsignedBigInteger('item_id');
             $table->float('quantity');
             $table->double('cost_price_per_item');
             $table->double('total_cost_price')->storedAs('quantity * cost_price_per_item');
-            $table->double('retail_price')->default('0');
-            $table->double('wholesale_price')->default('0');
-            $table->string('supplier')->nullable();
-            $table->string('supplier_contact')->nullable();
-            $table->string('recorded_by');
+            $table->double('retail_price');
+            $table->double('wholesale_price')->nullable();
+            $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->string('serial_no')->nullable();
+            $table->string('receipt_no')->nullable();
+            $table->unsignedBigInteger('recorded_by');
             $table->date('date_of_purchase')->nullable();
             $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
 
+            $table->foreign('item_id')->references('id')->on('stock')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->foreign('recorded_by')->references('id')->on('users')->onDelete('cascade');
         });
-
-
-
     }
 
     /**

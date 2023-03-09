@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 use App\Models\Damage;
-use App\Models\Stock;
 use App\Imports\ImportDamages;
 use App\Exports\ExportDamages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use App\DataTables\DamagesDataTable;
 use Illuminate\Support\Str;
 use  App\Helpers\Constants as Constant;

@@ -12,15 +12,13 @@ class Purchase extends Model
     protected $fillable = [
         'serial_no',
         'receipt_no',
-        'item_code',
-        'item',
+        'item_id',
         'quantity',
         'cost_price_per_item',
         'retail_price',
         'wholesale_price',
-        'supplier',
-        'supplier_contact',
-        'created_by',
+        'supplier_id',
+        'recorded_by',
         'date_of_purchase'  
     ];
     public $timestamps = true;

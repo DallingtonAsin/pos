@@ -16,19 +16,19 @@ class CreateCartTable extends Migration
     {
 
 
-//    DB::statement("CREATE TABLE cart(
-//             id BIGINT PRIMARY KEY IDENTITY,
-//             item_id NVARCHAR(255),
-//             item NVARCHAR(255) NOT NULL,
-//             quantity FLOAT NOT NULL,
-//             price money NOT NULL,
-//             total_cost AS quantity*price PERSISTED,
-//             discount money,
-//             amount money NOT NULL,
-//             got_sold BIT DEFAULT 0,
-//             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-//             date_of_sale DATETIME, 
-//          )");
+        //    DB::statement("CREATE TABLE cart(
+        //             id BIGINT PRIMARY KEY IDENTITY,
+        //             item_id NVARCHAR(255),
+        //             item NVARCHAR(255) NOT NULL,
+        //             quantity FLOAT NOT NULL,
+        //             price money NOT NULL,
+        //             total_cost AS quantity*price PERSISTED,
+        //             discount money,
+        //             amount money NOT NULL,
+        //             got_sold BIT DEFAULT 0,
+        //             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        //             date_of_sale DATETIME, 
+        //          )");
 
         Schema::create('cart', function (Blueprint $table) {
             $table->id();
@@ -42,10 +42,7 @@ class CreateCartTable extends Migration
             $table->boolean('got_sold')->default(0)->change();
             $table->dateTime('date_of_sale');
             $table->timestamps();
-
-             });
-
-
+        });
     }
 
     /**
@@ -56,6 +53,6 @@ class CreateCartTable extends Migration
     public function down()
     {
         // DB::statement('DROP TABLE IF EXISTS cart');
-       Schema::dropIfExists('cart');
+        Schema::dropIfExists('cart');
     }
 }
