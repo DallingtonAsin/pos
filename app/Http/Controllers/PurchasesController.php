@@ -7,11 +7,8 @@ use App\Models\Supplier;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use App\DataTables\PurchasesDataTable;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 use App\Imports\ImportPurchases;
@@ -42,7 +39,7 @@ class PurchasesController extends Controller
   {
     $purchases = Purchase::all();
 
-    $stock =Stock::select(['id', 'item_code', 'item'])->get();
+    $stock = Stock::select(['id', 'item_code', 'item'])->get();
     $suppliers = Supplier::select(['id', 'name'])->get();
 
     $arr = $this->GetPurchaseDetails();
@@ -86,85 +83,54 @@ class PurchasesController extends Controller
       $purchase_id = $request->input('id');
       $serial_no = $request->input('serial_no');
       $receipt_no = $request->input('receipt_no');
-      $item_code = $request->input('item_code');
-      $item = $request->input('item');
+      $item_id = $request->input('item');
       $quantity = floatval($request->input('quantity'));
       $cost_price_per_item = floatval(Helper::Numberize($request->input('cost_price')));
       $retail_price = floatval(Helper::Numberize($request->input('retail_price')));
       $wholesale_price = floatval(Helper::Numberize($request->input('wholesale_price')));
-      $supplier = $request->input('supplier');
-      $supplier_contact = $request->input('supplier_contact');
-      $recorded_by = Auth::user()->first_name . ' ' . Auth::user()->last_name;
+      $supplier_id = $request->input('supplier');
+      $recorded_by = $request->user()->id;
       $date_of_purchase = $request->input('date_of_purchase');
 
       $purchase_data = [
-        'serial_no' => $serial_no,
-        'receipt_no' => $receipt_no,
-        'item_code' => $item_code,
-        'item' => $item,
+        'item_id' => $item_id,
         'quantity' => $quantity,
         'cost_price_per_item' => $cost_price_per_item,
         'retail_price' => $retail_price,
         'wholesale_price' => $wholesale_price,
-        'supplier' => $supplier,
-        'suppliers_contact' => $supplier_contact,
-        'created_by' => $recorded_by,
+        'supplier_id' => $supplier_id,
+        'serial_no' => $serial_no,
+        'receipt_no' => $receipt_no,
+        'recorded_by' => $recorded_by,
         'date_of_purchase' => $date_of_purchase
       ];
 
-      dd($purchase_data);
 
       $isStored = Purchase::create($purchase_data);
       if ($isStored) {
-        if (Helper::isItemInStock($item)) {
+        $stock = Stock::where('id', $item_id);
+        if ($stock->exists()) {
 
-          $qty = Helper::getItemQty($item);
+          $qty = $stock->first()->quantity;
           $newQty = $qty + floatval($quantity);
-          $isUpdated = Stock::where('item', $item)->update(['quantity' => $newQty]);
+          $isUpdated = Stock::where('id', $item_id)->update(['quantity' => $newQty]);
 
           if ($isUpdated) {
             $arr = $this->GetSumupDetails();
+            $purchased_item = $stock->first()->item;
             return response()->json([
-              'success' => 'added purchased item in purchases collection and updated quantity in stock',
-              'totl_no' => $arr['totl'],
-              'totl_purchases' => $arr['value'],
-            ]);
-          }else{
-            return response()->json(['error' => 'System has failed to update quantity in stock']);
-          }
-  
-        } else {
-  
-          $stock_data = [
-            'item_code' => $item_code,
-            'item' => $item,
-            'qty' => $quantity,
-            'price_per_item' => $cost_price_per_item,
-            'retail_price' => $retail_price,
-            'wholesale_price' => $wholesale_price,
-            'supplier' => $supplier
-          ];
-  
-          $insertStockInserted = Helper::createStock($stock_data);
-          if ($insertStockInserted) {
-            $arr = $this->GetSumupDetails();
-            return response()->json([
-              'success' => 'You have successfully recorded purchase',
-              'totl_no' => $arr['totl'],
-              'totl_purchases' => $arr['value']
+              'success' => 'You have successfully added purchased item ' . $purchased_item . '',
+              'data' => $arr,
             ]);
           } else {
-            return response()->json(['error' => 'System has failed to add new purchased item in stock']);
+            return response()->json(['error' => 'System has failed to update quantity in stock']);
           }
-  
+        } else {
+          return response()->json(['error' => 'Stock item does not exist in the system']);
         }
-
       } else {
         return response()->json(['error' => 'System has failed to record purchase']);
       }
-
-     
-
     } catch (\Exception $ex) {
 
       $data = array(
@@ -178,10 +144,7 @@ class PurchasesController extends Controller
 
       Helper::logError($data);
       return response()->json(['error' => $ex->getMessage()]);
-
     }
-
-
   }
 
   protected function GetSumupDetails()
@@ -195,6 +158,22 @@ class PurchasesController extends Controller
     return $data;
   }
 
+
+  public function findPurchase($id)
+  {
+    try {
+
+      $purchase = Purchase::find($id);
+      $item = Stock::find($purchase->item_id);
+      $purchase->item = $item->item;
+      $purchase->item_code = $item->item_code;
+      return $purchase;
+
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
   /**
    * Display the specified resource.
    *
@@ -203,7 +182,7 @@ class PurchasesController extends Controller
    */
   public function show($id)
   {
-    $purchase = Purchase::find($id);
+    $purchase = $this->findPurchase($id);
     return response()->json($purchase);
   }
 
@@ -215,7 +194,7 @@ class PurchasesController extends Controller
    */
   public function edit($id)
   {
-    $purchase = Purchase::find($id);
+    $purchase = $this->findPurchase($id);
     return response()->json($purchase);
   }
 
@@ -230,114 +209,82 @@ class PurchasesController extends Controller
   public function update(Request $request, $id)
   {
 
-    $message = '';
-    $purchase_id = $request->input('id');
-    $serial_no = $request->input('serial_no');
-    $receipt_no = $request->input('receipt_no');
-    $item_code = $request->input('item_code');
-    $item = $request->input('item');
-    $quantity = floatval($request->input('quantity'));
-    $cost_price_per_item = floatval(Helper::Numberize($request->input('cost_price')));
-    $retail_price = floatval(Helper::Numberize($request->input('retail_price')));
-    $wholesale_price = floatval(Helper::Numberize($request->input('wholesale_price')));
-    $supplier = $request->input('supplier');
-    $supplier_contact = $request->input('supplier_contact');
-    $recorded_by = Auth::user()->name;
-    $date_of_purchase = $request->input('date_of_purchase');
-
     try {
 
-      if (Helper::isItemInStock($item)) {
+      $purchase_id = $request->input('id');
+
+      if ($purchase_id) {
+
+        $serial_no = $request->input('serial_no');
+        $receipt_no = $request->input('receipt_no');
+        $item_id = $request->input('item');
+        $quantity = floatval($request->input('quantity'));
+        $cost_price_per_item = floatval(Helper::Numberize($request->input('cost_price')));
+        $retail_price = floatval(Helper::Numberize($request->input('retail_price')));
+        $wholesale_price = floatval(Helper::Numberize($request->input('wholesale_price')));
+        $supplier_id = $request->input('supplier');
+        $recorded_by = $request->user()->id;
+        $date_of_purchase = $request->input('date_of_purchase');
 
         $purchase_data = [
-          'id' => $purchase_id,
-          'sno' => $serial_no,
-          'receipt_no' => $receipt_no,
-          'item_code' => $item_code,
-          'item' => $item,
-          'qty' => $quantity,
-          'price_per_item' => $cost_price_per_item,
+          'item_id' => $item_id,
+          'quantity' => $quantity,
+          'cost_price_per_item' => $cost_price_per_item,
           'retail_price' => $retail_price,
           'wholesale_price' => $wholesale_price,
-          'supplier' => $supplier,
-          'suppliers_contact' => $supplier_contact,
+          'supplier_id' => $supplier_id,
+          'serial_no' => $serial_no,
+          'receipt_no' => $receipt_no,
           'recorded_by' => $recorded_by,
-          'date_of_purchase' => $date_of_purchase,
+          'date_of_purchase' => $date_of_purchase
         ];
 
 
-        if (isset($purchase_id)) {
-          $result = Purchase::where('id', $purchase_id)->update($purchase_data);
-        } else {
-          $result = Purchase::create($purchase_data);
-        }
+        $purchase = Purchase::where('id', $purchase_id);
+        $oldQty = $purchase->first()->quantity;
 
+        if ($purchase->update($purchase_data)) {
 
-        $sessionVariable = 'success';
-        isset($purchase_id)
-          ? $message .= 'updated purchased item in purchases collection'
-          : $message .= 'added purchased item in purchases collection';
+          $stock = Stock::where('id', $item_id);
+          if ($stock->exists()) {
 
-        if ($result) {
+            $qtyDiff = $quantity - $oldQty;
+            $qty = $stock->first()->quantity;
+            $newQty = $qty + floatval($qtyDiff);
 
-          $sessionVariable = 'success';
-          $stock_data = [
-            'item_code' => $item_code,
-            'item' => $item,
-            'qty' => $quantity,
-            'price_per_item' => $cost_price_per_item,
-            'retail_price' => $retail_price,
-            'wholesale_price' => $wholesale_price,
-            'supplier' => $supplier
-          ];
+            $isUpdated = Stock::where('id', $item_id)->update(['quantity' => $newQty]);
 
-          if (empty($purchase_id)) {
-            $insertStockInserted = Helper::createStock($stock_data);
-            if ($insertStockInserted) {
-              $sessionVariable = 'success';
-              $message .= ' and also in stock collection';
+            if ($isUpdated) {
+              $arr = $this->GetSumupDetails();
+              $purchased_item = $stock->first()->item;
+              return response()->json([
+                'success' => 'You have successfully added purchased item ' . $purchased_item . '',
+                'data' => $arr,
+              ]);
             } else {
-              $sessionVariable = 'success';
-              $message .= ' but failed to add purchased item in stock collection';
+              return response()->json(['error' => 'System has failed to update quantity in stock']);
             }
+          } else {
+            return response()->json(['error' => 'Stock item does not exist in the system']);
           }
-
         } else {
-          $sessionVariable = 'error';
+          return response()->json(['error' => 'System has failed to record purchase']);
         }
-      } else {
-        $sessionVariable = 'success';
-        $message = 'Unable to find item in stock';
       }
-
-
     } catch (\Exception $ex) {
-      $sessionVariable = 'error';
-      $message = $ex->getMessage();
+
       $data = array(
         'username' => auth()->user()->username,
         'error_code' => $ex->getCode(),
-        'error_message' => $message,
+        'error_message' => $ex->getMessage(),
         'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
         'controller' => $this->controller,
-        'method' => 'RemoveSelected'
+        'method' => 'store'
       );
+
       Helper::logError($data);
-      abort(409, $ex->getMessage());
+      return response()->json(['error' => $ex->getMessage()]);
     }
-
-    $arr = $this->GetSumupDetails();
-    $sessionVariable == 'success'
-      ? $message = $this->SuccessMessage($message)
-      : $message = $this->FailedMessage($message);
-
-    return response()
-      ->json([
-        $sessionVariable => $message,
-        'totl_no' => $arr['totl'],
-        'totl_purchases' => $arr['value'],
-      ]);
-
   }
 
   protected function GetPurchaseDetails()
@@ -349,7 +296,6 @@ class PurchasesController extends Controller
       'totl_purchases' => $totl_cost_of_purchases,
     );
     return $data;
-
   }
 
 
@@ -401,7 +347,6 @@ class PurchasesController extends Controller
         'totl_no' => $arr['totl_no'],
         'totl_purchases' => $arr['totl_purchases'],
       ]);
-
   }
 
   public function deleteAllPurchases(Request $request)
@@ -441,7 +386,6 @@ class PurchasesController extends Controller
         'totl_no' => $arr['totl_no'],
         'totl_purchases' => $arr['totl_purchases'],
       ]);
-
   }
 
   public function RemoveSelected(Request $request)
@@ -480,8 +424,6 @@ class PurchasesController extends Controller
           'totl_no' => $arr['totl_no'],
           'totl_purchases' => $arr['totl_purchases'],
         ]);
-
-
     } catch (\Exception $ex) {
       $data = array(
         'username' => auth()->user()->username,
@@ -529,8 +471,6 @@ class PurchasesController extends Controller
       LogAfterRequest::LogRequest($request, $dataArr);
       return back()->with('fail', $messageErr);
     }
-
-
   }
 
   protected function ActionMessage($action)
@@ -550,6 +490,4 @@ class PurchasesController extends Controller
   {
     return $failmsg;
   }
-
-
 } //end of class Purchases

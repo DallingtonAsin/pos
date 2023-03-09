@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Damage;
 use App\Imports\ImportDamages;
 use App\Exports\ExportDamages;
@@ -21,13 +22,13 @@ class DamagesController extends Controller
   public function __construct()
   {
     $this->controller = 'DamagesController';
-
   }
 
-  public function GetDamages(DamagesDataTable $dataTable){
+  public function GetDamages(DamagesDataTable $dataTable)
+  {
 
     return  $dataTable->render('pages.main.damages');
-   }
+  }
 
 
   /**
@@ -99,8 +100,8 @@ class DamagesController extends Controller
 
       if ($save) {
         $res = DB::table('stock')
-                      ->where('item', $item)
-                      ->update(['quantity' => $new_quantity]);
+          ->where('item', $item)
+          ->update(['quantity' => $new_quantity]);
         if ($res) {
 
           $action = "recorded damaged item " . $item . "";
@@ -113,7 +114,6 @@ class DamagesController extends Controller
           LogAfterRequest::LogRequest($request, $dataArr);
           $sessionVariable = 'success';
           $responseInfo = $this->SuccessMessage($action);
-
         } else {
           $messageErr = "Damaged item not recorded!";
           $dataArr = array(
@@ -124,11 +124,8 @@ class DamagesController extends Controller
           LogAfterRequest::LogRequest($request, $dataArr);
           $sessionVariable = 'fail';
           $responseInfo = $this->FailedMessage($messageErr);
-
         }
-
-      }
-      else{
+      } else {
 
         $messageErr = "Unable to update stock";
         $dataArr = array(
@@ -139,10 +136,7 @@ class DamagesController extends Controller
         LogAfterRequest::LogRequest($request, $dataArr);
         $sessionVariable = 'fail';
         $responseInfo = $this->FailedMessage($messageErr);
-
       }
-
-
     } else {
 
       $messageErr = "Item " . $item . " not found in stock";
@@ -154,20 +148,18 @@ class DamagesController extends Controller
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
       $responseInfo = $this->FailedMessage($messageErr);
-
     }
 
-          $arr = $this->GetDamagesStats();
-          $totl_no = $arr['totl_no'];
-          $totl_amt = $arr['totl_amt'];
+    $arr = $this->GetDamagesStats();
+    $totl_no = $arr['totl_no'];
+    $totl_amt = $arr['totl_amt'];
 
-          return response()
-          ->json([$sessionVariable => $responseInfo,
-                  'totl_no' => $totl_no,
-                  'totl_amt' => $totl_amt,
-          ]);
-
-
+    return response()
+      ->json([
+        $sessionVariable => $responseInfo,
+        'totl_no' => $totl_no,
+        'totl_amt' => $totl_amt,
+      ]);
   }
 
   /**
@@ -205,7 +197,7 @@ class DamagesController extends Controller
   {
 
 
-       $request->validate([
+    $request->validate([
       'damage-item' => 'required',
       'quantity' => 'required',
     ]);
@@ -240,15 +232,15 @@ class DamagesController extends Controller
       }
 
       $hasSaved = Damage::where('id',  $uniqueId)->update([
-                   'quantity' => $quantity,
+        'quantity' => $quantity,
       ]);
 
 
       if ($hasSaved) {
 
         $res = DB::table('stock')
-                      ->where('item', $item)
-                      ->update(['quantity' => $new_quantity]);
+          ->where('item', $item)
+          ->update(['quantity' => $new_quantity]);
         if ($res) {
 
           $action = "recorded damaged item " . $item . "";
@@ -264,7 +256,6 @@ class DamagesController extends Controller
 
           $sessionVariable = 'success';
           $responseInfo = $this->SuccessMessage($action);
-
         } else {
           $messageErr = "Damaged item not recorded!";
           $dataArr = array(
@@ -275,11 +266,8 @@ class DamagesController extends Controller
           LogAfterRequest::LogRequest($request, $dataArr);
           $sessionVariable = 'fail';
           $responseInfo = $this->FailedMessage($messageErr);
-
         }
-
-      }
-      else{
+      } else {
 
         $messageErr = "Unable to update stock";
         $dataArr = array(
@@ -290,10 +278,7 @@ class DamagesController extends Controller
         LogAfterRequest::LogRequest($request, $dataArr);
         $sessionVariable = 'fail';
         $responseInfo = $this->FailedMessage($messageErr);
-
       }
-
-
     } else {
 
       $messageErr = "Item " . $item . " not found in stock";
@@ -305,20 +290,18 @@ class DamagesController extends Controller
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
       $responseInfo = $this->FailedMessage($messageErr);
-
     }
 
-          $arr = $this->GetDamagesStats();
-          $totl_no = $arr['totl_no'];
-          $totl_amt = $arr['totl_amt'];
+    $arr = $this->GetDamagesStats();
+    $totl_no = $arr['totl_no'];
+    $totl_amt = $arr['totl_amt'];
 
-          return response()
-          ->json([$sessionVariable => $responseInfo,
-                  'totl_no' => $totl_no,
-                  'totl_amt' => $totl_amt,
-          ]);
-
-
+    return response()
+      ->json([
+        $sessionVariable => $responseInfo,
+        'totl_no' => $totl_no,
+        'totl_amt' => $totl_amt,
+      ]);
   }
 
   /**
@@ -347,7 +330,6 @@ class DamagesController extends Controller
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
       $responseInfo = $this->SuccessMessage($action);
-
     } else {
 
       $messageErr = "Damaged item not deleted!";
@@ -359,48 +341,48 @@ class DamagesController extends Controller
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
       $responseInfo = $this->FailedMessage($messageErr);
-
     }
 
     $arr = $this->GetDamagesStats();
 
     return response()
-    ->json([$sessionVariable => $responseInfo,
-            'totl_no' => $arr['totl_no'],
-            'totl_amt' => $arr['totl_amt'],
-    ]);
-
+      ->json([
+        $sessionVariable => $responseInfo,
+        'totl_no' => $arr['totl_no'],
+        'totl_amt' => $arr['totl_amt'],
+      ]);
   }
 
-  protected function GetDamagesStats(){
+  protected function GetDamagesStats()
+  {
     $totl_no = Damage::count();
     $totl_cost = Damage::sum('total_cost');
     $data = array(
-            'totl_no' => $totl_no,
-            'totl_amt' => $totl_cost,
+      'totl_no' => $totl_no,
+      'totl_amt' => $totl_cost,
     );
     return $data;
-}
-
-
-  protected function searchItem(Request $request){
-
-  if($request->input('query')){
-    $query = $request->input('query');
-    $data = array();
-    $items = DB::table("stock")
-                  ->where("item_code", "like", "%".$query."%")
-                  ->orWhere("item", "like", "%".$query."%")
-                  ->get();
-
-    foreach($items as $item){
-      $data[] = $item->item;
-      $data[] = $item->item_code;
-    }
-    echo json_encode($data);
   }
 
-}
+
+  protected function searchItem(Request $request)
+  {
+
+    if ($request->input('query')) {
+      $query = $request->input('query');
+      $data = array();
+      $items = DB::table("stock")
+        ->where("item_code", "like", "%" . $query . "%")
+        ->orWhere("item", "like", "%" . $query . "%")
+        ->get();
+
+      foreach ($items as $item) {
+        $data[] = $item->item;
+        $data[] = $item->item_code;
+      }
+      echo json_encode($data);
+    }
+  }
 
 
   public function deleteAllDamages(Request $request)
@@ -420,7 +402,6 @@ class DamagesController extends Controller
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'success';
       $responseInfo = $this->SuccessMessage($action);
-
     } else {
       $messageErr = "Damaged items not deleted from the system!";
       $dataArr = array(
@@ -431,7 +412,6 @@ class DamagesController extends Controller
       LogAfterRequest::LogRequest($request, $dataArr);
       $sessionVariable = 'fail';
       $responseInfo = $messageErr;
-
     }
 
     $arr = $this->GetDamagesStats();
@@ -439,65 +419,65 @@ class DamagesController extends Controller
     $totl_amt = $arr['totl_amt'];
 
     return response()
-    ->json([$sessionVariable => $responseInfo,
-            'totl_no' => $totl_no,
-            'totl_amt' => $totl_amt,
-    ]);
-
+      ->json([
+        $sessionVariable => $responseInfo,
+        'totl_no' => $totl_no,
+        'totl_amt' => $totl_amt,
+      ]);
   }
 
- public function RemoveSelected(Request $request)
-    {
-        try {
-            $ids =  $request->input('selected_rows');
-            $deletedDamagedItems = array();
+  public function RemoveSelected(Request $request)
+  {
+    try {
+      $ids =  $request->input('selected_rows');
+      $deletedDamagedItems = array();
 
-            if (count($ids) > 0) {
-                foreach ($ids as $id) {
-                    $findId = Damage::find($id);
-                    $findId->delete();
-                    array_push($deletedDamagedItems, $findId->item);
-                }
-            }
-            $sessionVariable = 'success';
-            $deleteddamagedStockStr = implode(", ", $deletedDamagedItems);
-            $action = "removed damaged items ".$deleteddamagedStockStr." from the system";
-            if (count($ids) == 1) {
-                $action = Str::replaceFirst('items', 'item', $action);
-            }
-            $response = $this->SuccessMessage($action);
-
-            $dataArr = array("code" => '200',
-                "message" => $action,
-                "method" => "".$this->controller."@RemoveSelected"
-            );
-            LogsController::logger($request, $action, now());
-            LogAfterRequest::LogRequest($request, $dataArr);
-
-            $arr = $this->GetDamagesStats();
-            $totl_no = $arr['totl_no'];
-            $totl_amt = $arr['totl_amt'];
-
-            return response()
-            ->json([$sessionVariable => $response,
-                    'totl_no' => $totl_no,
-                    'totl_amt' => $totl_amt,
-            ]);
-
-           
-        } catch (\Exception $ex) {
-            $data = array(
-          'username' => auth()->user()->username,
-          'error_code' => $ex->getCode(),
-          'error_message' => $ex->getMessage(),
-          'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
-          'controller' => $this->controller,
-          'method' => 'RemoveSelected'
-        );
-            Helper::logError($data);
-            abort(409, $ex->getMessage());
+      if (count($ids) > 0) {
+        foreach ($ids as $id) {
+          $findId = Damage::find($id);
+          $findId->delete();
+          array_push($deletedDamagedItems, $findId->item);
         }
+      }
+      $sessionVariable = 'success';
+      $deleteddamagedStockStr = implode(", ", $deletedDamagedItems);
+      $action = "removed damaged items " . $deleteddamagedStockStr . " from the system";
+      if (count($ids) == 1) {
+        $action = Str::replaceFirst('items', 'item', $action);
+      }
+      $response = $this->SuccessMessage($action);
+
+      $dataArr = array(
+        "code" => '200',
+        "message" => $action,
+        "method" => "" . $this->controller . "@RemoveSelected"
+      );
+      LogsController::logger($request, $action, now());
+      LogAfterRequest::LogRequest($request, $dataArr);
+
+      $arr = $this->GetDamagesStats();
+      $totl_no = $arr['totl_no'];
+      $totl_amt = $arr['totl_amt'];
+
+      return response()
+        ->json([
+          $sessionVariable => $response,
+          'totl_no' => $totl_no,
+          'totl_amt' => $totl_amt,
+        ]);
+    } catch (\Exception $ex) {
+      $data = array(
+        'username' => auth()->user()->username,
+        'error_code' => $ex->getCode(),
+        'error_message' => $ex->getMessage(),
+        'error_severity' => Constant::$STATUS_ERROR_SEVERITY,
+        'controller' => $this->controller,
+        'method' => 'RemoveSelected'
+      );
+      Helper::logError($data);
+      abort(409, $ex->getMessage());
     }
+  }
 
 
 
@@ -581,7 +561,7 @@ class DamagesController extends Controller
 
   protected function SuccessMessage($msg)
   {
-    $message = "You have successfully ".$msg."";
+    $message = "You have successfully " . $msg . "";
     return $message;
   }
 
@@ -590,8 +570,4 @@ class DamagesController extends Controller
   {
     return $failmsg;
   }
-
-
-
-
 } //end of the class

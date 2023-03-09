@@ -6,7 +6,6 @@
             <div class="panel-title">
                 <span class="pl-0 mt-4 response"></span>
                 <div class="row nunito-font">
-                    {{-- <span class="response"></span> --}}
                     <div class="col-lg-3 text-dark">
                         <h6>
                             <i class="fa fa-home text-success"> /</i>
@@ -124,6 +123,11 @@
                                     <option value="{{ $item->id }}">{{ $item->item }}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <span><span class="text-danger">*</span> Item Code</span>
+                            <input type="text" class="form-control item_code" name="item_code" readonly>
                         </div>
 
                         <div class="form-group row">
@@ -373,16 +377,17 @@
             }
 
             function populateStockItemDetails(item_id) {
-                console.log(`item id: ${item_id}`);
+                
                 let url = "{{ route('stock.item.find', ':id') }}";
                 url = url.replace(':id', item_id);
                 $.get(url, function(response) {
                     if (response.success) {
                         let data = response.data;
-                        
-                        console.log(`data`, data);
-                        // let val = readableValue(debt.toString());
-                        // $('.debt_amount').val(val);
+                        $(".item_code").val(data.item_code);
+                        $(".cost_price").val(data.buying_price);
+                        $(".retail_price").val(data.selling_price);
+                        $(".wholesale_price").val(data.wholesale_price);
+                        $(".supplier").val(data.supplier_id);
                     } else {
                         ShowResponse('.response', response.error, 'error');
                     }
@@ -400,7 +405,6 @@
                 $('#addPurchaseModal').modal('show');
 
             });
-
 
             Numberize(".quantity");
             Numberize(".cost_price");
@@ -439,13 +443,13 @@
                         $('.serial_no').val(data.serial_no);
                         $('.receipt_no').val(data.receipt_no);
                         $('.item_code').val(data.item_code);
-                        $('.item-name').val(data.item);
+                        $('.item-name').val(data.item_id);
                         $('.quantity').val(data.quantity);
                         $('.cost_price').val(data.cost_price_per_item);
                         $('.retail_price').val(data.retail_price);
                         $('.wholesale_price').val(data.wholesale_price);
-                        $('.supplier').val(data.supplier);
-                        $('.supplier_contact').val(data.supplier_contact);
+                        $('.category').val(data.catgeory_id);
+                        $('.supplier').val(data.supplier_id);
                         $('.date_of_purchase').val(data.date_of_purchase);
                         $('.item-name').css('pointer-events', 'none');
                         DisableFormFields(true);
@@ -471,15 +475,21 @@
                     url: Url,
                     type: "PUT",
                     dataType: 'json',
-                    success: function(data) {
+                    success: function(response) {
 
-                        $('#purchaseForm').trigger("reset");
-                        $('#addPurchaseModal').modal("hide");
-                        let resp = data.success;
-                        ShowResponse('.response', resp, 'success');
-                        ResetTblInfo(data);
-                        let tbl = $('.purchase-table').DataTable();
-                        tbl.ajax.reload();
+                        let message = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
+
+                        if (response.success) {
+                            $('#purchaseForm').trigger("reset");
+                            $('#addPurchaseModal').modal("hide");
+                            let data = response.data;
+                            ResetTblInfo(data);
+                            let tbl = $('.purchase-table').DataTable();
+                            tbl.ajax.reload();
+                        }
+
+                        ShowResponse('.response', message, type);
 
                     },
                     error: function(data) {
@@ -502,16 +512,21 @@
                     url: "{{ route('purchases.store') }}",
                     type: "POST",
                     dataType: 'json',
-                    success: function(data) {
+                    success: function(response) {
 
-                        $('#purchaseForm').trigger("reset");
-                        $('#addPurchaseModal').modal("hide");
-                        let resp = data.success;
-                        ShowResponse('.response', resp, 'success');
-                        ResetTblInfo(data);
-                        let tbl = $('.purchase-table').DataTable();
-                        tbl.ajax.reload();
+                        let message = response.success || response.error;
+                        let type = response.success ? 'success' : 'error';
 
+                        if (response.success) {
+                            $('#purchaseForm').trigger("reset");
+                            $('#addPurchaseModal').modal("hide");
+                            let data = response.data;
+                            ResetTblInfo(data);
+                            let tbl = $('.purchase-table').DataTable();
+                            tbl.ajax.reload();
+                        }
+
+                        ShowResponse('.response', message, type);
                     },
                     error: function(data) {
                         console.log('Error:', data.error);
@@ -695,12 +710,18 @@
                 });
             }
 
-            function ResetTblInfo(response) {
+            function ResetTblInfo(data) {
                 let totl_no, totl_purchases;
-                totl_no = FormatNumber(response.totl_no);
-                totl_purchases = FormatNumber(response.totl_purchases);
-                $('.totl-no').html(totl_no);
-                $('.totl-purchases').html(totl_purchases);
+
+                if (data.totl) {
+                    totl_no = FormatNumber(data.totl);
+                    $('.totl-no').html(totl_no);
+                }
+
+                if (data.value) {
+                    totl_purchases = FormatNumber(data.value);
+                    $('.totl-purchases').html(totl_purchases);
+                }
 
             }
 

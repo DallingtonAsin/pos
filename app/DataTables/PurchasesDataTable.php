@@ -18,7 +18,7 @@ class PurchasesDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)->order(function($query){
-               $query->orderBy('id', 'asc');
+               $query->orderBy('id', 'desc');
         })->addIndexColumn()
         ->addColumn('action', function ($purchase) {
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"
