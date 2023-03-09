@@ -8,21 +8,16 @@
                 <div class="row nunito-font">
                     <span class="response"></span>
                     <div class="col-lg-4">
-                        <h6 class="text-dark">
+                        <h5 class="text-dark">
                             <i class="fa fa-home text-success"> /</i>
                             <strong>Customers with debts</strong>
-                            <span class="badge nunito-font  total_debtors">
-                                @isset($total_debtors)
-                                    {{ number_format($total_debtors) }}
-                                @endisset
-                            </span>
-                        </h6>
+                        </h5>
                     </div>
 
                     @can('isAdmin')
                         <div class="col-lg-4">
                             <h5>
-                                <strong>Debts: shs. </strong><label class="text-danger total_debts">
+                                <strong>Current Total Debts: UGX. </strong><label class="text-danger total_debts">
                                     @isset($total_debts)
                                         {{ number_format($total_debts) }}
                                     @endisset
@@ -138,19 +133,6 @@
                                         <span>Paid Amount</span>
                                         <input type="text" class="form-control paid_amount " name="paid_amount">
                                     </div>
-                                </div>
-
-
-                                <div class="form-group received-div">
-                                    <span>Received now</span>
-                                    <input type="text" class="form-control received "
-                                        placeholder="Enter amount the customer has just paid now" name="received">
-                                </div>
-
-                                <div class="form-group date">
-                                    <span>Date of repayment</span>
-                                    <input type="date" class="form-control date " name="date"
-                                        value="{{ date('Y-m-d') }}">
                                 </div>
 
                                 <div class="form-group">

@@ -65,12 +65,10 @@ Route::get('/customers/with-debts/ajax', 'CustomerDebtPaymentController@GetCusto
 Route::get('/customers/debt-payments', 'CustomerDebtPaymentController@index')->name('customers.debts.payments.index');
 Route::get('/customers/debt-payments/ajax', 'CustomerDebtPaymentController@GetCustomerDebtPayments')->name('customers.debts.payments.ajax');
 Route::get('/customers/debt/{customer_id}', 'CustomerDebtPaymentController@getCustomerDebt')->name('customer.debt.ajax');
+Route::get('/customers/with-debts', 'CustomerDebtPaymentController@customersWithDebtsIndex')->name('customers.with.debts');
 
 
 Route::get('purchases/store', 'PurchasesController@store')->name('purchases.post');
-
-
-
 Route::match(['get', 'post'], '/botman', 'ChatBotController@handle');
 
 Route::group(["middleware" => "restricted"], function () {
@@ -151,8 +149,6 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::post('/sales/filtered-sales', 'SalesController@filterSales')->name('filtersales');
 	Route::post('/sales/debts/search', 'SalesController@filterSalesWithDebts')->name('sales.debts.filter');
 
-
-
 	Route::put('/sales/records/update/', 'SalesController@updateSaleRecord')
 		->name('sales.records.update');
 	Route::get('sales/export-sales', 'SalesController@exportSales')->name('sales.export');
@@ -185,8 +181,6 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::get('/customers/home', 'CustomersController@GetCustomers')->name('customers.home');
 	Route::post('/customers/import-customers', 'CustomersController@importCustomers')->name('customers.import');
 	Route::get('/customers/export-customers', 'CustomersController@exportCustomers')->name('customers.export');
-	Route::get('/customers/with-debts', 'CustomersController@customersWithDebtsIndex')->name('customers.with.debts');
-
 
 	Route::post('suppliers/import-suppliers', 'SuppliersController@importSuppliers')->name('suppliers.import');
 	Route::get('suppliers/export-suppliers', 'SuppliersController@exportSuppliers')->name('suppliers.export');

@@ -140,6 +140,8 @@ class CustomersController extends Controller
   public function showCustomerWithDebt($id)
   {
     $sale = Sale::find($id);
+    $customer = Helper::getCustomer($sale->customer_id);
+    $sale->customer = $customer->name;
     return response()->json($sale);
   }
 
