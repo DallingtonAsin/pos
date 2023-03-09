@@ -61,7 +61,10 @@
                             <th></th>
                             <th>Customer Name</th>
                             <th>Phone Number</th>
-                            <th>Debt</th>
+                            <th>Total Initial Debt</th>
+                            <th>Amount Paid</th>
+                            <th>Current Debt</th>
+
                         </tr>
                     </thead>
                 </table>
@@ -136,8 +139,7 @@
 
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success submitBtn"
-                                        name="submitBtn">Save</button>
+                                    <button type="submit" class="btn btn-success submitBtn" name="submitBtn">Save</button>
 
                                 </div>
 
@@ -196,8 +198,16 @@
                     name: 'customer_contact'
                 },
                 {
-                    data: 'debt',
-                    name: 'debt'
+                    data: 'total_debt',
+                    name: 'total_debt'
+                },
+                {
+                    data: 'total_paid',
+                    name: 'total_paid'
+                },
+                {
+                    data: 'current_debt',
+                    name: 'current_debt'
                 }
             ];
             makeDataTable2(table, title, columns, dataColumns);
@@ -221,9 +231,17 @@
                     name: 'customer_contact'
                 },
                 {
-                    data: 'debt',
-                    name: 'debt'
+                    data: 'total_debt',
+                    name: 'total_debt'
                 },
+                {
+                    data: 'total_paid',
+                    name: 'total_paid'
+                },
+                {
+                    data: 'current_debt',
+                    name: 'current_debt'
+                }
             ];
             makeDataTable2(table, title, columns, dataColumns);
         </script>

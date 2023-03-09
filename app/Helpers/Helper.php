@@ -482,6 +482,25 @@ class Helper
     }
   }
 
+  public static function totalCustomerDebt($customer_id)
+  {
+    try {
+       return  Sale::where('customer_id', $customer_id)->sum('amount')
+       - Sale::where('customer_id', $customer_id)->sum('paid_amount');
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+  
+  public static function totalCustomerPayments($customer_id)
+  {
+    try {
+       return CustomerDebtPayment::where('customer_id', $customer_id)->sum('paid_amount');
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
   public static function getTotalCustomerDebt()
   {
     try {
