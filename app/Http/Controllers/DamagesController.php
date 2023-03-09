@@ -93,7 +93,7 @@ class DamagesController extends Controller
       $damage->quantity = $quantity;
 
       foreach ($data as $key) {
-        $damage->item_id = $key->item_id;
+        $damage->item_id = $key->item_code;
         $damage->category = $key->category;
         $damage->buying_price = $key->buying_price;
       }
@@ -237,12 +237,10 @@ class DamagesController extends Controller
       $damage->quantity = $quantity;
 
       foreach ($data as $key) {
-        $damage->item_id = $itemId = $key->item_id;
-        $damage->category = $cat = $key->category;
-        $damage->buying_price = $bprice = $key->buying_price;
+        $damage->item_id  = $key->item_code;
+        $damage->category  = $key->category;
+        $damage->buying_price  = $key->buying_price;
       }
-
-      //$hasSaved = $damage->save();
 
       $hasSaved = Damage::where('id',  $uniqueId)->update([
                    'quantity' => $quantity,
@@ -394,13 +392,13 @@ class DamagesController extends Controller
     $query = $request->input('query');
     $data = array();
     $items = DB::table("stock")
-                  ->where("item_id", "like", "%".$query."%")
+                  ->where("item_code", "like", "%".$query."%")
                   ->orWhere("item", "like", "%".$query."%")
                   ->get();
 
     foreach($items as $item){
       $data[] = $item->item;
-      $data[] = $item->item_id;
+      $data[] = $item->item_code;
     }
     echo json_encode($data);
   }
@@ -541,7 +539,7 @@ class DamagesController extends Controller
   //method that gets details of damaged item from stock
   public function getdetailsofDamagedItem($item)
   {
-    $data_obj = DB::select('select item_id,category,buying_price  from stock where item = ?', [$item]);
+    $data_obj = DB::select('select item_code, category, buying_price from stock where item = ?', [$item]);
     return $data_obj;
   }
 
