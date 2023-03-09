@@ -260,8 +260,6 @@ class SalesController extends Controller
   }
 
 
-
-
   protected function GetDailySalesReview()
   {
 

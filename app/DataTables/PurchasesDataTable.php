@@ -4,6 +4,8 @@ namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
 use App\Models\Purchase;
+use App\Models\Supplier;
+use App\Models\Stock;
 
 class PurchasesDataTable extends DataTable
 {
@@ -16,7 +18,7 @@ class PurchasesDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)->order(function($query){
-               $query->orderBy('id', 'asc');
+               $query->orderBy('id', 'desc');
         })->addIndexColumn()
         ->addColumn('action', function ($purchase) {
             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"
@@ -39,6 +41,15 @@ class PurchasesDataTable extends DataTable
         })->addColumn('checkbox', function ($purchase) {
               $checkBox = '<input type="checkbox" id="'.$purchase->id.'"/>';
              return $checkBox;
+        })->addColumn('item', function ($data) {
+            $item = Stock::find($data->item_id);
+            return $item->item;
+        })->addColumn('item_code', function ($data) {
+            $item = Stock::find($data->item_id);
+            return $item->item_code;
+        })->addColumn('supplier', function ($data) {
+            $supplier = Supplier::find($data->supplier_id);
+            return $supplier->name;
         })->editColumn('quantity', function ($data) {
             return number_format($data->quantity);
         })->editColumn('cost_price_per_item', function ($data) {

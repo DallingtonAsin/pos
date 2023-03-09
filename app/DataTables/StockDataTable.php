@@ -5,6 +5,8 @@ namespace App\DataTables;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Stock;
+use App\Models\StockCat;
+use App\Models\Supplier;
 
 class StockDataTable extends DataTable
 {
@@ -18,58 +20,67 @@ class StockDataTable extends DataTable
     {
 
         return datatables($query)
-        ->order(function($query){
-               $query->orderBy('id', 'desc');
-        })
-        ->addIndexColumn()
-        ->addColumn('action', function ($stock) {
+            ->order(function ($query) {
+                $query->orderBy('id', 'desc');
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function ($stock) {
 
-           $btn = "";
-            if(Gate::allows('isAdmin')){
+                $btn = "";
+                if (Gate::allows('isAdmin')) {
 
-            $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
-            data-id="'.$stock->id.'" data-original-title="Edit" id="edit-stock"
+                    $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
+            data-id="' . $stock->id . '" data-original-title="Edit" id="edit-stock"
             class="px-3 py-1 border border-success rounded mx-2 edit-stock pr-3">
              <span class="fa fa-pen text-success"></span></a>';
 
-            $btn .= '<a href="javascript:void(0);" id="delete-stock"
-            data-toggle="tooltip" data-original-title="Delete" data-id="'.$stock->id.'" 
+                    $btn .= '<a href="javascript:void(0);" id="delete-stock"
+            data-toggle="tooltip" data-original-title="Delete" data-id="' . $stock->id . '" 
             class="px-3 py-1 border border-danger rounded mx-2 pr-3"">
             <span class="fa fa-trash-alt text-danger" ></span></a>';
+                }
 
-
-            }
-
-             $btn .= '<a href="javascript:void(0);" id="view-stock"
+                $btn .= '<a href="javascript:void(0);" id="view-stock"
             data-toggle="tooltip" data-original-title="View"
-             data-id="'.$stock->id.'" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
+             data-id="' . $stock->id . '" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
             <i class="fa fa-eye" ></i></a>';
 
 
-           return $btn;
-
-        })->addColumn('checkbox', function ($stock) {
-              $checkBox = '<input type="checkbox" id="'.$stock->id.'"/>';
-             return $checkBox;
-        })->editColumn('quantity', function ($data) {
-            return number_format($data->quantity);
-        })->editColumn('threshold_qty', function ($data) {
-            return number_format($data->threshold_qty);
-        })->editColumn('buying_price', function ($data) {
-            return number_format($data->buying_price);
-        })->editColumn('selling_price', function ($data) {
-            return number_format($data->selling_price);
-        })->editColumn('wholesale_price', function ($data) {
-            return number_format($data->wholesale_price);
-        })->rawColumns(['action', 'checkbox']);
-
+                return $btn;
+            })->addColumn('checkbox', function ($stock) {
+                $checkBox = '<input type="checkbox" id="' . $stock->id . '"/>';
+                return $checkBox;
+            })->addColumn('category', function ($data) {
+                $category_name = null;
+                if ($data->category_id) {
+                    $category = StockCat::find($data->category_id);
+                    $category_name = $category->name;
+                }
+                return $category_name;
+            })->addColumn('supplier', function ($data) {
+                $supplier_name = null;
+                if ($data->supplier_id) {
+                    $supplier = Supplier::find($data->supplier_id);
+                    $supplier_name = $supplier->name;
+                }
+                return $supplier_name;
+            })->editColumn('quantity', function ($data) {
+                return number_format($data->quantity);
+            })->editColumn('threshold_qty', function ($data) {
+                return number_format($data->threshold_qty);
+            })->editColumn('buying_price', function ($data) {
+                return number_format($data->buying_price);
+            })->editColumn('selling_price', function ($data) {
+                return number_format($data->selling_price);
+            })->editColumn('wholesale_price', function ($data) {
+                return number_format($data->wholesale_price);
+            })->rawColumns(['action', 'checkbox']);
     }
 
 
     public function query(Stock $model)
     {
         return $model->newQuery()->select('*');
-
     }
 
     /**
@@ -80,11 +91,11 @@ class StockDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->addAction(['width' => '80px'])
-        ->dom('Bfrtip')
-        ->orderBy(1)->parameters($this->getBuilderParameters());
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->addAction(['width' => '80px'])
+            ->dom('Bfrtip')
+            ->orderBy(1)->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -95,7 +106,7 @@ class StockDataTable extends DataTable
     protected function getColumns()
     {
 
-      //  if(Gate::allows('isAdmin')){
+        //  if(Gate::allows('isAdmin')){
 
         return [
             'id',
@@ -108,9 +119,6 @@ class StockDataTable extends DataTable
             'wholesale_price',
             'supplier'
         ];
-
-
-
     }
 
     /**

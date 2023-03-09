@@ -229,22 +229,10 @@
             }
         }
 
-        // $('#item-name').on('change',function(){
-        //      var itemName = $('.item-name').val();
-        //      var isBarcode = 0;
-        //      if(itemName.length >= 3){
-        //        AddItemToCart(isBarcode, itemName);
-        //      }
-        //      $('.item-name').val("");
-        // });
-
         $('#addToCartBtn').on('click', function() {
-
             var itemName = $('.item-name').val();
             var isBarcode = 0;
-            // if(itemName.length >= 3){
             AddItemToCart(isBarcode, itemName);
-            // }
             $('.item-name').val("");
         });
 
@@ -487,14 +475,10 @@
             let amount_paid = $(this).parents('tr').attr('data-paid');
             let date_of_sale = $(this).parents('tr').attr('data-date');
 
-
-
             $(this).parents('tr').find('td:eq(2)').html(quantity);
             $(this).parents('tr').find('td:eq(5)').html(discount);
             $(this).parents('tr').find('td:eq(7)').html(amount_paid);
             $(this).parents('tr').find('td:eq(8)').html(date_of_sale);
-
-
 
             $(this).parents('tr').find('.btn-update').hide();
             $(this).parents('tr').find('.btn-cancel').hide();
@@ -751,7 +735,7 @@
                 return total + parseFloat(subTotl);
             }, 0);
 
-            var rowCount = (table.rows.length - 1);
+            let rowCount = table.rows.length;
             document.getElementById('num').innerHTML = FormatNumber(rowCount.toFixed(0));
             document.getElementById('amountToPay').innerHTML = FormatNumber(subTotal.toFixed(2));
         }

@@ -140,6 +140,8 @@ class CustomersController extends Controller
   public function showCustomerWithDebt($id)
   {
     $sale = Sale::find($id);
+    $customer = Helper::getCustomer($sale->customer_id);
+    $sale->customer = $customer->name;
     return response()->json($sale);
   }
 
@@ -407,57 +409,6 @@ class CustomersController extends Controller
       Helper::logError($data);
       abort(409, $ex->getMessage());
     }
-  }
-
-
-
-  public function importCustomers(Request $request)
-  {
-
-    $this->validate(
-      $request,
-      ['select_file' => 'required|mimes:xls,xlsx'],
-      ['select_file.mimes' => 'Please select only excel files to import customers']
-    );
-    $importSuccess = Excel::import(new ImportCustomers, request()->file('select_file'));
-
-    if ($importSuccess) {
-      $action = "imported an excel file of customers into the system";
-      LogsController::logger($request, $action, now());
-      $dataArr = array(
-        "code" => '200',
-        "message" => $action,
-        "method" => "CustomersController@importCustomers"
-      );
-      LogAfterRequest::LogRequest($request, $dataArr);
-
-      return back()->with('success', $this->SuccessMessage($action));
-    } else {
-      $messageErr = "Excel Customers data not imported!";
-      $dataArr = array(
-        "code" => '101',
-        "message" => $messageErr,
-        "method" => "CustomersController@importCustomers"
-      );
-      LogAfterRequest::LogRequest($request, $dataArr);
-      return back()->with('fail', $messageErr);
-    }
-  }
-
-  /**
-   * @return \Illuminate\Support\Collection
-   */
-  public function exportCustomers()
-  {
-    return Excel::download(new ExportCustomers, 'customers.xlsx');
-  }
-
-
-  public function downloadCustomersPdf()
-  {
-    $customers = Customer::all();
-    $pdf = PDF::loadView('pages.main.customers', compact('customers'));
-    return $pdf->download('customers.pdf');
   }
 
 

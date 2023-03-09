@@ -8,21 +8,16 @@
                 <div class="row nunito-font">
                     <span class="response"></span>
                     <div class="col-lg-4">
-                        <h6 class="text-dark">
+                        <h5 class="text-dark">
                             <i class="fa fa-home text-success"> /</i>
                             <strong>Customers with debts</strong>
-                            <span class="badge nunito-font  total_debtors">
-                                @isset($total_debtors)
-                                    {{ number_format($total_debtors) }}
-                                @endisset
-                            </span>
-                        </h6>
+                        </h5>
                     </div>
 
                     @can('isAdmin')
                         <div class="col-lg-4">
                             <h5>
-                                <strong>Debts: shs. </strong><label class="text-danger total_debts">
+                                <strong>Current Total Debts: UGX. </strong><label class="text-danger total_debts">
                                     @isset($total_debts)
                                         {{ number_format($total_debts) }}
                                     @endisset
@@ -64,16 +59,12 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Name</th>
-                            <th>Item</th>
-                            <th>Qty</th>
-                            <th>Total</th>
-                            <th>Discount</th>
-                            <th>Amount</th>
-                            <th>Paid Amt</th>
-                            <th>Balance</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th>Customer Name</th>
+                            <th>Phone Number</th>
+                            <th>Total Initial Debt</th>
+                            <th>Amount Paid</th>
+                            <th>Current Debt</th>
+
                         </tr>
                     </thead>
                 </table>
@@ -140,19 +131,6 @@
                                     </div>
                                 </div>
 
-
-                                <div class="form-group received-div">
-                                    <span>Received now</span>
-                                    <input type="text" class="form-control received "
-                                        placeholder="Enter amount the customer has just paid now" name="received">
-                                </div>
-
-                                <div class="form-group date">
-                                    <span>Date of repayment</span>
-                                    <input type="date" class="form-control date " name="date"
-                                        value="{{ date('Y-m-d') }}">
-                                </div>
-
                                 <div class="form-group">
                                     <span>Balance</span>
                                     <input type="text" class="form-control balance  text-danger" name="balance" required>
@@ -161,8 +139,7 @@
 
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success submitBtn"
-                                        name="submitBtn">Save</button>
+                                    <button type="submit" class="btn btn-success submitBtn" name="submitBtn">Save</button>
 
                                 </div>
 
@@ -200,7 +177,7 @@
         const token = "{{ csrf_token() }}";
         var table = $('#customers-with-debts-table');
         var title = "List of customers with debts in the system";
-        var columns = [0, 1, 2, 3, 4];
+        var columns = [0, 1, 2];
     </script>
 
 
@@ -213,47 +190,25 @@
                     searchable: false
                 },
                 {
-                    data: 'customer',
-                    name: 'customer'
+                    data: 'customer_name',
+                    name: 'customer_name'
                 },
                 {
-                    data: 'item',
-                    name: 'item'
+                    data: 'customer_contact',
+                    name: 'customer_contact'
                 },
                 {
-                    data: 'quantity',
-                    name: 'quantity'
+                    data: 'total_debt',
+                    name: 'total_debt'
                 },
                 {
-                    data: 'total_cost',
-                    name: 'total_cost'
+                    data: 'total_paid',
+                    name: 'total_paid'
                 },
                 {
-                    data: 'discount',
-                    name: 'discount'
-                },
-                {
-                    data: 'amount',
-                    name: 'amount'
-                },
-                {
-                    data: 'paid_amount',
-                    name: 'paid_amount'
-                },
-                {
-                    data: 'balance',
-                    name: 'balance'
-                },
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
+                    data: 'current_debt',
+                    name: 'current_debt'
+                }
             ];
             makeDataTable2(table, title, columns, dataColumns);
         </script>
@@ -268,47 +223,25 @@
                     searchable: false
                 },
                 {
-                    data: 'customer',
-                    name: 'customer'
+                    data: 'customer_name',
+                    name: 'customer_name'
                 },
                 {
-                    data: 'item',
-                    name: 'item'
+                    data: 'customer_contact',
+                    name: 'customer_contact'
                 },
                 {
-                    data: 'quantity',
-                    name: 'quantity'
+                    data: 'total_debt',
+                    name: 'total_debt'
                 },
                 {
-                    data: 'total_cost',
-                    name: 'total_cost'
+                    data: 'total_paid',
+                    name: 'total_paid'
                 },
                 {
-                    data: 'discount',
-                    name: 'discount'
-                },
-                {
-                    data: 'amount',
-                    name: 'amount'
-                },
-                {
-                    data: 'paid_amount',
-                    name: 'paid_amount'
-                },
-                {
-                    data: 'balance',
-                    name: 'balance'
-                },
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
+                    data: 'current_debt',
+                    name: 'current_debt'
+                }
             ];
             makeDataTable2(table, title, columns, dataColumns);
         </script>

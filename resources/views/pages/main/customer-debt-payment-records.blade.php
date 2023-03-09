@@ -254,7 +254,6 @@
             }
 
             function populateCustomerDebt(customer_id) {
-                console.log(`customer id: ${customer_id}`);
                 let url = "{{ route('customer.debt.ajax', ':id') }}";
                 url = url.replace(':id', customer_id);
                 $.get(url, function(response) {
