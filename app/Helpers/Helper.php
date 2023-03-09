@@ -365,9 +365,8 @@ class Helper
         ->whereMonth('date_of_expenditure', $month)
         ->sum('amount');
 
-      $totalDamages = Damage::whereYear('recordedOn', $year)
-        ->whereMonth('recordedOn', $month)
-        ->sum('total_cost');
+  
+      $totalDamages = Helper::getAnnualBasedDamageCost($year, $month);
 
       $supplierDebts = (Supplier::whereYear('created_at', $year)
         ->whereMonth('created_at', $month)
@@ -485,17 +484,17 @@ class Helper
   public static function totalCustomerDebt($customer_id)
   {
     try {
-       return  Sale::where('customer_id', $customer_id)->sum('amount')
-       - Sale::where('customer_id', $customer_id)->sum('paid_amount');
+      return  Sale::where('customer_id', $customer_id)->sum('amount')
+        - Sale::where('customer_id', $customer_id)->sum('paid_amount');
     } catch (\Exception $ex) {
       throw $ex;
     }
   }
-  
+
   public static function totalCustomerPayments($customer_id)
   {
     try {
-       return CustomerDebtPayment::where('customer_id', $customer_id)->sum('paid_amount');
+      return CustomerDebtPayment::where('customer_id', $customer_id)->sum('paid_amount');
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -513,31 +512,47 @@ class Helper
     }
   }
 
-  public static function getDamageCost(){
+  public static function getDamageCost()
+  {
     $damaged_items = Damage::all();
     $total_damage_cost = 0;
-    
+
     foreach ($damaged_items as $damaged_item) {
-        $stock = Stock::findOrFail($damaged_item->item_id);
-        $damage_cost = $stock->buying_price * $damaged_item->quantity;
-        $total_damage_cost += $damage_cost;
+      $stock = Stock::findOrFail($damaged_item->item_id);
+      $damage_cost = $stock->buying_price * $damaged_item->quantity;
+      $total_damage_cost += $damage_cost;
     }
-    
+
     return $total_damage_cost;
   }
 
-  public static function getPeriodicDamageCost($start_date, $end_date){
+  public static function getPeriodicDamageCost($start_date, $end_date)
+  {
     $damaged_items = Damage::whereBetween('recorded_on', [$start_date, $end_date])->get();
     $total_damage_cost = 0;
-    
+
     foreach ($damaged_items as $damaged_item) {
-        $stock = Stock::findOrFail($damaged_item->item_id);
-        $damage_cost = $stock->buying_price * $damaged_item->quantity;
-        $total_damage_cost += $damage_cost;
+      $stock = Stock::findOrFail($damaged_item->item_id);
+      $damage_cost = $stock->buying_price * $damaged_item->quantity;
+      $total_damage_cost += $damage_cost;
     }
-    
+
     return $total_damage_cost;
   }
 
+  public static function getAnnualBasedDamageCost($year, $month)
+  {
+    $damaged_items =  Damage::whereYear('recorded_on', $year)
+      ->whereMonth('recorded_on', $month)->get();
 
+    $total_damage_cost = 0;
+
+    foreach ($damaged_items as $damaged_item) {
+      $stock = Stock::findOrFail($damaged_item->item_id);
+      $damage_cost = $stock->buying_price * $damaged_item->quantity;
+      $total_damage_cost += $damage_cost;
+    }
+
+    return $total_damage_cost;
+  }
 }
