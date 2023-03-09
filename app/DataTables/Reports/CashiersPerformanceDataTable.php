@@ -2,9 +2,9 @@
 
 namespace App\DataTables\Reports;
 
-use App\User;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\TopCashier;
+use App\Helpers\Helper;
 
 class CashiersPerformanceDataTable extends DataTable
 {
@@ -17,12 +17,15 @@ class CashiersPerformanceDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-        ->addIndexColumn()->editColumn('totalsales', function ($data){
-            return number_format($data->totalsales);
-        })->addColumn('percent', function ($data){
-             $total  = TopCashier::sum('totalsales');
-             return round(($data->totalsales/$total)*100, 2);
-         });
+            ->addIndexColumn()->editColumn('totalsales', function ($data) {
+                return number_format($data->totalsales);
+            })->addColumn('cashier', function ($data) {
+                $user = Helper::getUser($data->cashier_id);
+                return $user->first_name . " " . $user->last_name;
+            })->addColumn('percent', function ($data) {
+                $total  = TopCashier::sum('totalsales');
+                return round(($data->totalsales / $total) * 100, 2);
+            });
     }
 
     /**
@@ -44,10 +47,10 @@ class CashiersPerformanceDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->addAction(['width' => '80px'])
-                    ->parameters($this->getBuilderParameters());
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->addAction(['width' => '80px'])
+            ->parameters($this->getBuilderParameters());
     }
 
     /**
