@@ -15,15 +15,15 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleTableSeeder::class,
             UserTableSeeder::class,
-            SuppliersTableSeeder::class,
-            StockCategoriesTableSeeder::class,
-            StockTableSeeder::class,
-            CustomersTableSeeder::class,
-            DamagesTableSeeder::class,
-            EventsTableSeeder::class,
-            ExpensesTableSeeder::class,
-            SalesTableSeeder::class,
-            PurchasesTableSeeder::class,
+            // SuppliersTableSeeder::class,
+            // StockCategoriesTableSeeder::class,
+            // StockTableSeeder::class,
+            // CustomersTableSeeder::class,
+            // DamagesTableSeeder::class,
+            // EventsTableSeeder::class,
+            // ExpensesTableSeeder::class,
+            // SalesTableSeeder::class,
+            // PurchasesTableSeeder::class,
         ]);
     }
 }
