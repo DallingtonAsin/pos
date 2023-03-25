@@ -3,8 +3,6 @@
 namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\Expense;
 
 class ExpensesDataTable extends DataTable

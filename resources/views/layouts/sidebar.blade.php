@@ -86,13 +86,11 @@
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Inventory</a>
                     <ul class="nav-sub">
+                        <li class="nav-sub-item"><a href="{{ Route('stores.index') }}" class="nav-sub-link">Stores</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}"
-                                class="nav-sub-link">Purchases</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}"
-                                class="nav-sub-link">Damaged Stock</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}"
-                                class="nav-sub-link">Product Categories</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Purchases</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Stock</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Product Categories</a></li>
                     </ul>
                 </li>
             @endcan

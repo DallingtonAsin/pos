@@ -18,7 +18,8 @@
         }
     </script>
     <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
-
+    <link rel="stylesheet" href="{{ asset('vendors/toastr/css/toastr.min.css') }}">
+    <script src="{{ asset('vendors/toastr/js/toastr.min.js') }}"></script>
     <script src="{{ asset('vendors/datatables/dtables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('vendors/datatables/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('vendors/datatables/buttons.print.min.js') }}"></script>

@@ -16,7 +16,8 @@ class AddStoreIdInStockTable extends Migration
     public function up()
     {
         Schema::table('stock', function (Blueprint $table) {
-            DB::statement('alter table stock add column store_id DOUBLE DEFAULT NULL');
+            $table->unsignedBigInteger('store_id')->nullable()->after('category_id');
+            $table->foreign('store_id')->references('id')->on('stores');
         });
     }
 
@@ -28,7 +29,8 @@ class AddStoreIdInStockTable extends Migration
     public function down()
     {
         Schema::table('stock', function (Blueprint $table) {
-            //
+            $table->dropForeign(['store_id']);
+            $table->dropColumn('store_id');
         });
     }
 }
