@@ -15,6 +15,7 @@ class Stock extends Model
 		'item_code',
 		'item',
 		'category_id',
+		'store_id',
 		'quantity',  
 		'buying_price',
 		'selling_price',

@@ -15,15 +15,18 @@ use App\DataTables\StockDataTable;
 use Illuminate\Support\Str;
 use  App\Helpers\Constants as Constant;
 use App\Helpers\Helper;
+use App\Repositories\StoreRepository;
 
 
 class StockController extends Controller
 {
 
-  public $controller;
-  public function __construct()
+  protected $controller, $storeRepository;
+
+  public function __construct(StoreRepository $storeRepository)
   {
     $this->controller = 'StockController';
+    $this->storeRepository = $storeRepository;
   }
   /**
    * Display a listing of the resource.
@@ -37,7 +40,10 @@ class StockController extends Controller
     $stock_value = Stock::sum('total_cost_price');
     $categories = StockCat::get();
     $suppliers = Supplier::get();
-    return view('pages.main.stock')->with(compact('stock', 'stock_value', 'categories', 'suppliers', 'number_of_stockItems'));
+    $stores =  $this->storeRepository->get();
+
+    return view('pages.main.stock')
+      ->with(compact('stock', 'stock_value', 'categories', 'suppliers', 'number_of_stockItems', 'stores'));
   }
 
 
@@ -71,9 +77,16 @@ class StockController extends Controller
 
     $request->validate([
       'item' => 'required',
+      'item_code' => 'sometimes|nullable',
+      'category' => 'sometimes|nullable',
+      'store' => 'sometimes|nullable',
+      'supplier' => 'sometimes|nullable',
+      'thresholdQty' => 'sometimes|nullable',
+      'expiry_date' => 'sometimes|nullable',
+      'wholesale_price' => 'sometimes|nullable',
       'quantity' => 'required',
       'original_price' => 'required',
-      'selling_price' => 'required'
+      'selling_price' => 'required',
     ]);
 
     $stock = new Stock;
@@ -81,6 +94,7 @@ class StockController extends Controller
     $item_code = $request->input('item_code');
     $item = $request->input('item');
     $category_id = $request->input('category');
+    $store_id = $request->input('store');
     $supplier_id = $request->input('supplier');
     $quantity = Helper::Numberize($request->input('quantity'));
 
@@ -97,6 +111,7 @@ class StockController extends Controller
     $stock->item_code = $item_code;
     $stock->item = $item;
     $stock->category_id = $category_id;
+    $stock->store_id = $store_id;
     $stock->supplier_id = $supplier_id;
     $stock->quantity = $quantity;
     $stock->threshold_qty = $thresholdQty;
@@ -203,6 +218,13 @@ class StockController extends Controller
 
     $request->validate([
       'item' => 'required',
+      'item_code' => 'sometimes|nullable',
+      'category' => 'sometimes|nullable',
+      'store' => 'sometimes|nullable',
+      'supplier' => 'sometimes|nullable',
+      'thresholdQty' => 'sometimes|nullable',
+      'expiry_date' => 'sometimes|nullable',
+      'wholesale_price' => 'sometimes|nullable',
       'quantity' => 'required',
       'original_price' => 'required',
       'selling_price' => 'required',
@@ -211,12 +233,18 @@ class StockController extends Controller
     $stock = Stock::find($id);
     $stock->item_code = $request->input('item_code');
     $stock->item = $item = $request->input('item');
-    $supplier_id= $request->input('supplier');
+    $supplier_id = $request->input('supplier');
     $category_id = $request->input('category');
+    $store_id = $request->input('store');
+
 
     empty($category_id)
       ? $stock->category_id = $stock->category_id
       : $stock->category_id = $request->input('category');
+
+    empty($store_id)
+      ? $stock->store_id = $stock->store_id
+      : $stock->store_id = $request->input('store');
 
     empty($supplier_id)
       ? $stock->supplier_id = $stock->supplier_id
