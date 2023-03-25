@@ -596,7 +596,6 @@
 
             }
 
-
             //View Modal used to view each row [stock details]
             $('body').on('click', '#view-stock', function(event) {
                 var stock_id = $(this).data('id');
