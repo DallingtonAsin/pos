@@ -203,24 +203,24 @@ class ProfileController extends Controller
     {
 
         $this->validate($request, [
-            'Username' => 'required',
-            'Email' => 'required',
-            'Contact' => 'required',
-            'Address' => 'required'
+            'username' => 'required',
+            'email' => 'sometimes|nullable',
+            'contact' => 'required',
+            'address' => 'required'
         ]);
 
         try {
 
             $user = User::find($id);
             $old_username = $user->username;
-            $user->username = $new_username = $request->input('Username');
-            $user->email = $request->input('Email');
-            $user->tel_no = $request->input('Contact');
-            $user->address = $request->input('Address');
+            $user->username = $new_username = $request->input('username');
+            $user->email = $request->input('email');
+            $user->tel_no = $request->input('contact');
+            $user->address = $request->input('address');
 
-            $OldPassword = $request->input('OldPassword');
-            $NewPassword = $request->input('NewPassword');
-            $ConfirmPassword = $request->input('PasswordConfirm');
+            $OldPassword = $request->input('old_password');
+            $NewPassword = $request->input('new_password');
+            $ConfirmPassword = $request->input('password_confirm');
 
             if ($request->hasfile('image')) {
 
@@ -268,7 +268,7 @@ class ProfileController extends Controller
                 $message = "Username " . $new_username . " is already taken up, please enter a different one!";
             } else if ($bool === false) {
 
-                if ($request->filled('OldPassword') && $request->filled('NewPassword') && isset($ConfirmPassword)) {
+                if ($request->filled('old_password') && $request->filled('new_password') && isset($ConfirmPassword)) {
 
                     if (Hash::check($OldPassword, Auth::user()->password)) {
                         if ($NewPassword == $ConfirmPassword) {
@@ -276,12 +276,12 @@ class ProfileController extends Controller
                         } else {
                             $sessionVariable = 'error';
                             $message = "Your new passwords do not match, please enter matching passwords";
-                            return back()->with('error', $message);
+                            return back()->withInput()->with('error', $message);
                         }
                     } else {
                         $sessionVariable = 'error';
                         $message = "You have entered old password that does not match the current stored password, please try again!";
-                        return back()->with('error', $message);
+                        return back()->withInput()->with('error', $message);
                     }
                 } else {
                     $user->password = Auth::user()->password;
@@ -303,7 +303,7 @@ class ProfileController extends Controller
             return back()->with([$sessionVariable => $message]);
         } catch (\Exception $ex) {
             $exception_message = $ex->getMessage();
-            return back()->with('error', $exception_message);
+            return back()->withInput()->with('error', $exception_message);
         }
     }
 

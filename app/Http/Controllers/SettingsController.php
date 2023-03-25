@@ -90,7 +90,6 @@ class SettingsController extends Controller
                 return back()
                     ->withErrors($validator)
                     ->withInput();
-
             } else {
 
                 $name = $request->input('name');
@@ -106,6 +105,7 @@ class SettingsController extends Controller
                 $company->phone_number = $phone_number;
                 $company->email = $email;
                 $company->address = $address;
+                $company->is_registered = true;
 
                 if ($request->hasfile('logo')) {
 

@@ -102,7 +102,7 @@ Route::group(["middleware" => "restricted"], function () {
 
 
 	Route::get('/company/register', 'SettingsController@showCreateCoForm')->name('company.register');
-	Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('companies.register');
+	Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('company.add_or_update');
 	Route::get('/users/managers', 'UserController@fetchManagers')->name('managers.home');
 	Route::get('/users/managers/ajax', 'UserController@GetManagers')->name('managers.index.ajax');
 	Route::get('/users/cashiers', 'UserController@fetchCashiers')->name('cashiers.home');

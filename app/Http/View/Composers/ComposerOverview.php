@@ -37,13 +37,13 @@ class ComposerOverview
     $total_customersDebts = 1; // DebtorsCustomer::sum('debts');
     $total_suppliersDebts = DebtorsSupplier::sum('debts');
     $totlSystemUsers = User::count();
-    $totlActiveUsers =User::where('isActive', true)->count();
+    $totlActiveUsers = User::where('isActive', true)->count();
     $totlLockedUsers = User::where('isActive', false)->count();
     $fiveSuperAdmin = User::limit(5)->get();
 
 
     $company = Company::where('id', '!=', null)->first();
-    if(empty($company)){
+    if (empty($company)) {
 
       $company = new Company();
       $company->name = env('COMPANY_NAME', 'Point of Sale');
@@ -55,8 +55,7 @@ class ComposerOverview
       $company->is_registered = false;
     }
 
-      $view->with('company', $company);
-
+    $view->with('company', $company);
 
     $data = array(
       'num_of_stockItems' => $items_in_stock,
@@ -88,17 +87,13 @@ class ComposerOverview
     } {
       return redirect('/home');
     }
-
-
-   
-
   }
 
 
 
   public function getRoles()
   {
-    $roles =Role::get();
+    $roles = Role::get();
     return $roles;
   }
 
