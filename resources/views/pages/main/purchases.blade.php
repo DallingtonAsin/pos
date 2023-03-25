@@ -126,7 +126,7 @@
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger">*</span> Item Code</span>
+                            <span>Item Code</span>
                             <input type="text" class="form-control item_code" name="item_code" readonly>
                         </div>
 
@@ -181,7 +181,7 @@
 
 
                         <div class="form-group">
-                            <span>Supplier</span>
+                            <span><span class="text-danger">*</span> Supplier</span>
                             <select class="form-control supplier" id="supplier" name="supplier">
                                 <option value="">Select supplier</option>
                                 @foreach ($suppliers as $supplier)

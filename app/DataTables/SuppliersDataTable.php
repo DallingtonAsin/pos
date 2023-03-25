@@ -3,9 +3,6 @@
 namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use App\Models\Supplier;
 
 class SuppliersDataTable extends DataTable

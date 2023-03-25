@@ -100,14 +100,15 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::get('StockCats/load/', 'StockCatsController@StockCatAjaxIndex')->name('get-stockItems');
 
 
-
 	Route::get('/company/register', 'SettingsController@showCreateCoForm')->name('company.register');
-	Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('companies.register');
+	Route::post('/register/company/{id}', 'SettingsController@addUpdateCompany')->name('company.add_or_update');
 	Route::get('/users/managers', 'UserController@fetchManagers')->name('managers.home');
 	Route::get('/users/managers/ajax', 'UserController@GetManagers')->name('managers.index.ajax');
 	Route::get('/users/cashiers', 'UserController@fetchCashiers')->name('cashiers.home');
 	Route::get('/users/cashiers/ajax', 'UserController@GetCashiers')->name('cashiers.index.ajax');
 	Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.ajax');
+	
+	Route::get('stores/fetch/ajax', 'StoreController@getStoresDataTable')->name('stores.index.ajax');
 
 	Route::resources([
 		'stock' => 'StockController',
@@ -124,6 +125,7 @@ Route::group(["middleware" => "restricted"], function () {
 		'mail' => 'MailController',
 		'logs' => 'LogsController',
 		'users' => 'UserController',
+		'stores' => 'StoreController',
 		'calendar' => 'CalendarController',
 		'command' => 'ChatBotController',
 		'company' => 'SettingsController',

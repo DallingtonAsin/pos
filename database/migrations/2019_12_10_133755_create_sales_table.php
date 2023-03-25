@@ -14,24 +14,6 @@ class CreateSalesTable extends Migration
      */
     public function up()
     {
-
-
-        // DB::statement("CREATE TABLE sales(
-        //     id BIGINT PRIMARY KEY IDENTITY,
-        //     item_id NVARCHAR(255),
-        //     item NVARCHAR(255) NOT NULL,
-        //     quantity FLOAT NOT NULL,
-        //     original_price money NOT NULL,
-        //     selling_price money NOT NULL,
-        //     total_cost AS quantity * selling_price PERSISTED,
-        //     discount money DEFAULT 0,
-        //     amount money NOT NULL,
-        //     customer NVARCHAR(50),
-        //     date DATE NOT NULL,
-        //     time TIME NOT NULL,
-        //     cashier NVARCHAR(50) NOT NULL,
-        //  )");
-
         Schema::create('sales', function (Blueprint $table) {
 
             $table->id();

@@ -104,6 +104,7 @@
                             @endcan
                             <th>Item</th>
                             <th>Code</th>
+                            <th>Store</th>
                             @can('isAdmin')
                                 <th>Category</th>
                             @endcan
@@ -151,27 +152,39 @@
                                 </div>
 
                                 <div class="form-group">
-                                  <span>Item ID</span>
-                                  <input type="hidden" class="stockId" name="id">
-                                  <input type="text" class="form-control  item_code" name="item_code"
-                                      placeholder="Enter item ID">
-                              </div>
+                                    <span>Item ID</span>
+                                    <input type="hidden" class="stockId" name="id">
+                                    <input type="text" class="form-control  item_code" name="item_code"
+                                        placeholder="Enter item ID">
+                                </div>
 
-                                <div class="form-group">
-                                    <span>Category</span>
-                                    <select class="form-control  category" name="category" required autofocus
-                                        id="category">
-                                        <option value="" selected="true">choose category</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}"> {{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <span>Category</span>
+                                        <select class="form-control  category" name="category" required autofocus
+                                            id="category">
+                                            <option value="" selected="true">Select category</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}"> {{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <span>Store</span>
+                                        <select class="form-control store" name="store" id="store">
+                                            <option value="" selected="true">Select store</option>
+                                            @foreach ($stores as $store)
+                                                <option value="{{ $store->id }}"> {{ $store->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <span>Supplier</span>
                                     <select class="form-control " id="supplier" name="supplier" required autofocus>
-                                        <option value="" selected="true">choose supplier</option>
+                                        <option value="" selected="true">Select supplier</option>
                                         @foreach ($suppliers as $supplier)
                                             <option value="{{ $supplier->id }}"> {{ $supplier->name }}</option>
                                         @endforeach
@@ -351,6 +364,10 @@
                     name: 'item_code'
                 },
                 {
+                    data: 'store',
+                    name: 'store'
+                },
+                {
                     data: 'category',
                     name: 'category'
                 },
@@ -495,11 +512,8 @@
                         $('.stockId').val(data.id);
                         $('.item_code').val(data.item_code);
                         $('.item-name').val(data.item);
-                        if (data.category_id) {
-                            $('#category').val(data.category_id);
-                        } else {
-                            $('#category').val("choose category");
-                        }
+                        $('#category').val(data.category_id);
+                        $('#store').val(data.store_id);
                         $('#supplier').val(data.supplier_id);
                         $('.quantity').val(data.quantity);
                         $('.threshold_qty').val(data.threshold_qty);
@@ -598,6 +612,7 @@
                     $('.item_code').val(data.item_code);
                     $('.item-name').val(data.item);
                     $('.category').val(data.category_id);
+                    $('.store').val(data.store_id);
                     $('#supplier').val(data.supplier_id);
                     $('.quantity').val(data.quantity);
                     $('.thresholdQty').val(data.threshold_qty)
@@ -681,6 +696,7 @@
                 $('.item_code').val('');
                 $('.item-name').val('');
                 $('.category').val('');
+                $('.store').val('');
                 $('#supplier').val('');
                 $('.quantity').val('');
                 $('.expiry_date').val('');

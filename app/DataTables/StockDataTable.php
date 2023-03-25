@@ -6,6 +6,7 @@ use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Stock;
 use App\Models\StockCat;
+use App\Models\Store;
 use App\Models\Supplier;
 
 class StockDataTable extends DataTable
@@ -64,6 +65,12 @@ class StockDataTable extends DataTable
                     $supplier_name = $supplier->name;
                 }
                 return $supplier_name;
+            })->addColumn('store', function ($data) {
+                $store_name = null;
+                if ($data->store_id) {
+                    return Store::find($data->store_id)->name;
+                }
+                return $store_name;
             })->editColumn('quantity', function ($data) {
                 return number_format($data->quantity);
             })->editColumn('threshold_qty', function ($data) {
@@ -112,6 +119,9 @@ class StockDataTable extends DataTable
             'id',
             'item_code',
             'item',
+            'category_id',
+            'store_id',
+            'supplier_id',
             'quantity',
             'threshold_qty',
             'buying_price',

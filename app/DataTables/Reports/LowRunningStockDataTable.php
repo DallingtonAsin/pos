@@ -22,8 +22,13 @@ class LowRunningStockDataTable extends DataTable
             ->filter(function ($query) {
                 $query->whereColumn('quantity', '<=', 'threshold_qty');
             })->addColumn('supplier', function ($data) {
-                $supplier = Supplier::find($data->supplier_id);
-                return $supplier->name;
+
+                if ($data->suppler_id) {
+                    $supplier = Supplier::find($data->supplier_id);
+                    return $supplier->name;
+                } else {
+                    return null;
+                }
             })->editColumn('quantity', function ($data) {
                 return number_format($data->quantity);
             })->editColumn('threshold_qty', function ($data) {
