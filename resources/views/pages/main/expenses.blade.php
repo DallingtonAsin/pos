@@ -85,11 +85,9 @@
 
                     <div class="table table-responsive custom-family">
                       <table class="table table-bordered expenses-table">
-
                         <thead>
                           <tr>
                             <th></th>
-                            {{-- <th class="td-md">No</th> --}}
                             <th>expense</th>
                             <th>Amount</th>
                             <th>Date of Expenditure</th>

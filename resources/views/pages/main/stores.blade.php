@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Department Name</span>
+                            <span><i class="text-danger pr-1">*</i>Store Name</span>
                             <input type="text" class="form-control name " name="name" placeholder="Enter stores name">
                         </div>
 
@@ -261,10 +261,10 @@
             $('body').on('click', '#view-store', function(event) {
                 let store_id = $(this).data('id');
                 event.preventDefault();
-                viewDepartment(store_id);
+                viewStore(store_id);
             });
 
-            function viewDepartment(store_id) {
+            function viewStore(store_id) {
                 $.get("{{ route('stores.index') }}" + '/' + store_id + '', function(response) {
                     if (response.success) {
                         let data = response.data;

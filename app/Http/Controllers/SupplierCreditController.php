@@ -28,12 +28,13 @@ class SupplierCreditController extends Controller
     public function index()
     {
         $no_of_credits = $this->supplierCreditRepository->count();
-        $total_supplier_credits = $this->supplierCreditRepository->total();
+        $total_credits = $this->supplierCreditRepository->total();
+        $suppliers = $this->supplierRepository->get();
 
-        return view('pages.main.suppliers.credits')->with(compact('total_supplier_credits'));
+        return view('pages.main.suppliers.credits')->with(compact('suppliers', 'no_of_credits', 'total_credits'));
     }
 
-    public function getStoresDataTable(SupplierCreditDataTable $dataTable)
+    public function getSupplierCreditDataTable(SupplierCreditDataTable $dataTable)
     {
         return $dataTable->render('pages.main.suppliers.credits');
     }
@@ -160,7 +161,7 @@ class SupplierCreditController extends Controller
 
                     if ($this->supplierCreditRepository->update($id, $data)) {
                         $supplier = $this->supplierRepository->find($supplier_id);
-                        $message = "Credit for supplier " . $supplier->name . " has been added successfully";
+                        $message = "Credit for supplier " . $supplier->name . " has been updated successfully";
 
                         $stats = $this->getSupplierCreditStats();
                         $data = [
@@ -203,7 +204,7 @@ class SupplierCreditController extends Controller
 
                 if ($this->supplierCreditRepository->update($id, $data)) {
                     $supplier = $this->supplierRepository->find($supplierCredit->supplier_id);
-                    $message = "Credit for supplier " . $supplier->name . " has been added successfully";
+                    $message = "Credit for supplier " . $supplier->name . " has been deleted successfully";
 
                     $stats = $this->getSupplierCreditStats();
                     $data = [
@@ -229,6 +230,8 @@ class SupplierCreditController extends Controller
     {
         try {
             $data = $this->supplierCreditRepository->find($id);
+            $data->amount = number_format($data->amount);
+            $data->supplier = $this->supplierRepository->find($data->supplier_id)->name;
             return response()->json(['success' => 'Ok', 'data' => $data]);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()]);
@@ -240,11 +243,13 @@ class SupplierCreditController extends Controller
         try {
 
             $credits = $this->supplierCreditRepository->get();
-            $total_credits = $this->supplierCreditRepository->count();
+            $no_of_credits = $this->supplierCreditRepository->count();
+            $total_credits = $this->supplierCreditRepository->total();
 
             $data = array(
                 'data' => $credits,
-                'total' => $total_credits
+                'no_of_credits' => $no_of_credits,
+                'total_credits' => $total_credits,
             );
 
             return $data;

@@ -187,8 +187,9 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::post('suppliers/import-suppliers', 'SuppliersController@importSuppliers')->name('suppliers.import');
 	Route::get('suppliers/export-suppliers', 'SuppliersController@exportSuppliers')->name('suppliers.export');
 	Route::get('suppliers/getSuppliers4DT', 'SuppliersController@GetSuppliersData')->name('getSuppliers4DT');
+	Route::get('suppliers/credits/ajax', 'SupplierCreditController@getSupplierCreditDataTable')->name('suppliers.credits.ajax');
 
-
+	
 	Route::post('product-categories/import-categories', 'StockCatsController@importCategories')->name('categories.import');
 	Route::get('product-categories/export-categories', 'StockCatsController@exportCategories')->name('categories.export');
 

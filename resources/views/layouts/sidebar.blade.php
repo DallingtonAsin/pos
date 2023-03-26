@@ -41,13 +41,9 @@
         <ul class="nav">
             <li class="nav-label">Main Menu</li>
 
-            @can('isAdmin')
-                <li><a href="{{ route('home') }}" class="nav-link"><i class="fa fa-home"></i>Home</a></li>
-            @endcan
-
 
             <li class="nav-item">
-                <a href="" class="nav-link with-sub"><i class="typcn typcn-clipboard"></i>Dashboard</a>
+                <a href="" class="nav-link with-sub"><i class="fa fa-home"></i>Dashboard</a>
 
                 @can('isSuperAdmin')
                     <ul class="nav-sub">
@@ -59,11 +55,11 @@
 
                 @can('isAdmin')
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">Suppliers</a>
-                        </li>
+                        <li class="nav-sub-item"><a href="{{ Route('home') }}" class="nav-sub-link">Home</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('expenses.index') }}" class="nav-sub-link">Expenses</a>
                         </li>
-                        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}" class="nav-sub-link">Customers</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('customers.index') }}"
+                                class="nav-sub-link">Customers</a></li>
                     </ul>
                 @endcan
 
@@ -88,9 +84,27 @@
                     <ul class="nav-sub">
                         <li class="nav-sub-item"><a href="{{ Route('stores.index') }}" class="nav-sub-link">Stores</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}" class="nav-sub-link">Purchases</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}" class="nav-sub-link">Damaged Stock</a></li>
-                        <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}" class="nav-sub-link">Product Categories</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}"
+                                class="nav-sub-link">Purchases</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}"
+                                class="nav-sub-link">Damaged Stock</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}"
+                                class="nav-sub-link">Product Categories</a></li>
+                    </ul>
+                </li>
+            @endcan
+
+
+            @can('isAdmin')
+                <li class="nav-item">
+                    <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Suppliers</a>
+                    <ul class="nav-sub">
+                        <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">List of
+                                suppliers</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('supplier-credits.index') }}"
+                                class="nav-sub-link">Supplier Credits</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('supplier-debts.index') }}"
+                                class="nav-sub-link">Supplier Debts</a></li>
                     </ul>
                 </li>
             @endcan
@@ -129,7 +143,7 @@
 
             @can('isAdmin')
                 <li class="nav-item">
-                    <a href="" class="nav-link with-sub"><i class="fa fa-user-circle"></i>Users</a>
+                    <a href="" class="nav-link with-sub"><i class="fa fa-users"></i>System users</a>
                     <ul class="nav-sub">
                         <li class="nav-sub-item"><a href="{{ Route('cashiers.home') }}"
                                 class="nav-sub-link">Cashiers</a></li>
@@ -158,10 +172,14 @@
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="{{ route('debtors-suppliers') }}" class="nav-sub-link">Supplier debts</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('top-cashiers') }}" class="nav-sub-link">Cashier performance</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('customers.with.debts') }}" class="nav-sub-link">Customer debts</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('customer-debt-payments.index') }}" class="nav-sub-link">Customer debt payments</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('debtors-suppliers') }}"
+                                class="nav-sub-link">Supplier debts</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('top-cashiers') }}" class="nav-sub-link">Cashier
+                                performance</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('customers.with.debts') }}"
+                                class="nav-sub-link">Customer debts</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('customer-debt-payments.index') }}"
+                                class="nav-sub-link">Customer debt payments</a></li>
 
                         <li class="nav-item">
                             <a href="" class="nav-link with-sub">Stock</a>
