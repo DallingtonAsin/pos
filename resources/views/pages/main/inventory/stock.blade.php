@@ -427,6 +427,10 @@
                     name: 'item_code'
                 },
                 {
+                    data: 'store',
+                    name: 'store'
+                },
+                {
                     data: 'quantity',
                     name: 'quantity'
                 },
@@ -652,9 +656,6 @@
                 });
             }
 
-
-
-
             //this pops up confirm delete modal
             $('body').on('click', '#delete-stock', function(e) {
                 var stock_id = $(this).data("id");
@@ -698,6 +699,7 @@
                 $('.store').val('');
                 $('#supplier').val('');
                 $('.quantity').val('');
+                $('.thresholdQty').val('');
                 $('.expiry_date').val('');
                 $('.original_price').val('');
                 $('.selling_price').val('');
@@ -712,8 +714,10 @@
                 $('.item_code').attr('disabled', bool);
                 $('.item-name').attr('disabled', bool);
                 $('.category').attr('disabled', bool);
+                $('.store').attr('disabled', bool);
                 $('#supplier').attr('disabled', bool);
                 $('.quantity').attr('disabled', bool);
+                $('.thresholdQty').attr('disabled', bool);
                 $('.expiry_date').attr('disabled', bool);
                 $('.original_price').attr('disabled', bool);
                 $('.selling_price').attr('disabled', bool);
