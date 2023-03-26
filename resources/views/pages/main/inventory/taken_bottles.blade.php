@@ -16,10 +16,9 @@
                 </h5>
             </div>
 
-    
 
-            <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
-                id="addTakenBottle">
+
+            <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2" id="addTakenBottle">
                 <i class="fa fa-plus-circle pr-1"></i>Add taken bottle</button>
         </div>
 
@@ -67,8 +66,8 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control taken_bottle_record_id  taken_bottle_record_id" name="id"
-                                placeholder="Enter credit id">
+                            <input type="hidden" class="form-control taken_bottle_record_id  taken_bottle_record_id"
+                                name="id" placeholder="Enter credit id">
                         </div>
 
                         <div class="form-group">
@@ -93,12 +92,28 @@
 
                         <div class="form-group">
                             <span><i class="text-danger pr-1">*</i> Quantity</span>
-                            <input type="text" class="form-control quantity" name="quantity" placeholder="Enter quantity">
+                            <input type="text" class="form-control quantity" name="quantity"
+                                placeholder="Enter quantity">
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger pr-2">*</span>Date</span>
+                            <span><span class="text-danger pr-2">*</span>Taken On</span>
                             <input type="date" class="form-control taken_on" value="{{ date('Y-m-d') }}" name="taken_on"
+                                placeholder="Select date">
+                        </div>
+
+                        <div class="form-group">
+                            <span><i class="text-danger pr-1">*</i> Status</span>
+                            <select class="form-control status" name="status">
+                                <option value="">Select status</option>
+                                <option value="1">Returned</option>
+                                <option value="0" selected>Not Returned</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group return_date_section">
+                            <span><span class="text-danger pr-2">*</span>Returned On</span>
+                            <input type="date" class="form-control returned_on" value="" name="returned_on"
                                 placeholder="Select date">
                         </div>
 
@@ -225,6 +240,16 @@
             });
 
             Numberize('.amount');
+            $('.return_date_section').hide();
+
+            $('.status').on('change', function() {
+                let val = $(this).val();
+                if (val === '1') {
+                    $('.return_date_section').show();
+                } else {
+                    $('.return_date_section').hide();
+                }
+            })
 
             $('#addTakenBottle').click(function(e) {
                 e.preventDefault();
@@ -299,10 +324,12 @@
 
             function editTakenBottle(taken_bottle_record_id) {
                 $('.taken_bottle_record_id').val(taken_bottle_record_id);
-                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '/edit', function(response) {
+                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '/edit', function(
+                    response) {
                     if (response.success) {
                         let data = response.data;
-                        $('#modalHeading').html("Edit details of taken bottle by customer " + data.customer + "");
+                        $('#modalHeading').html("Edit details of taken bottle by customer " + data
+                            .customer + "");
                         $('.addTakenBottleBtn').text("Update");
                         $('#addTakenBottleModal').modal('show');
                         $('.taken_bottle_record_id').val('');
@@ -324,10 +351,12 @@
             });
 
             function viewDetails(taken_bottle_record_id) {
-                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '', function(response) {
+                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '', function(
+                    response) {
                     if (response.success) {
                         let data = response.data;
-                        $('#modalHeading').html("Details of taken bottle by customer " + data.customer + "");
+                        $('#modalHeading').html("Details of taken bottle by customer " + data.customer +
+                            "");
                         $('#addTakenBottleModal').modal('show');
                         populateTakenBottleDetails(data);
                         DisableTableFields(true);
@@ -343,14 +372,22 @@
                 $('.customer').val(data.customer_id);
                 $('.bottle').val(data.bottle_id);
                 $('.quantity').val(data.quantity);
+                $('.status').val(data.is_returned);
                 $('.taken_on').val(data.taken_on);
+                $('.returned_on').val(data.returned_on);
+                if (data.is_returned == 1) {
+                    $('.return_date_section').show();
+                }else{
+                    $('.return_date_section').hide();
+                }
             }
 
             //this pops up confirm delete modal
             $('body').on('click', '#delete-taken-bottle', function(e) {
                 let taken_bottle_record_id = $(this).data("id");
                 e.preventDefault();
-                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '', function(response) {
+                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '', function(
+                    response) {
                     if (response.success) {
 
                         let data = response.data;
@@ -409,6 +446,8 @@
                 $('.bottle').attr('disabled', bool);
                 $('.quantity').attr('disabled', bool);
                 $('.taken_on').attr('disabled', bool);
+                $('.status').attr('disabled', bool);
+                $('.returned_on').attr('disabled', bool);
             }
 
             function HideBtns() {
@@ -435,6 +474,7 @@
                 let bottle = $('.bottle').val();
                 let quantity = $('.quantity').val();
                 let taken_on = $('.taken_on').val();
+                let status = $('.status').val();
 
                 let isValidForm = false;
 
@@ -444,10 +484,21 @@
                     displayResponse('.response', "Please select bottle from stock", "error");
                 } else if (quantity.length < 1) {
                     displayResponse('.response', "Please enter quantity", "error");
-                }else if (taken_on.length < 1) {
+                } else if (taken_on.length < 1) {
                     displayResponse('.response', "Please select date", "error");
+                } else if (status.length < 1) {
+                    displayResponse('.response', "Please select status", "error");
                 } else {
-                    isValidForm = true;
+                    if (status === '1') {
+                        let returned_on = $('.returned_on').val();
+                        if (returned_on.length < 1) {
+                            displayResponse('.response', "Please select return date", "error");
+                        } else {
+                            isValidForm = true;
+                        }
+                    } else {
+                        isValidForm = true;
+                    }
                 }
 
                 return isValidForm;

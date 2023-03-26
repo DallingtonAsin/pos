@@ -62,7 +62,9 @@ class TakenBottleController extends Controller
             'customer' => 'required',
             'bottle' => 'required',
             'quantity' => 'required',
-            'taken_on' => 'required'
+            'taken_on' => 'required',
+            'status' => 'required',
+            'returned_on' => 'sometimes|nullable',
         ]);
 
         try {
@@ -75,6 +77,9 @@ class TakenBottleController extends Controller
                 $bottle_id = $request->input('bottle');
                 $quantity = Helper::Numberize($request->input('quantity'));
                 $taken_on = $request->input('taken_on');
+                $status = boolval($request->input('status'));
+                $returned_on = $status == 1 ? $request->input('returned_on') : null;
+
                 $created_by = $request->user()->id;
 
                 $data = [
@@ -82,6 +87,8 @@ class TakenBottleController extends Controller
                     'bottle_id' => $bottle_id,
                     'quantity' => $quantity,
                     'taken_on' => $taken_on,
+                    'is_returned' => $status,
+                    'returned_on' => $returned_on,
                     'added_by' => $created_by
                 ];
 
@@ -143,7 +150,9 @@ class TakenBottleController extends Controller
                 'customer' => 'required',
                 'bottle' => 'required',
                 'quantity' => 'required',
-                'taken_on' => 'required'
+                'taken_on' => 'required',
+                'status' => 'required',
+                'returned_on' => 'sometimes|nullable'
             ]);
 
             try {
@@ -156,13 +165,19 @@ class TakenBottleController extends Controller
                     $bottle_id = $request->input('bottle');
                     $quantity = Helper::Numberize($request->input('quantity'));
                     $taken_on = $request->input('taken_on');
+                    $status = boolval($request->input('status'));
+                    $returned_on = $status == 1 ? $request->input('returned_on') : null;
                     $created_by = $request->user()->id;
+
+                   
 
                     $data = [
                         'customer_id' => $customer_id,
                         'bottle_id' => $bottle_id,
                         'quantity' => $quantity,
                         'taken_on' => $taken_on,
+                        'is_returned' => $status,
+                        'returned_on' => $returned_on,
                         'added_by' => $created_by
                     ];
 
