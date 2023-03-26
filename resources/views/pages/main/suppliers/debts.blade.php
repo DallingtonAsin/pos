@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading row d-flex justify-content-between align-items-center">
+        <div class="panel-heading d-flex justify-content-between align-items-center">
             <span class="response"></span>
             <div class="col-md-5">
-                <h5 class="card-title mb-0 text-dark">
+                <h5 class="panel-title mb-0 text-dark">
                     <i class="fa fa-home text-success"> /</i>
                     <strong>Supplier Debts</strong>
                     <span class="badge badge-info no_of_debts">
@@ -17,10 +17,10 @@
             </div>
 
             <div class="col-md-4">
-                <h5 class="card-title mb-0 text-dark">
+                <h5 class="panel-title mb-0 text-dark">
                     <strong>Total Debts: UGX.</strong>
                     @isset($total_debts)
-                        <span class="text-danger total_debts"> {{ number_format($total_debts) }}</span>
+                        <strong class="text-danger total_debts"> {{ number_format($total_debts) }}</strong>
                     @endisset
                 </h5>
             </div>

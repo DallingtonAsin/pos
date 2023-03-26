@@ -2,22 +2,22 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading row d-flex justify-content-between align-items-center">
+        <div class="panel-heading d-flex align-items-center">
             <span class="response"></span>
             <div class="col-md-5">
-                <h5 class="card-title mb-0 text-dark">
+                <h5 class="panel-title mb-0 text-dark">
                     <i class="fa fa-home text-success"> /</i>
                     <strong>Supplier Credits</strong>
-                    <span class="badge badge-info no_of_credits">
+                    <strong class="badge badge-info no_of_credits">
                         @isset($no_of_credits)
                             {{ number_format($no_of_credits) }}
                         @endisset
-                    </span>
+                    </strong>
                 </h5>
             </div>
 
             <div class="col-md-4">
-                <h5 class="card-title mb-0 text-dark">
+                <h5 class="panel-title mb-0 text-dark">
                     <strong>Total Credits: UGX.</strong>
                     @isset($total_credits)
                         <span class="text-success total_credits"> {{ number_format($total_credits) }}</span>
