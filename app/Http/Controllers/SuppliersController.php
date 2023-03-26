@@ -30,7 +30,7 @@ class SuppliersController extends Controller
 
     public function GetSuppliers(SuppliersDataTable $dataTable)
     {
-        return $dataTable->render('pages.main.suppliers');
+        return $dataTable->render('pages.main.suppliers.index');
     }
     /**
      * Display a listing of the resource.
@@ -49,7 +49,7 @@ class SuppliersController extends Controller
             $total_credit = $arr['totl_credit'];
             $total_debts = $arr['totl_debt'];
 
-            return view('pages.main.suppliers')->with([
+            return view('pages.main.suppliers.index')->with([
                 'number_of_suppliers' => $number_of_suppliers,
                 'total_credit' => $total_credit,
                 'total_debts' => $total_debts,
@@ -83,7 +83,7 @@ class SuppliersController extends Controller
      */
     public function create()
     {
-        return view('pages.main.suppliers');
+        return view('pages.main.suppliers.index');
     }
 
     /**
