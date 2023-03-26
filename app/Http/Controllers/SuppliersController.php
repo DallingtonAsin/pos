@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
@@ -15,15 +14,19 @@ use Illuminate\Support\Str;
 use  App\Helpers\Constants as Constant;
 use Excel;
 use App\Helpers\Helper;
+use App\Repositories\SupplierCreditRepository;
+use App\Repositories\SupplierDebtRepository;
 
 class SuppliersController extends Controller
 {
 
+    protected $controller, $supplierCreditRepository, $supplierDebtRepository;
 
-    public $controller;
-    public function __construct()
+    public function __construct(SupplierCreditRepository $supplierCreditRepository, SupplierDebtRepository $supplierDebtRepository)
     {
         $this->controller = 'SuppliersController';
+        $this->supplierCreditRepository = $supplierCreditRepository;
+        $this->supplierDebtRepository = $supplierDebtRepository;
     }
 
 
@@ -39,9 +42,7 @@ class SuppliersController extends Controller
      */
     public function index()
     {
-        $table = "suppliers";
-        $primaryKey = "id";
-
+      
         try {
 
             $arr = $this->GetSumupDetails();
@@ -58,15 +59,16 @@ class SuppliersController extends Controller
         } catch (ModelNotFoundException $ex) {
             throw new ModelNotFoundException("Not found what you are looking for");
         } catch (\Exception $ex) {
-            return abort("405", "We have caught exception " . $ex->getMesage() . " for you");
+            return abort("405", "We have caught exception " . $ex->getMessage() . " for you");
         }
     }
 
     protected function GetSumupDetails()
     {
         $number_of_suppliers = Supplier::count();
-        $total_credit = DB::table('suppliers')->sum('credit');
-        $total_debts = DB::table('suppliers')->sum('debt');
+        $total_credit = $this->supplierCreditRepository->total();
+        $total_debts = $this->supplierDebtRepository->total();
+
         $data = array(
             'totl_no' => $number_of_suppliers,
             'totl_credit' => $total_credit,
@@ -100,12 +102,8 @@ class SuppliersController extends Controller
         $address = $request->input('address');
         $contact = $request->input('contact');
         $email = $request->input('email');
-        $debt = Helper::Numberize($request->input('debt'));
-        $credit = Helper::Numberize($request->input('credit'));
 
         empty($email) ? $email = null : $email = $email;
-        empty($debt) ? $debt = null : $debt = $debt;
-        empty($credit) ? $credit = null : $credit = $credit;
 
         (empty($supplierId)) ? $keyAction = 'registered' : $keyAction = 'updated';
 
@@ -116,9 +114,7 @@ class SuppliersController extends Controller
                     'name' => $supplier_name,
                     'address' => $address,
                     'contact' => $contact,
-                    'email' => $email,
-                    'debt' => $debt,
-                    'credit' => $credit,
+                    'email' => $email
                 ]);
         } else {
 
@@ -127,8 +123,6 @@ class SuppliersController extends Controller
             $supplier->address = $address;
             $supplier->contact = $contact;
             $supplier->email = $email;
-            $supplier->debt = $debt;
-            $supplier->credit = $credit;
             $response = $supplier->save();
         }
 
@@ -211,13 +205,8 @@ class SuppliersController extends Controller
         $supplier->address = $request->input('address');
         $supplier->contact = $request->input('contact');
         $email = $request->input('email');
-        $debt = Helper::Numberize($request->input('debt'));
-        $credit = Helper::Numberize($request->input('credit'));
 
         empty($email) ? $supplier->email = "" : $supplier->email = $email;
-        empty($debt) ? $supplier->debt = 0 : $supplier->debt = $debt;
-        empty($credit) ? $supplier->credit = 0 : $supplier->credit = $credit;
-
         $save_status = $supplier->save();
 
         if ($save_status) {
