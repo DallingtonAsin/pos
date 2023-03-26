@@ -172,18 +172,6 @@
 
 
                         <div class="form-group">
-                            <span>Debt</span>
-                            <input type="text" class="form-control debt " name="debt" placeholder="Enter debt">
-                        </div>
-
-
-                        <div class="form-group">
-                            <span>Credit</span>
-                            <input type="text" class="form-control credit " name="credit"
-                                placeholder="Enter credit">
-                        </div>
-
-                        <div class="form-group">
                             <button type="submit" class="btn btn-success addsupplierBtn"
                                 name="AddsupplierBtn">Save</button>
                             <button type="reset" class="btn btn-danger clearBtn">Clear</button>

@@ -10,12 +10,13 @@ use App\DataTables\StoreDataTable;
 class StoreController extends Controller
 {
 
+    protected $storeRepository;
+
     public function __construct(StoreRepository $storeRepository)
     {
         $this->storeRepository = $storeRepository;
     }
 
-    protected $storeRepository;
 
     /**
      * Display a listing of the resource.
