@@ -193,17 +193,9 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::get('damaged-stock-items/export-damages', 'DamagesController@exportDamages')->name('damages.export');
 	Route::post('stock/search/item', 'DamagesController@searchItem')->name('stock-item.search');
 
-	Route::get('payments', 'PaymentsController@index')->name('payments');
-	Route::get('payments/paypal', 'PaymentsController@paypalIndex')->name('paypal');
-	Route::post('payments/paypal/post', 'PaymentsController@PayPalPayment')->name('paypal-payment-form-submit');
-	Route::get('payment/paypay/cancel', 'PaymentsController@cancel')->name('payment.cancel');
-	Route::get('payment/paypal/success', 'PaymentsController@success')->name('payment.success');
-	Route::post('payments', 'PaymentsController@MoMoPayment')->name('payments.request');
-
 	Route::get('get-chartdata', 'ReportsController@getMonthlySalesData')->name('chartdata');
 	Route::resource('customers', 'CustomersController');
 	Route::get('account-settings', 'ProfileController@accountSettings')->name('account-settings');
-
 
 	Route::get('reports/low-running-stock/{qty?}', 'ReportsController@lowRunningStock')->name('low-stock');
 	Route::get('reports/monthly-sales', 'ReportsController@MonthlySales')->name('m-sales');
