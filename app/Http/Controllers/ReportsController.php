@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
-
 use App\DataTables\Reports\TopCustomersDataTable;
 use App\DataTables\Reports\MonthlySalesDataTable;
-use App\DataTables\Reports\SupplierDebtorsDataTable;
 use App\DataTables\Reports\LowRunningStockDataTable;
 use App\DataTables\Reports\CustomerDebtorsDataTable;
 use App\DataTables\Reports\BestSellingItemsDataTable;
@@ -48,11 +45,7 @@ public function purchaseReports(Request $request)
         return $dataTable->render('pages.reports.monthlysales');
     }
 
-    public function GetSupplierDebtorsDT(SupplierDebtorsDataTable $dataTable)
-    {
-        return $dataTable->render('pages.reports.debtors-suppliers');
-    }
-
+    
     public function GetCustomerDebtorsDT(CustomerDebtorsDataTable $dataTable)
     {
         return $dataTable->render('pages.reports.debtors-customers');
@@ -107,10 +100,5 @@ public function purchaseReports(Request $request)
       return view('pages.reports.debtors-customers');
     }
 
-
-    public function debtorsSuppliersList()
-    {
-      return view('pages.reports.debtors-suppliers');
-    }
 
 }

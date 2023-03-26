@@ -42,7 +42,7 @@ class StockController extends Controller
     $suppliers = Supplier::get();
     $stores =  $this->storeRepository->get();
 
-    return view('pages.main.stock')
+    return view('pages.main.inventory.stock')
       ->with(compact('stock', 'stock_value', 'categories', 'suppliers', 'number_of_stockItems', 'stores'));
   }
 
@@ -50,7 +50,7 @@ class StockController extends Controller
   public function GetStock(StockDataTable $dataTable)
   {
     //if(Auth::check()){
-    return $dataTable->render('pages.main.stock');
+    return $dataTable->render('pages.main.inventory.stock');
     // }else{
     //    return redirect('/');
     // }
@@ -63,7 +63,7 @@ class StockController extends Controller
    */
   public function create()
   {
-    return view('pages.main.stock');
+    return view('pages.main.inventory.stock');
   }
 
   /**

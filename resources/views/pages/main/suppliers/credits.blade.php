@@ -5,7 +5,7 @@
         <div class="panel-heading row d-flex justify-content-between align-items-center">
             <span class="response"></span>
             <div class="col-md-5">
-                <h6 class="card-title mb-0 text-dark">
+                <h5 class="card-title mb-0 text-dark">
                     <i class="fa fa-home text-success"> /</i>
                     <strong>Supplier Credits</strong>
                     <span class="badge badge-info no_of_credits">
@@ -13,16 +13,16 @@
                             {{ number_format($no_of_credits) }}
                         @endisset
                     </span>
-                </h6>
+                </h5>
             </div>
 
             <div class="col-md-4">
-                <h6 class="card-title mb-0 text-dark">
+                <h5 class="card-title mb-0 text-dark">
                     <strong>Total Credits: UGX.</strong>
                     @isset($total_credits)
                         <span class="text-success total_credits"> {{ number_format($total_credits) }}</span>
                     @endisset
-                </h6>
+                </h5>
             </div>
 
             <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
@@ -298,15 +298,14 @@
                 });
             }
 
-
             //View Modal used to view each row [supplier credit details]
             $('body').on('click', '#view-supplier-credit', function(event) {
                 let credit_id = $(this).data('id');
                 event.preventDefault();
-                viewDepartment(credit_id);
+                viewSupplierCreditDetails(credit_id);
             });
 
-            function viewDepartment(credit_id) {
+            function viewSupplierCreditDetails(credit_id) {
                 $.get("{{ route('supplier-credits.index') }}" + '/' + credit_id + '', function(response) {
                     if (response.success) {
                         let data = response.data;

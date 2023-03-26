@@ -19,9 +19,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Jobs\ProcessSendSms;
 use App\User;
 use  App\Helpers\Constants as Constant;
+use App\Models\SupplierCredit;
+use App\Models\SupplierDebt;
 
 class Helper
 {
+
 
   public static function logError($data)
   {
@@ -54,7 +57,7 @@ class Helper
       $item = Stock::where('id', $stockId)->value('item');
       return $item;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+      throw $ex;
     }
   }
 
@@ -64,7 +67,7 @@ class Helper
       $result = floatval(preg_replace('/[^\d.]/', '', $input));
       return $result;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+      throw $ex;
     }
   }
 
@@ -74,7 +77,7 @@ class Helper
       $roleId = Role::where('name', 'like', '%' . $role . '%')->value('id');
       return $roleId;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+      throw $ex;
     }
   }
 
@@ -84,7 +87,7 @@ class Helper
       $role = Role::where('id', $roleId)->value('name');
       return $role;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+      throw $ex;
     }
   }
 
@@ -94,7 +97,7 @@ class Helper
       $roles = Role::get();
       return $roles;
     } catch (\Exception $ex) {
-      dd($ex->getMessage());
+      throw $ex;
     }
   }
 
@@ -368,11 +371,11 @@ class Helper
   
       $totalDamages = Helper::getAnnualBasedDamageCost($year, $month);
 
-      $supplierDebts = (Supplier::whereYear('created_at', $year)
+      $supplierDebts = (SupplierCredit::whereYear('created_at', $year)
         ->whereMonth('created_at', $month)
-        ->sum('credit')) -  (Supplier::whereYear('created_at', $year)
+        ->sum('amount')) -  (SupplierDebt::whereYear('created_at', $year)
         ->whereMonth('created_at', $month)
-        ->sum('debt'));
+        ->sum('amount'));
 
       $customerDebts = Sale::where('fully_paid', 0)
         ->where('balance', '>', 0)

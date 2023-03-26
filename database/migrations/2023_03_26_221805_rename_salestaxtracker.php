@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChatboxTable extends Migration
+class RenameSalestaxtracker extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,7 @@ class CreateChatboxTable extends Migration
      */
     public function up()
     {
-        Schema::create('chatbox', function (Blueprint $table) {
-            $table->id();
-            $table->text("chat_command");
-            $table->text("chat_response");
-        });
+        Schema::rename('salestaxtracker', 'sales_tax_tracker');
     }
 
     /**
@@ -27,6 +23,8 @@ class CreateChatboxTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chatbox');
+        Schema::table('salestaxtracker', function (Blueprint $table) {
+            //
+        });
     }
 }

@@ -7,41 +7,37 @@
             <div class="col-md-5">
                 <h5 class="card-title mb-0 text-dark">
                     <i class="fa fa-home text-success"> /</i>
-                    <strong>Supplier Debts</strong>
-                    <span class="badge badge-info no_of_debts">
-                        @isset($no_of_debts)
-                            {{ number_format($no_of_debts) }}
+                    <strong>Taken Bottles</strong>
+                    <span class="badge badge-info no_of_bottles">
+                        @isset($no_of_bottles)
+                            {{ number_format($no_of_bottles) }}
                         @endisset
                     </span>
                 </h5>
             </div>
 
-            <div class="col-md-4">
-                <h5 class="card-title mb-0 text-dark">
-                    <strong>Total Debts: UGX.</strong>
-                    @isset($total_debts)
-                        <span class="text-danger total_debts"> {{ number_format($total_debts) }}</span>
-                    @endisset
-                </h5>
-            </div>
+    
 
             <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
-                id="addSupplierDebt">
-                <i class="fa fa-plus-circle pr-1"></i>Add supplier debt</button>
+                id="addTakenBottle">
+                <i class="fa fa-plus-circle pr-1"></i>Add taken bottle</button>
         </div>
 
         <div class="panel-body">
 
             <div class="table table-sm table-responsive">
-                <table class="table table-bordered table-hover supplier-debts-table" id="supplier-debts-table">
+                <table class="table table-bordered table-hover taken-bottles-table" id="taken-bottles-table">
 
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Supplier</th>
-                            <th>Debt Amount</th>
-                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Bottle</th>
+                            <th>Quantity</th>
+                            <th>Taken on</th>
                             <th>is Deleted</th>
+                            <th>is Returned</th>
+                            <th>Returned On</th>
                             <th>Added By</th>
                             <th>Action</th>
                         </tr>
@@ -51,17 +47,17 @@
         </div>
     </div>
 
-    <!--Add supplier debt -->
-    <div class="modal fade nunito-font addSupplierDebtModal" id="addSupplierDebtModal" tabindex="-1"
+    <!--Add taken bottle -->
+    <div class="modal fade nunito-font addTakenBottleModal" id="addTakenBottleModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true"
         role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
-                <form name="SupplierDebtsForm" id="SupplierDebtsForm">
+                <form name="TakenBottleForm" id="TakenBottleForm">
                     @csrf
                     <div class="modal-header text-center">
-                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new supplier debt</h6>
+                        <h6 class="modal-title w-100 font-weight-bold" id="modalHeading">Add new taken bottle</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -71,34 +67,44 @@
 
                         <div class="form-group">
                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                            <input type="hidden" class="form-control debt_id  debt_id" name="id"
-                                placeholder="Enter debt id">
+                            <input type="hidden" class="form-control taken_bottle_record_id  taken_bottle_record_id" name="id"
+                                placeholder="Enter credit id">
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i> Supplier</span>
-                            <select class="form-control supplier" name="supplier">
-                                <option value="">Select supplier</option>
-                                @foreach ($suppliers as $supplier)
-                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                            <span><i class="text-danger pr-1">*</i> Customer</span>
+                            <select class="form-control customer" name="customer">
+                                <option value="">Select customer</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i> Debt Amount</span>
-                            <input type="text" class="form-control amount" name="amount" placeholder="Enter amount">
+                            <span><i class="text-danger pr-1">*</i> Bottle Name</span>
+                            <select class="form-control bottle" name="bottle">
+                                <option value="">Select bottle</option>
+                                @foreach ($stock as $item)
+                                    <option value="{{ $item->id }}">{{ $item->item }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger pr-2">*</span> Date</span>
-                            <input type="date" class="form-control date " value="{{ date('Y-m-d') }}" name="date"
+                            <span><i class="text-danger pr-1">*</i> Quantity</span>
+                            <input type="text" class="form-control quantity" name="quantity" placeholder="Enter quantity">
+                        </div>
+
+                        <div class="form-group">
+                            <span><span class="text-danger pr-2">*</span>Date</span>
+                            <input type="date" class="form-control taken_on" value="{{ date('Y-m-d') }}" name="taken_on"
                                 placeholder="Select date">
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary rounded-pill addSupplierDebtBtn"
-                                name="addSupplierDebtBtn">Save</button>
+                            <button type="submit" class="btn btn-primary rounded-pill addTakenBottleBtn"
+                                name="addTakenBottleBtn">Save</button>
                             <button type="reset" class="btn btn-danger rounded-pill clearBtn">Clear</button>
                         </div>
 
@@ -113,14 +119,14 @@
     </div>
 
 
-    <!--Modal delete supplier debt -->
-    <div class="modal fade" id="deleteSupplierDebtModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <!--Modal Delete Stores -->
+    <div class="modal fade" id="deleteTakenBottleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog"
         aria-labelledby="ModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete supplier debt</h6>
+                    <h6 class="modal-title delete-modal-title w-100 font-weight-bold">Delete taken bottle</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -130,8 +136,8 @@
 
                     <div class="form-group">
                         <div class="text-center">
-                            <label class="text-danger delete-alert-text">Are you sure you want to delete this supplier
-                                debt
+                            <label class="text-danger delete-alert-text">Are you sure you want to delete this taken bottle
+                                credit
                                 <small class="text-dark text-muted bolded">
                                 </small>
                                 ?
@@ -147,7 +153,7 @@
                 </div>
             </div>
         </div>
-    </div> <!-- end of modal Delete Supplier Debt-->
+    </div> <!-- end of modal Delete Taken Bottle-->
 
     <script>
         $.ajaxSetup({
@@ -155,17 +161,16 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        const ajaxUrl = @json(route('suppliers.debts.ajax'));
-        const deletedSeletectedUrl = @json(route('selected-suppliers.remove'));
-        const cat = 'supplier_debts';
+        const ajaxUrl = @json(route('taken-bottles.index.ajax'));
+        const cat = 'taken_bottles';
         const token = "{{ csrf_token() }}";
     </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
 
-            let table = $('#supplier-debts-table');
-            let title = "List of supplier debts in the system";
+            let table = $('#taken-bottles-table');
+            let title = "List of taken bottles in the system";
             let columns = [0, 1, 2, 3, 4];
             let dataColumns = [{
                     data: 'DT_RowIndex',
@@ -174,20 +179,32 @@
                     searchable: false
                 },
                 {
-                    data: 'supplier',
-                    name: 'supplier'
+                    data: 'customer',
+                    name: 'customer'
                 },
                 {
-                    data: 'amount',
-                    name: 'amount'
+                    data: 'bottle',
+                    name: 'bottle'
                 },
                 {
-                    data: 'date',
-                    name: 'date'
+                    data: 'quantity',
+                    name: 'quantity'
+                },
+                {
+                    data: 'taken_on',
+                    name: 'taken_on'
                 },
                 {
                     data: 'is_deleted',
                     name: 'is_deleted'
+                },
+                {
+                    data: 'is_returned',
+                    name: 'is_returned'
+                },
+                {
+                    data: 'returned_on',
+                    name: 'returned_on'
                 },
                 {
                     data: 'added_by',
@@ -204,35 +221,35 @@
             makeDataTable2(table, title, columns, dataColumns);
 
             $('.modal').on('hidden.bs.modal', function() {
-                $('.debt_id').val('');
+                $('.taken_bottle_record_id').val('');
             });
 
             Numberize('.amount');
 
-            $('#addSupplierDebt').click(function(e) {
+            $('#addTakenBottle').click(function(e) {
                 e.preventDefault();
                 DisableTableFields(false);
                 ShowBtns();
-                $('.addSupplierDebtBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                $('.debt_id').val('');
-                $('#SupplierDebtsForm').trigger("reset");
-                $('#modalHeading').html("Add new supplier debt");
-                $('#addSupplierDebtModal').modal('show');
+                $('.addTakenBottleBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                $('.taken_bottle_record_id').val('');
+                $('#TakenBottleForm').trigger("reset");
+                $('#modalHeading').html("Add new taken bottle");
+                $('#addTakenBottleModal').modal('show');
             });
 
 
-            $('.addSupplierDebtBtn').click(function(e) {
+            $('.addTakenBottleBtn').click(function(e) {
 
                 e.preventDefault();
-                let debt_id = $('.debt_id').val();
+                let taken_bottle_record_id = $('.taken_bottle_record_id').val();
                 let method, url;
 
-                if (debt_id) {
-                    url = "{{ route('supplier-debts.update', ':id') }}";
-                    url = url.replace(":id", debt_id);
+                if (taken_bottle_record_id) {
+                    url = "{{ route('taken-bottles.update', ':id') }}";
+                    url = url.replace(":id", taken_bottle_record_id);
                     method = 'PUT';
                 } else {
-                    url = "{{ route('supplier-debts.store') }}";
+                    url = "{{ route('taken-bottles.store') }}";
                     method = 'POST';
                 }
 
@@ -242,7 +259,7 @@
                     $(this).html('Sending..');
 
                     $.ajax({
-                        data: $('#SupplierDebtsForm').serialize(),
+                        data: $('#TakenBottleForm').serialize(),
                         url: url,
                         type: method,
                         dataType: 'json',
@@ -253,11 +270,11 @@
 
                             if (response.success) {
                                 let data = response.data;
-                                $('.debt_id').val('');
-                                $('#SupplierDebtsForm').trigger("reset");
-                                $('#addSupplierDebtModal').modal("hide");
+                                $('.taken_bottle_record_id').val('');
+                                $('#TakenBottleForm').trigger("reset");
+                                $('#addTakenBottleModal').modal("hide");
                                 resetTblInfo(data);
-                                let tbl = $('#supplier-debts-table').DataTable();
+                                let tbl = $('#taken-bottles-table').DataTable();
                                 tbl.ajax.reload();
                             }
 
@@ -266,30 +283,30 @@
                         error: function(data) {
                             console.log('Error:', data.error);
                             displayResponse('.response', data.error, 'error');
-                            $('.addSupplierDebtBtn').html('Save Changes');
+                            $('.addTakenBottleBtn').html('Save Changes');
                         }
                     });
                 }
 
             });
 
-            //modal used to edit supplier debt details [each row of the tbl]
-            $('body').on('click', '#edit-supplier-debt', function(event) {
-                let debt_id = $(this).data('id');
+            //modal used to edit taken bottle details [each row of the tbl]
+            $('body').on('click', '#edit-taken-bottle', function(event) {
+                let taken_bottle_record_id = $(this).data('id');
                 event.preventDefault();
-                editStore(debt_id);
+                editTakenBottle(taken_bottle_record_id);
             });
 
-            function editStore(debt_id) {
-                $('.debt_id').val(debt_id);
-                $.get("{{ route('supplier-debts.index') }}" + '/' + debt_id + '/edit', function(response) {
+            function editTakenBottle(taken_bottle_record_id) {
+                $('.taken_bottle_record_id').val(taken_bottle_record_id);
+                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '/edit', function(response) {
                     if (response.success) {
                         let data = response.data;
-                        $('#modalHeading').html("Edit debt details for supplier " + data.supplier + "");
-                        $('.addSupplierDebtBtn').text("Update");
-                        $('#addSupplierDebtModal').modal('show');
-                        $('.debt_id').val('');
-                        populateStoreDetails(data);
+                        $('#modalHeading').html("Edit details of taken bottle by customer " + data.customer + "");
+                        $('.addTakenBottleBtn').text("Update");
+                        $('#addTakenBottleModal').modal('show');
+                        $('.taken_bottle_record_id').val('');
+                        populateTakenBottleDetails(data);
                         DisableTableFields(false);
                         ShowBtns();
                     } else {
@@ -299,20 +316,20 @@
             }
 
 
-            //View Modal used to view each row [supplier debt details]
-            $('body').on('click', '#view-supplier-debt', function(event) {
-                let debt_id = $(this).data('id');
+            //View Modal used to view each row [taken bottle details]
+            $('body').on('click', '#view-taken-bottle', function(event) {
+                let taken_bottle_record_id = $(this).data('id');
                 event.preventDefault();
-                viewSupplierDebtDetails(debt_id);
+                viewDetails(taken_bottle_record_id);
             });
 
-            function viewSupplierDebtDetails(debt_id) {
-                $.get("{{ route('supplier-debts.index') }}" + '/' + debt_id + '', function(response) {
+            function viewDetails(taken_bottle_record_id) {
+                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '', function(response) {
                     if (response.success) {
                         let data = response.data;
-                        $('#modalHeading').html("Debt details for supplier " + data.supplier + "");
-                        $('#addSupplierDebtModal').modal('show');
-                        populateStoreDetails(data);
+                        $('#modalHeading').html("Details of taken bottle by customer " + data.customer + "");
+                        $('#addTakenBottleModal').modal('show');
+                        populateTakenBottleDetails(data);
                         DisableTableFields(true);
                         HideBtns();
                     } else {
@@ -321,26 +338,27 @@
                 });
             }
 
-            function populateStoreDetails(data) {
-                $('.debt_id').val(data.id);
-                $('.supplier').val(data.supplier_id);
-                $('.amount').val(data.amount);
-                $('.date').val(data.date);
+            function populateTakenBottleDetails(data) {
+                $('.taken_bottle_record_id').val(data.id);
+                $('.customer').val(data.customer_id);
+                $('.bottle').val(data.bottle_id);
+                $('.quantity').val(data.quantity);
+                $('.taken_on').val(data.taken_on);
             }
 
             //this pops up confirm delete modal
-            $('body').on('click', '#delete-supplier-debt', function(e) {
-                let debt_id = $(this).data("id");
+            $('body').on('click', '#delete-taken-bottle', function(e) {
+                let taken_bottle_record_id = $(this).data("id");
                 e.preventDefault();
-                $.get("{{ route('supplier-debts.index') }}" + '/' + debt_id + '', function(response) {
+                $.get("{{ route('taken-bottles.index') }}" + '/' + taken_bottle_record_id + '', function(response) {
                     if (response.success) {
 
                         let data = response.data;
-                        $('debt_id').val(data.id);
+                        $('taken_bottle_record_id').val(data.id);
                         let action = data.is_deleted == 1 ? 'undelete' : 'delete';
-                        $("#deleteSupplierDebtModal").modal('show');
+                        $("#deleteTakenBottleModal").modal('show');
                         $(".delete-alert-text").html(
-                            `Are you sure you want to ${action} debt for supplier ${data.supplier}?`
+                            `Are you sure you want to ${action} taken bottle by customer ${data.customer}?`
                         );
                         $('.delete-ok-btn').on('click', function() {
                             deleteRecord(data.id);
@@ -353,7 +371,7 @@
 
 
             function deleteRecord(id) {
-                let deleteUrl = '{{ route('supplier-debts.destroy', ':id') }}';
+                let deleteUrl = '{{ route('taken-bottles.destroy', ':id') }}';
                 deleteUrl = deleteUrl.replace(':id', id);
                 $('.delete-ok-btn').html('Deleting...');
                 $.ajax({
@@ -368,11 +386,11 @@
 
                             let data = response.data;
                             $('.delete-ok-btn').html('Yes');
-                            $('#deleteSupplierDebtModal').modal("hide");
-                            $('.debt_id').val('');
+                            $('#deleteTakenBottleModal').modal("hide");
+                            $('.taken_bottle_record_id').val('');
 
                             resetTblInfo(data);
-                            let tbl = $('#supplier-debts-table').DataTable();
+                            let tbl = $('#taken-bottles-table').DataTable();
                             tbl.ajax.reload();
 
                         }
@@ -386,45 +404,47 @@
             }
 
             function DisableTableFields(bool) {
-                $('.debt_id').attr('disabled', bool);
-                $('.supplier').attr('disabled', bool);
-                $('.amount').attr('disabled', bool);
-                $('.date').attr('disabled', bool);
+                $('.taken_bottle_record_id').attr('disabled', bool);
+                $('.customer').attr('disabled', bool);
+                $('.bottle').attr('disabled', bool);
+                $('.quantity').attr('disabled', bool);
+                $('.taken_on').attr('disabled', bool);
             }
 
             function HideBtns() {
-                $('.addSupplierDebtBtn').hide();
+                $('.addTakenBottleBtn').hide();
                 $('.clearBtn').hide();
             }
 
             function ShowBtns() {
-                $('.addSupplierDebtBtn').show();
+                $('.addTakenBottleBtn').show();
                 $('.clearBtn').show();
             }
 
 
             function resetTblInfo(data) {
-                if (data.no_of_debts && data.total_debts) {
-                    let num = FormatNumber(data.no_of_debts);
-                    let total = FormatNumber(data.total_debts);
-                    $('.no_of_debts').html(num);
-                    $('.total_debts').html(total);
+                if (data.no_of_bottles) {
+                    let num = FormatNumber(data.no_of_bottles);
+                    $('.no_of_bottles').html(num);
                 }
             }
 
             function validateForm() {
 
-                let supplier = $('.supplier').val();
-                let amount = $('.amount').val();
-                let date = $('.date').val();
+                let customer = $('.customer').val();
+                let bottle = $('.bottle').val();
+                let quantity = $('.quantity').val();
+                let taken_on = $('.taken_on').val();
 
                 let isValidForm = false;
 
-                if (supplier.length < 1) {
-                    displayResponse('.response', "Please select supplier", "error");
-                } else if (amount.length < 1) {
-                    displayResponse('.response', "Please enter amount", "error");
-                } else if (date.length < 1) {
+                if (customer.length < 1) {
+                    displayResponse('.response', "Please select customer", "error");
+                } else if (bottle.length < 1) {
+                    displayResponse('.response', "Please select bottle from stock", "error");
+                } else if (quantity.length < 1) {
+                    displayResponse('.response', "Please enter quantity", "error");
+                }else if (taken_on.length < 1) {
                     displayResponse('.response', "Please select date", "error");
                 } else {
                     isValidForm = true;

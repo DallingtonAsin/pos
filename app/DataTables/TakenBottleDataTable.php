@@ -2,16 +2,16 @@
 
 namespace App\DataTables;
 
+use App\Helpers\Helper;
+use App\Models\Customer;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Services\DataTable;
-use App\Helpers\Helper;
-use App\Models\Supplier;
-use App\Models\SupplierDebt;
+use App\Models\TakenBottle;
+use App\Models\Stock;
 
-
-class SupplierDebtDataTable extends DataTable
+class TakenBottleDataTable extends DataTable
 {
-    /**
+   /**
      * Build DataTable class.
      *
      * @param mixed $query Results from query() method.
@@ -23,36 +23,37 @@ class SupplierDebtDataTable extends DataTable
             ->order(function ($query) {
                 $query->orderBy('created_at', 'desc');
             })->addIndexColumn()
-            ->addColumn('action', function ($supplierDebt) {
+            ->addColumn('action', function ($takenBottle) {
 
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" 
-                data-id="' . $supplierDebt->id . '" data-original-title="Edit" id="edit-supplier-debt"
-                  class="px-3 py-1 border border-success rounded mx-2 edit-supplier-debt pr-4">
+                data-id="' . $takenBottle->id . '" data-original-title="Edit" id="edit-taken-bottle"
+                  class="px-3 py-1 border border-success rounded mx-2 edit-taken-bottle pr-4">
                  <span class="fa fa-pen text-success"></span></a>';
 
-                $btn .= '<a href="javascript:void(0);" id="delete-supplier-debt" 
+                $btn .= '<a href="javascript:void(0);" id="delete-taken-bottle" 
                 data-toggle="tooltip" data-original-title="Delete"
-                 data-id="' . $supplierDebt->id . '" class="px-3 py-1 border border-danger rounded mx-2 pr-4"">
+                 data-id="' . $takenBottle->id . '" class="px-3 py-1 border border-danger rounded mx-2 pr-4"">
                 <span class="fa fa-trash-alt text-danger" ></span></a>';
 
-                $btn .= '<a href="javascript:void(0);" id="view-supplier-debt" 
+                $btn .= '<a href="javascript:void(0);" id="view-taken-bottle" 
                data-toggle="tooltip" data-original-title="View"
-                data-id="' . $supplierDebt->id . '" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
+                data-id="' . $takenBottle->id . '" class="px-3 py-1 border border-secondary rounded text-secondary mx-2">
                <i class="fa fa-eye" ></i></a>';
 
                 return $btn;
-            })->addColumn('supplier', function ($data) {
-                $supplier = Supplier::find($data->supplier_id);
-                return $supplier->name;
+            })->addColumn('customer', function ($data) {
+                $customer = Customer::find($data->customer_id);
+                return $customer->name;
+            })->addColumn('bottle', function ($data) {
+                $stock = Stock::find($data->bottle_id);
+                return $stock->item;
             })->editColumn('is_deleted', function ($data) {
                 return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>';
-            })->editColumn('added_by', function ($supplierDebt) {
-                $user = Helper::getUser($supplierDebt->added_by);
+            })->editColumn('added_by', function ($takenBottle) {
+                $user = Helper::getUser($takenBottle->added_by);
                 return $user->first_name . ' ' . $user->last_name;
-            })->editColumn('amount', function ($supplierDebt) {
-                return number_format($supplierDebt->amount);
-            })->addColumn('checkbox', function ($supplierDebt) {
-                $checkBox = '<input type="checkbox" id="' . $supplierDebt->id . '"/>';
+            })->addColumn('checkbox', function ($takenBottle) {
+                $checkBox = '<input type="checkbox" id="' . $takenBottle->id . '"/>';
                 return $checkBox;
             })->rawColumns(['checkbox', 'is_deleted', 'action']);
     }
@@ -60,10 +61,10 @@ class SupplierDebtDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\SupplierDebt $model
+     * @param \App\Models\TakenBottle $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(SupplierDebt $model)
+    public function query(TakenBottle $model)
     {
         return $model->newQuery();
     }
@@ -76,7 +77,7 @@ class SupplierDebtDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('supplier_credits_datatable_table')
+            ->setTableId('taken_bottles_datatable_table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -99,9 +100,12 @@ class SupplierDebtDataTable extends DataTable
     {
         return [
             'id',
-            'supplier_id',
-            'amount',
-            'date',
+            'customer_id',
+            'bottle_id',
+            'quantity',
+            'taken_on',
+            'is_returned',
+            'returned_on',
             'is_deleted',
             'added_by'
         ];
@@ -114,6 +118,6 @@ class SupplierDebtDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'SupplierDebts_' . date('YmdHis');
+        return 'TakenBottles_' . date('YmdHis');
     }
 }
