@@ -20,6 +20,8 @@ use App\Exports\DailySalesReport;
 use Illuminate\Support\Str;
 use App\Helpers\Helper;
 use  App\Helpers\Constants as Constant;
+use App\Models\SupplierCredit;
+use App\Models\SupplierDebt;
 use Excel;
 use DataTable;
 
@@ -54,12 +56,12 @@ class SalesController extends Controller
     $total_expenses = Expense::whereBetween('date_of_expenditure', [$startDate, $endDate])->sum('amount');
     $cost_of_damages = Helper::getPeriodicDamageCost($startDate, $endDate);
 
-    $value3 = (Supplier::whereDate('created_at', ">=", $startDate)
+    $value3 = (SupplierCredit::whereDate('created_at', ">=", $startDate)
       ->whereDate('created_at', "<=", $endDate)
-      ->sum('credit'))
-      - (Supplier::whereDate('created_at', ">=", $startDate)
+      ->sum('amount'))
+      - (SupplierDebt::whereDate('created_at', ">=", $startDate)
         ->whereDate('created_at', "<=", $endDate)
-        ->sum('debt'));
+        ->sum('amount'));
 
     $value4 = 0;
 
@@ -267,7 +269,7 @@ class SalesController extends Controller
     $total_sales = $value2 = Sale::where('date', Date('Y-m-d'))->sum('paid_amount');
     $total_expenses = Expense::where('date_of_expenditure', Date('Y-m-d'))->sum('amount');
     $cost_of_damages = Helper::getPeriodicDamageCost(Date('Y-m-d'), Date('Y-m-d'));
-    $value3 = (Supplier::whereDate('created_at', Date('Y-m-d'))->sum('credit')) - (Supplier::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
+    $value3 = (SupplierCredit::whereDate('created_at', Date('Y-m-d'))->sum('amount')) - (SupplierDebt::whereDate('created_at', Date('Y-m-d'))->sum('amount'));
     $value4 = (Customer::whereDate('created_at', Date('Y-m-d'))->sum('credit')) - (Customer::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
 
     $netValue = (($value2 - $value1) - ($total_expenses + $cost_of_damages) + ($value3 + $value4));

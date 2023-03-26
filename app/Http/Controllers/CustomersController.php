@@ -33,12 +33,12 @@ class CustomersController extends Controller
     // $customers = DB::select('select * from customers');
     $customers = Customer::all();
     $number_of_customers = Customer::count();
-    return view('pages.main.customers')->with(compact('customers', 'number_of_customers'));
+    return view('pages.main.customers.index')->with(compact('customers', 'number_of_customers'));
   }
 
   public function GetCustomers(CustomersDataTable $dataTable)
   {
-    return $dataTable->render('pages.main.customers');
+    return $dataTable->render('pages.main.customers.index');
   }
 
 
@@ -49,7 +49,7 @@ class CustomersController extends Controller
    */
   public function create()
   {
-    return view('pages.main.customers');
+   
   }
 
   /**

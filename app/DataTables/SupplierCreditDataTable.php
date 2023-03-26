@@ -60,7 +60,7 @@ class SupplierCreditDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Store $model
+     * @param \App\Models\SupplierCredit $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(SupplierCredit $model)

@@ -86,6 +86,8 @@
                         <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}"
                                 class="nav-sub-link">Purchases</a></li>
+                                <li class="nav-sub-item"><a href="{{ Route('taken-bottles.index') }}"
+                                    class="nav-sub-link">Taken Bottles</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}"
                                 class="nav-sub-link">Damaged Stock</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}"
@@ -172,8 +174,6 @@
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="{{ route('debtors-suppliers') }}"
-                                class="nav-sub-link">Supplier debts</a></li>
                         <li class="nav-sub-item"><a href="{{ route('top-cashiers') }}" class="nav-sub-link">Cashier
                                 performance</a></li>
                         <li class="nav-sub-item"><a href="{{ route('customers.with.debts') }}"
@@ -206,17 +206,7 @@
                 </li>
             @endcan
 
-            @can('isSuperAdmin')
-                <li class="nav-item">
-                    <a href="" class="nav-link with-sub"><i class="fa fa-comments"></i>Manage chatbot</a>
-                    <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="{{ route('command.index') }}"
-                                class="nav-sub-link">commands</a></li>
-                    </ul>
-                </li>
-            @endcan
-
-
+        
             @cannot('isSuperAdmin')
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="typcn typcn-location"></i>Events</a>

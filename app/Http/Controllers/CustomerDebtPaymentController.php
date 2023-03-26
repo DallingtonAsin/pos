@@ -23,21 +23,21 @@ class CustomerDebtPaymentController extends Controller
             ->join('sales', 'customers.id', '=', 'sales.customer_id')
             ->select('customers.id', 'customers.name')
             ->get();
-        return view('pages.main.customer-debt-payment-records')->with(compact('customers'));
+        return view('pages.main.customers.customer-debt-payment-records')->with(compact('customers'));
     }
 
     public function GetCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable){
-        return $dataTable->render('pages.main.customer-debt-payment-records');
+        return $dataTable->render('pages.main.customers.customer-debt-payment-records');
     }
 
 
     public function customersWithDebtsIndex(){
         $total_debts = Helper::getTotalCustomerDebt();
-        return view('pages.main.customers-with-debts')->with(compact('total_debts'));
+        return view('pages.main.customers.customers-with-debts')->with(compact('total_debts'));
     }
 
     public function GetCustomersWithDebts(CustomersWithDebtsDataTable $dataTable){
-        return $dataTable->render('pages.main.customers-with-debts');
+        return $dataTable->render('pages.main.customers.customers-with-debts');
     }
 
     /**

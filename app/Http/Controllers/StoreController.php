@@ -26,12 +26,12 @@ class StoreController extends Controller
     public function index()
     {
         $total_stores = $this->storeRepository->count();
-        return view('pages.main.stores')->with(compact('total_stores'));
+        return view('pages.main.inventory.stores')->with(compact('total_stores'));
     }
 
     public function getStoresDataTable(StoreDataTable $dataTable)
     {
-        return $dataTable->render('pages.main.stores');
+        return $dataTable->render('pages.main.inventory.stores');
     }
 
     /**

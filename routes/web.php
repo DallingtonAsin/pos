@@ -32,11 +32,8 @@ Route::group(["middleware" => "OTPlayer"], function () {
 });
 
 
-
 Route::get("/export/excel", "SalesController@GetSalesExcelFileReport");
-
 Route::get("/sale/make-receipt", "CartController@getReceipt");
-
 
 // Route::get("/users/active", "UserController@ActiveUsersIndex")->name('user-account.active');
 // Route::get("/users/locked", "UserController@LockedUsersIndex")->name('user-account.locked');
@@ -49,8 +46,6 @@ Route::get('reports/ajax/monthly-sales', 'ReportsController@GetMonthlySalesDT')-
 Route::get('reports/ajax/low-running-stock/{qty?}', 'ReportsController@GetLowStockDT')->name('low-stock.ajax');
 Route::get('reports/ajax/best-selling-items', 'ReportsController@GetBestSellingItemsDT')->name('best-selling-items.ajax');
 Route::get('reports/ajax/cashiers-performance', 'ReportsController@GetCashiersReportDT')->name('top-cashiers.ajax');
-Route::get('reports/ajax/debtors/suppliers', 'ReportsController@GetSupplierDebtorsDT')->name('debtors-suppliers.ajax');
-
 
 Route::get("users/active", "UserController@ActiveUsersIndex")->name('user.account.active');
 Route::get("users/locked", "UserController@LockedUsersIndex")->name('user.account.locked');
@@ -69,7 +64,6 @@ Route::get('/customers/with-debts', 'CustomerDebtPaymentController@customersWith
 
 
 Route::get('purchases/store', 'PurchasesController@store')->name('purchases.post');
-Route::match(['get', 'post'], '/botman', 'ChatBotController@handle');
 
 Route::group(["middleware" => "restricted"], function () {
 
@@ -93,7 +87,6 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::get('/sales/debts/ajax', 'SalesController@GetSalesWithDebts')->name('get-sales-with-debts');
 	Route::get('/sales/today/debts/ajax', 'SalesController@GetTodaySalesWithDebts')->name('get-daily-sales-with-debts');
 
-
 	Route::get('/events/get', 'EventsController@GetEvents')->name('get-events');
 	Route::get('/events/getTitle/{id}', 'EventsController@GetEventTitle')->name('getEventTitle');
 	Route::get('purchases/get/', 'PurchasesController@GetPurchases')->name('get-purchases');
@@ -109,9 +102,12 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.ajax');
 	
 	Route::get('stores/fetch/ajax', 'StoreController@getStoresDataTable')->name('stores.index.ajax');
+	Route::get('taken-bottles/fetch/ajax', 'TakenBottleController@getTakenBottleDataTable')->name('taken-bottles.index.ajax');
 
+	
 	Route::resources([
 		'stock' => 'StockController',
+		'taken-bottles' => 'TakenBottleController',
 		'pos' => 'CartController',
 		'sales' => 'SalesController',
 		'product-categories' => 'StockCatsController',
@@ -129,7 +125,6 @@ Route::group(["middleware" => "restricted"], function () {
 		'users' => 'UserController',
 		'stores' => 'StoreController',
 		'calendar' => 'CalendarController',
-		'command' => 'ChatBotController',
 		'company' => 'SettingsController',
 		'customer-debt-payments' => 'CustomerDebtPaymentController',
 	]);
@@ -216,8 +211,6 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::get('reports/top-customers', 'ReportsController@topCustomers')->name('top-customers');
 	Route::get('reports/cashiers-performance', 'ReportsController@topCashiers')->name('top-cashiers');
 	Route::get('reports/debtors/customers', 'ReportsController@debtorsCustomersList')->name('debtors-customers');
-	Route::get('reports/debtors/suppliers', 'ReportsController@debtorsSuppliersList')->name('debtors-suppliers');
-
 
 	Route::post('notifications/get', 'NotificationController@GetOtherNotifications')->name('unreadNotifications');
 	Route::post('notification/unreadEmailNotifications', 'NotificationController@GetUnReadEmailNotifications')->name('unreadEmailNotifications');
@@ -254,8 +247,6 @@ Route::group(["middleware" => "restricted"], function () {
 
 	Route::get('/cashier/change-account/{id}/{status}/{name}', 'CashiersController@ChangeAccountStatus')->name('cashiers.changestatus');
 
-	Route::post('chatbox/commands/import', "ChatBotController@importChatBotCommands")->name("command.import");
-	Route::get('chatbox/commands/truncate', "ChatBotController@truncateChatBotCommands")->name("command.truncate")->middleware("password.confirm");
 
 	// Route::put('/profile/update/{id}', 'ProfileController@update')->name('profile.update');
 
