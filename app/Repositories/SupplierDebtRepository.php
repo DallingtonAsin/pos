@@ -77,6 +77,15 @@ class SupplierDebtRepository
             throw $ex;
         }
     }
+    
+    public function getSupplierTotalDebt($supplier_id)
+    {
+        try {
+            return $this->supplierDebt->where('supplier_id', $supplier_id)->where('is_deleted', false)->sum('amount');
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
 
     public function exists($supplier_id, $amount, $date)
     {

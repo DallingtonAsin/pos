@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DebtorsSupplier extends Model
 {
-    protected $table = 'debtors_suppliers';
+    protected $table = 'supplier_debts';
     public $timestamps = true;
 }

@@ -78,6 +78,15 @@ class SupplierCreditRepository
         }
     }
 
+    public function getSupplierTotalCredit($supplier_id)
+    {
+        try {
+            return $this->supplierCredit->where('supplier_id', $supplier_id)->where('is_deleted', false)->sum('amount');
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
     public function exists($supplier_id, $amount, $date)
     {
         try {
