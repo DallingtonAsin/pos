@@ -39,7 +39,7 @@
                         <tr>
                             <th>#</th>
                             <th>Supplier</th>
-                            <th>Amount</th>
+                            <th>Debt Amount</th>
                             <th>Date</th>
                             <th>is Deleted</th>
                             <th>Added By</th>
@@ -76,7 +76,7 @@
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Supplier</span>
+                            <span><i class="text-danger pr-1">*</i> Supplier</span>
                             <select class="form-control supplier" name="supplier">
                                 <option value="">Select supplier</option>
                                 @foreach ($suppliers as $supplier)
@@ -86,12 +86,12 @@
                         </div>
 
                         <div class="form-group">
-                            <span><i class="text-danger pr-1">*</i>Amount</span>
+                            <span><i class="text-danger pr-1">*</i> Debt Amount</span>
                             <input type="text" class="form-control amount" name="amount" placeholder="Enter amount">
                         </div>
 
                         <div class="form-group">
-                            <span><span class="text-danger pr-2">*</span>Date</span>
+                            <span><span class="text-danger pr-2">*</span> Date</span>
                             <input type="date" class="form-control date " value="{{ date('Y-m-d') }}" name="date"
                                 placeholder="Select date">
                         </div>
