@@ -54,10 +54,10 @@ class SuppliersDataTable extends DataTable
                 $checkBox = '<input type="checkbox" id="' . $supplier->id . '"/>';
                 return $checkBox;
             })->addColumn('credit', function ($data) {
-                $credit = $this->supplierCreditRepository->getSupplierTotalCredit($data->supplier_id);
+                $credit = $this->supplierCreditRepository->getSupplierTotalCredit($data->id);
                 return number_format($credit);
             })->addColumn('debt', function ($data) {
-                $debt = $this->supplierDebtRepository->getSupplierTotalDebt($data->supplier_id);
+                $debt = $this->supplierDebtRepository->getSupplierTotalDebt($data->id);
                 return number_format($debt);
             })->rawColumns(['action', 'checkbox']);
     }
