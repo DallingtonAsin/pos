@@ -99,7 +99,7 @@
 
             @can('isAdmin')
                 <li class="nav-item">
-                    <a href="" class="nav-link with-sub"><i class="fa fa-database"></i>Suppliers</a>
+                    <a href="" class="nav-link with-sub"><i class="fa fa-user-circle"></i>Suppliers</a>
                     <ul class="nav-sub">
                         <li class="nav-sub-item"><a href="{{ Route('suppliers.index') }}" class="nav-sub-link">List of
                                 suppliers</a></li>

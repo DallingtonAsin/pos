@@ -269,10 +269,10 @@ class SalesController extends Controller
     $total_sales = $value2 = Sale::where('date', Date('Y-m-d'))->sum('paid_amount');
     $total_expenses = Expense::where('date_of_expenditure', Date('Y-m-d'))->sum('amount');
     $cost_of_damages = Helper::getPeriodicDamageCost(Date('Y-m-d'), Date('Y-m-d'));
-    $value3 = (SupplierCredit::whereDate('created_at', Date('Y-m-d'))->sum('amount')) - (SupplierDebt::whereDate('created_at', Date('Y-m-d'))->sum('amount'));
-    $value4 = (Customer::whereDate('created_at', Date('Y-m-d'))->sum('credit')) - (Customer::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
+    $net_supplier_value = (SupplierCredit::whereDate('created_at', Date('Y-m-d'))->sum('amount')) - (SupplierDebt::whereDate('created_at', Date('Y-m-d'))->sum('amount'));
+    $net_customer_value = (Customer::whereDate('created_at', Date('Y-m-d'))->sum('credit')) - (Customer::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
 
-    $netValue = (($value2 - $value1) - ($total_expenses + $cost_of_damages) + ($value3 + $value4));
+    $netValue = (($value2 - $value1) - ($total_expenses + $cost_of_damages) + ($net_supplier_value + $net_customer_value));
 
     $data = array(
       'totl_no' => $total_number_of_sales,
@@ -412,7 +412,7 @@ class SalesController extends Controller
     $total_expenses = Expense::sum('amount');
     $cost_of_damages = Helper::getDamageCost();
     $total_initial_cost = Sale::sum('total_buying_cost');
-    $supplier_debts = (Supplier::sum('credit')) - (Supplier::sum('debt'));
+    $supplier_debts = (SupplierCredit::sum('amount')) - (SupplierDebt::sum('amount'));
     $customer_debts = Sale::where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
     $netValue = (($total_sales - $total_initial_cost) - ($total_expenses + $cost_of_damages) + ($supplier_debts + $customer_debts));
 
@@ -435,7 +435,7 @@ class SalesController extends Controller
       $total_expenses = Expense::sum('amount');
       $cost_of_damages = Helper::getDamageCost();
       $total_initial_cost = Sale::sum('total_buying_cost');
-      $supplier_debts = (Supplier::sum('credit')) - (Supplier::sum('debt'));
+      $supplier_debts = (SupplierCredit::sum('amount')) - (SupplierDebt::sum('amount'));
       $customer_debts = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
       $netValue = (($total_sales - $total_initial_cost) - ($total_expenses + $cost_of_damages) + ($supplier_debts + $customer_debts));
     } else {
