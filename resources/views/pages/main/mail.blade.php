@@ -41,7 +41,7 @@
               <span class="input-group-addon"><i class="fa fa-user" ></i></span>
               <input type="text"  class="form-control   @error('senderName') is-invalid @enderror"  value="{{ Auth::user()->name}}" 
               name="senderName" placeholder="type your name" value="{{ Auth::user()->name }}"
-              autocomplete="off" id='sender' spellcheck="false" disabled>
+              autocomplete="off" id='sender' spellcheck="false">
             </div>
             @error('senderName')
             <span class="text-danger">{{ $message }}</span>
@@ -80,7 +80,7 @@
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-envelope" ></i></span>
             <input type="text"  class="form-control "  placeholder="type your email" 
-            name="senderEmail" value="{{ Auth::user()->email}}" disabled
+            name="senderEmail" value="{{ Auth::user()->email}}" 
             autocomplete="off" spellcheck="false">
           </div>
           @error('senderEmail')
@@ -222,14 +222,14 @@
         
     }else
     {
-        $("#sender").prop('disabled', true);
-        $("#recipient").prop('disabled', true);
-        $("#receiverEmail").prop('disabled', true);
-        $("#subject").prop('disabled', true);
-        $("#email-message").prop('disabled', true);
-        $("#attachment").prop('disabled', true);
-        $("#sendMailBtn").prop('disabled', true);
-        $(".radioBtn").prop('disabled', true);
+        $("#sender").prop('', true);
+        $("#recipient").prop('', true);
+        $("#receiverEmail").prop('', true);
+        $("#subject").prop('', true);
+        $("#email-message").prop('', true);
+        $("#attachment").prop('', true);
+        $("#sendMailBtn").prop('', true);
+        $(".radioBtn").prop('', true);
     }
 
     function HideShowEmailField(resp1, resp2)
