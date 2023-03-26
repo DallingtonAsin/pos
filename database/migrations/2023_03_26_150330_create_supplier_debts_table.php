@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
-class CreateStoresTable extends Migration
+class CreateSupplierDebtsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,15 +13,17 @@ class CreateStoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('supplier_debts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('supplier_id');
+            $table->double('amount');
+            $table->date('date');
             $table->boolean('is_deleted')->default(false);
             $table->unsignedBigInteger('added_by');
             $table->timestamps();
 
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->foreign('added_by')->references('id')->on('users')->onDelete('cascade');
-
         });
     }
 
@@ -33,8 +34,6 @@ class CreateStoresTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('stores');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::dropIfExists('supplier_debts');
     }
 }
