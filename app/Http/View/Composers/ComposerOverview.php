@@ -44,7 +44,7 @@ class ComposerOverview
 
     $top_items_data = Sale::select('item',  DB::raw('SUM(quantity) as total_quantity'))
       ->groupBy('item')
-      ->orderByDesc('total_quantity')
+      ->orderBy('total_quantity', 'desc')
       ->take(10)
       ->get();
     

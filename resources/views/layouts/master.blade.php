@@ -11,7 +11,9 @@
     <title>{{ $company->name }}</title>
 
     <script>
-        window.Laravel = { csrfToken: 'csrf_token()' }
+        window.Laravel = {
+            csrfToken: 'csrf_token()'
+        }
     </script>
 
     <script src="{{ asset('vendors/js/jquery-3.3.1.js') }}"></script>
@@ -47,7 +49,8 @@
     <script src="{{ asset('vendors/js/azia.js') }}"></script>
     <script src="{{ asset('js/external.min.js') }}"></script>
     <script src="{{ asset('vendors/custom/js.js') }}"></script>
-
+    <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
+    <script src="{{ asset('js/echarts.js') }}"></script>
 
     <link rel="stylesheet" href="{{ asset('vendors/fonts/montserrat/css.css') }}">
     <link href="{{ asset('vendors/calendar/fullcalendar.min.css') }}" rel="stylesheet" />
@@ -72,7 +75,7 @@
     <link href="{{ asset('vendors/magnific-popup/dist/magnific-popup.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
-    
+
     <style>
         tbody>tr>td {
             font-weight: normal !important;
@@ -134,6 +137,11 @@
         .close span {
             color: #fff;
             font-size: 25px !important;
+        }
+
+        .chart-card {
+            width: 700px !important;
+            height: 400px !important;
         }
     </style>
 </head>

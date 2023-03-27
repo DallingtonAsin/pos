@@ -58,21 +58,20 @@
         </a>
     </div>
 
-    <div id="top_items_by_qty_chart" class="chart-card"></div>
 
     <div class="row">
         <div class="col-md-6">
             <div class="tile">
-                <div class="embed-responsive">
+                {{-- <div class="embed-responsive"> --}}
                     <div id="top_items_by_qty_chart" class="chart-card"></div>
-                </div>
+                {{-- </div> --}}
             </div>
         </div>
         <div class="col-md-6">
             <div class="tile">
-                <div class="embed-responsive">
+                {{-- <div class="embed-responsive"> --}}
                     <div id="paid_order_chart" class="chart-card"></div>
-                </div>
+                {{-- </div> --}}
             </div>
         </div>
 
@@ -81,24 +80,23 @@
     <div class="row">
         <div class="col-md-6">
             <div class="tile">
-                <div class="embed-responsive">
+                {{-- <div class="embed-responsive"> --}}
                     <div id="cancelled_order_chart" class="chart-card"></div>
-                </div>
+                {{-- </div> --}}
             </div>
         </div>
         <div class="col-md-6">
             <div class="tile">
-                <div class="embed-responsive">
+                {{-- <div class="embed-responsive"> --}}
                     <div id="overview_chart" class="chart-card"></div>
-                </div>
+                {{-- </div> --}}
             </div>
         </div>
     </div>
 
 </div>
 
-<script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
-<script src="{{ asset('js/echarts.js') }}"></script>
+
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -118,7 +116,7 @@
 
 
      
-        eBarGraph('top_items_by_qty_chart', 'Top sold items by quantity', topItems.items, topItems.quantity, 'items', '#0dcaf0');
+       eBarGraph('top_items_by_qty_chart', 'Top sold items by quantity', topItems.quantity, topItems.items, 'items', '#0dcaf0');
         
 
         // if (paid_orders != undefined || paid_orders.length > 0) {
