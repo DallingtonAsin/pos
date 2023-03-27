@@ -40,6 +40,8 @@ class ComposerOverview
     $totlLockedUsers = User::where('isActive', false)->count();
     $fiveSuperAdmin = User::limit(5)->get();
     $topItems = $this->getTopItemsByQuantity();
+    $salesByCashier = $this->getSalesByCashierReport();
+
 
 
 
@@ -76,6 +78,7 @@ class ComposerOverview
       'topItemsByRevenue' => $this->getTopItemsByRevenue(),
       'topItemsByProfit' => $this->getTopItemsByProfit(),
       'totlSuperAdmin' => $this->getNumberofSuperAdmin(),
+      'salesByCashier' => $salesByCashier,
       'superAdminArr' => $fiveSuperAdmin,
     );
 
@@ -169,7 +172,29 @@ class ComposerOverview
     }
   }
 
+  private function getSalesByCashierReport()
+  {
+    try {
 
+      $salesByCashier = Sale::join('users', 'sales.cashier_id', '=', 'users.id')
+        ->select(DB::raw('users.first_name as cashier, sum(sales.amount) as total_sales'))
+        ->groupBy('sales.cashier_id')
+        ->orderByDesc('total_sales')
+        ->get();
+
+      $data = $row = array();
+      foreach ($salesByCashier as $item) {
+        $row['name'] = $item->cashier;
+        $row['value'] = $item->total_sales;
+        array_push($data, $row);
+      }
+
+      return $data;
+
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
 
   private function getRoles()
   {

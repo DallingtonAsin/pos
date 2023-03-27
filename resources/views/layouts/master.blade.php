@@ -4,9 +4,8 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <meta name="description" content="{{ config('app.name') }}">
-    <meta name="author" content="DallingtonCompanies">
+    <meta name="author" content="Pivosoft POS">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $company->name }}</title>
 
@@ -75,75 +74,7 @@
     <link href="{{ asset('vendors/magnific-popup/dist/magnific-popup.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
-
-    <style>
-        tbody>tr>td {
-            font-weight: normal !important;
-        }
-
-        main {
-            padding: 0;
-        }
-
-        header {
-            position: sticky;
-            top: 0;
-        }
-
-        .cartPanelHeader {
-            position: sticky;
-            top: 0;
-        }
-
-        .fixedTableHead {
-            overflow-y: auto;
-            height: 350px;
-        }
-
-        .fixedTableHead thead th {
-            /* position: sticky; */
-            top: 0;
-        }
-
-        .cart-table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        .tr-exists {
-            background-color: red;
-        }
-
-        html,
-        body {
-            max-width: 100%;
-        }
-
-        ::-webkit-scrollbar {
-            width: 0;
-            height: 0;
-        }
-
-        .close {
-            background-color: red !important;
-            border-radius: 50px;
-            margin-right: 1px !important;
-            opacity: 1 !important;
-            filter: none !important;
-            padding: 5px !important;
-            margin-top: 1px !important
-        }
-
-        .close span {
-            color: #fff;
-            font-size: 25px !important;
-        }
-
-        .chart-card {
-            width: 700px !important;
-            height: 400px !important;
-        }
-    </style>
+    <link href="{{ asset('css/must-load.css') }}" rel="stylesheet" media="all">
 </head>
 
 

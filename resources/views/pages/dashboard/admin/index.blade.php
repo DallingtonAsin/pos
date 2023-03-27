@@ -62,12 +62,12 @@
     <div class="row">
         <div class="col-md-6">
             <div class="tile">
-                    <div id="top_items_by_qty_chart" class="chart-card"></div>
+                <div id="top_items_by_qty_chart" class="chart-card"></div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="tile">
-                    <div id="top_items_by_revenue_chart" class="chart-card"></div>
+                <div id="top_items_by_revenue_chart" class="chart-card"></div>
             </div>
         </div>
 
@@ -76,12 +76,12 @@
     <div class="row">
         <div class="col-md-6">
             <div class="tile">
-                    <div id="top_items_by_profit_chart" class="chart-card"></div>
+                <div id="sales_by_cashier_chart" class="chart-card"></div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="tile">
-                    <div id="overview_chart" class="chart-card"></div>
+                <div id="top_items_by_profit_chart" class="chart-card"></div>
             </div>
         </div>
     </div>
@@ -95,45 +95,15 @@
         let topItemsByQty = {!! json_encode($data['topItemsByQty']) !!};
         let topItemsByRevenue = {!! json_encode($data['topItemsByRevenue']) !!};
         let topItemsByProfit = {!! json_encode($data['topItemsByProfit']) !!};
+        let salesByCashier = {!! json_encode($data['salesByCashier']) !!};
 
 
-        // let paid_orders = {!! json_encode($customers) !!};
-        // let cancelled_orders = {!! json_encode($customers) !!};
-        // let completed_orders = {!! json_encode($customers) !!};
-
-
-        // console.log('Paid orders', paid_orders);
-        // console.log('Cancelled orders', cancelled_orders);
-        // console.log('Completed orders', completed_orders);
-
-
-
-     
-       eBarGraph('top_items_by_qty_chart', 'Top Sold Items By Quantity', topItemsByQty.quantity, topItemsByQty.items, 'items', '#0dcaf0');
-       ePieChart('top_items_by_revenue_chart', 'Top Sold Items By Revenue', topItemsByRevenue);
-       eLineGraph('top_items_by_profit_chart', 'Top Sold Items by Profit', topItemsByProfit.profit, topItemsByProfit.items, 'items', '#198754');
-
-     
-
-
-        // if ((monthly_orders != undefined || monthly_orders.length > 0) &&
-        //     (completed_orders != undefined || completed_orders.length > 0) &&
-        //     (cancelled_orders != undefined || cancelled_orders.length > 0)) {
-
-        //     let metricsData = [];
-        //     let metrics = ["Total orders", "Paid orders", "Cancelled orders"];
-        //     let title = "Total Orders vs Paid Orders vs Cancelled Orders";
-
-        //     metricsData[0] = monthly_orders.orders;
-        //     metricsData[1] = completed_orders.orders;
-        //     metricsData[2] = cancelled_orders.orders;
-        //     get2BarsAndLineGraphOptions('overview_chart', title, metrics, monthly_orders.months, metricsData);
-        // } else {
-        //     console.log("monthly orders", monthly_orders.length);
-        //     console.log("completed orders", completed_orders.length);
-        //     console.log("cancelled orders", cancelled_orders.length);
-
-        // }
+        eBarGraph('top_items_by_qty_chart', 'Top Sold Items By Quantity', topItemsByQty.quantity, topItemsByQty
+            .items, 'items', '#0dcaf0');
+        ePieChart('top_items_by_revenue_chart', 'Top Sold Items By Revenue', topItemsByRevenue);
+        eLineGraph('top_items_by_profit_chart', 'Top Sold Items by Profit', topItemsByProfit.profit,
+            topItemsByProfit.items, 'items', '#198754');
+        ePieChart('sales_by_cashier_chart', 'Sales By Cashier', salesByCashier);
 
     });
 </script>
