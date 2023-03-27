@@ -639,6 +639,10 @@ td {
 	font-size: 15.5px !important;
    }
 
+   .widget-small .fa{
+	font-size: 40px !important;
+   }
+
    .nav-item a .fa-credit-card{
 	 font-size: 15px !important;
    }
@@ -710,4 +714,8 @@ td {
   text-align: right;
   font-weight: bold;
   font-size: 24;
+}
+
+.widget-title{
+	font-size: 18px !important;
 }

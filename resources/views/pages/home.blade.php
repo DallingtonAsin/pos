@@ -2,19 +2,19 @@
 
 @can('isAdmin')
 @section('content')
-@include('pages.dashboard.main_admin')
+@include('pages.dashboard.admin.index')
 @endsection
 @endcan
 
 @can('isSuperAdmin')
 @section('content')
-@include('pages.dashboard.main_superAdmin')
+@include('pages.dashboard.super-admin.index')
 @endsection
 @endcan
 
 
 @can('isCashier')
 @section('content')
-@include('pages.dashboard.main_cashier')
+@include('pages.dashboard.cashier.index')
 @endsection
 @endcan
