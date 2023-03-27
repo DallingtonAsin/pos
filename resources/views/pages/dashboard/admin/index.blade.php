@@ -6,11 +6,9 @@
                 <div class="info">
                     <h4 class="widget-title">Sales</h4>
                     <p>
-                        <b>
-                            @isset($data)
-                                {{ number_format($data['total_sales']) }}
-                            @endisset
-                        </b>
+                        @isset($data)
+                            <strong>{{ number_format($data['total_sales']) }}</strong>
+                        @endisset
                     </p>
                 </div>
             </div>
@@ -21,11 +19,11 @@
             <div class="widget-small warning coloured-icon"><i class="icon fa fa-database fa-3x"></i>
                 <div class="info">
                     <h4 class="widget-title">Stock</h4>
-                    <p><b>
-                            @isset($data)
-                                {{ number_format($data['num_of_stockItems']) }}
-                            @endisset
-                        </b></p>
+                    <p>
+                        @isset($data)
+                            <strong>{{ number_format($data['num_of_stockItems']) }}</strong>
+                        @endisset
+                    </p>
                 </div>
             </div>
         </a>
@@ -35,11 +33,11 @@
             <div class="widget-small info coloured-icon"><i class="icon fa fa-minus-circle fa-3x"></i>
                 <div class="info">
                     <h4 class="widget-title">Expenses</h4>
-                    <p><b>
-                            @isset($data)
-                                {{ number_format($data['total_expenses']) }}
-                            @endisset
-                        </b></p>
+                    <p>
+                        @isset($data)
+                            <strong>{{ number_format($data['total_expenses']) }}</strong>
+                        @endisset
+                    </p>
                 </div>
             </div>
         </a>
@@ -47,12 +45,12 @@
         <a href="{{ route('damaged-stock-items.index') }}" class="col-md-6 col-lg-3 text-decoration-none">
             <div class="widget-small danger coloured-icon"><i class="icon fa fa-cube fa-3x"></i>
                 <div class="info">
-                    <h4 class="widget-title">Damaged stock</h4>
-                    <p><b>
-                            @isset($data)
-                                {{ number_format($data['total_damages']) }}
-                            @endisset
-                        </b></p>
+                    <h4 class="widget-title">Damages</h4>
+                    <p>
+                        @isset($data)
+                            <strong>{{ number_format($data['total_damages']) }}</strong>
+                        @endisset
+                    </p>
                 </div>
             </div>
         </a>
@@ -92,18 +90,14 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
-        let topItemsByQty = {!! json_encode($data['topItemsByQty']) !!};
-        let topItemsByRevenue = {!! json_encode($data['topItemsByRevenue']) !!};
-        let topItemsByProfit = {!! json_encode($data['topItemsByProfit']) !!};
-        let salesByCashier = {!! json_encode($data['salesByCashier']) !!};
+        let topItemsByQty = {!! json_encode($data['topItemsByQty']) !!}
+        let topItemsByRevenue = {!! json_encode($data['topItemsByRevenue']) !!}
+        let topItemsByProfit = {!! json_encode($data['topItemsByProfit']) !!}
+        let salesByCashier = {!! json_encode($data['salesByCashier']) !!}
 
-
-        eBarGraph('top_items_by_qty_chart', 'Top Sold Items By Quantity', topItemsByQty.quantity, topItemsByQty
-            .items, 'items', '#0dcaf0');
-        ePieChart('top_items_by_revenue_chart', 'Top Sold Items By Revenue', topItemsByRevenue);
-        eLineGraph('top_items_by_profit_chart', 'Top Sold Items by Profit', topItemsByProfit.profit,
-            topItemsByProfit.items, 'items', '#198754');
-        ePieChart('sales_by_cashier_chart', 'Sales By Cashier', salesByCashier);
-
+        ePieChart('sales_by_cashier_chart', 'Sales By Cashier', salesByCashier)
+        ePieChart('top_items_by_revenue_chart', 'Top Sold Items By Revenue', topItemsByRevenue)
+        eBarGraph('top_items_by_qty_chart', 'Top Sold Items By Quantity', topItemsByQty.quantity, topItemsByQty.items, 'items', '#0dcaf0')
+        eLineGraph('top_items_by_profit_chart', 'Top Sold Items by Profit', topItemsByProfit.profit, topItemsByProfit.items, 'items', '#198754')
     });
 </script>
