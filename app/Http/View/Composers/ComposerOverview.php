@@ -41,24 +41,10 @@ class ComposerOverview
     $totlActiveUsers = User::where('isActive', true)->count();
     $totlLockedUsers = User::where('isActive', false)->count();
     $fiveSuperAdmin = User::limit(5)->get();
+    $topItems = $this->getTopItemsByQuantity();
 
-    $top_items_data = Sale::select('item',  DB::raw('SUM(quantity) as total_quantity'))
-      ->groupBy('item')
-      ->orderBy('total_quantity', 'desc')
-      ->take(10)
-      ->get();
-    
-    $top_items = $quantity = array();
-    foreach($top_items_data as $item){
-      array_push($top_items, $item->item);
-      array_push($quantity, $item->total_quantity);
-    }
-    
-    $topItems = [
-      'items' => $top_items,
-      'quantity' => $quantity
-    ];
-    
+
+
     $company = Company::where('id', '!=', null)->first();
     if (empty($company)) {
 
@@ -88,7 +74,8 @@ class ComposerOverview
       'totlSystemUsers' => $totlSystemUsers,
       'totlActiveUsers' => $totlActiveUsers,
       'totlLockedUsers' => $totlLockedUsers,
-      'topItems' =>  $topItems,
+      'topItemsByQty' =>  $topItems,
+      'topItemsByRevenue' => $this->getTopItemsByRevenue(),
       'totlSuperAdmin' => $this->getNumberofSuperAdmin(),
       'superAdminArr' => $fiveSuperAdmin,
     );
@@ -107,7 +94,55 @@ class ComposerOverview
     }
   }
 
+  private function getTopItemsByQuantity()
+  {
+    try {
 
+      $top_items_data = Sale::select('item',  DB::raw('SUM(quantity) as total_quantity'))
+        ->groupBy('item')
+        ->orderBy('total_quantity', 'desc')
+        ->take(10)
+        ->get();
+
+      $top_items = $quantity = array();
+      foreach ($top_items_data as $item) {
+        array_push($top_items, $item->item);
+        array_push($quantity, $item->total_quantity);
+      }
+
+      $topItems = [
+        'items' => $top_items,
+        'quantity' => $quantity
+      ];
+      return $topItems;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
+  private function getTopItemsByRevenue()
+  {
+    try {
+
+      $top_items_data = Sale::select('item',  DB::raw('SUM(amount) as total_amount'))
+        ->groupBy('item')
+        ->orderBy('total_amount', 'desc')
+        ->take(10)
+        ->get();
+
+      $topItems = $row = array();
+      foreach ($top_items_data as $item) {
+        $row['name'] = $item->item;
+        $row['value'] = $item->total_amount;
+        array_push($topItems, $row);
+      }
+
+      return $topItems;
+
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
 
   public function getRoles()
   {

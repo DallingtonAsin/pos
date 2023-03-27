@@ -100,14 +100,13 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
-        let topItems = {!! json_encode($data['topItems']) !!};
+        let topItemsByQty = {!! json_encode($data['topItemsByQty']) !!};
+        let topItemsByRevenue = {!! json_encode($data['topItemsByRevenue']) !!};
+
         // let paid_orders = {!! json_encode($customers) !!};
         // let cancelled_orders = {!! json_encode($customers) !!};
         // let completed_orders = {!! json_encode($customers) !!};
 
-        console.log('Top items', topItems);
-        console.log('Top items', topItems.items);
-        console.log('Top items', topItems.quantity);
 
         // console.log('Paid orders', paid_orders);
         // console.log('Cancelled orders', cancelled_orders);
@@ -116,12 +115,9 @@
 
 
      
-       eBarGraph('top_items_by_qty_chart', 'Top sold items by quantity', topItems.quantity, topItems.items, 'items', '#0dcaf0');
+       eBarGraph('top_items_by_qty_chart', 'Top Sold Items by Quantity', topItemsByQty.quantity, topItemsByQty.items, 'items', '#0dcaf0');
+       ePieChart('paid_order_chart', 'Top Sold Items by Revenue', topItemsByRevenue);
         
-
-        // if (paid_orders != undefined || paid_orders.length > 0) {
-        //     ePieChart('paid_order_chart', 'Monthly Paid Kitchen Orders', paid_orders);
-        // }
 
         // if (cancelled_orders != undefined || cancelled_orders.length > 0) {
         //     eLineGraph('cancelled_order_chart', 'Monthly Cancelled Kitchen Orders', cancelled_orders.orders,
