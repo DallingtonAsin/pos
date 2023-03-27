@@ -86,8 +86,8 @@
                         <li class="nav-sub-item"><a href="{{ Route('stock.index') }}" class="nav-sub-link">Stock</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('purchases.index') }}"
                                 class="nav-sub-link">Purchases</a></li>
-                                <li class="nav-sub-item"><a href="{{ Route('taken-bottles.index') }}"
-                                    class="nav-sub-link">Taken Bottles</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('taken-bottles.index') }}" class="nav-sub-link">Taken
+                                Bottles</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('damaged-stock-items.index') }}"
                                 class="nav-sub-link">Damaged Stock</a></li>
                         <li class="nav-sub-item"><a href="{{ Route('product-categories.index') }}"
@@ -206,7 +206,7 @@
                 </li>
             @endcan
 
-        
+
             @cannot('isSuperAdmin')
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="typcn typcn-location"></i>Events</a>
@@ -266,7 +266,7 @@
             </div>
 
             <div class="az-header-center nunito-font">
-                <h5 class="nav-label colored-icon-1">{{ $company->name }} </h5>
+                <h4 class="nav-label text-white text-uppercase"> <strong>{{ $company->name }}</strong></h4>
             </div>
 
             <div class="dropdown az-profile-menu">

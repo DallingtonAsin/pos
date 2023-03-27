@@ -3,9 +3,8 @@
 
 namespace App\Http\View\Composers;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use App\User;
-use Auth;
 
 class ComposerNotifications{
 

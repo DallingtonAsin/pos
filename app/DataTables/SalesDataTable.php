@@ -49,8 +49,10 @@ class SalesDataTable extends DataTable
                 $checkBox = '<input type="checkbox" id="' . $sale->id . '"/>';
                 return $checkBox;
             })->addColumn('cashier', function ($sale) {
-                    $cashier = Helper::getUser($sale->cashier_id);
-                    return $cashier->first_name. ' '.$cashier->last_name;
+                $cashier = Helper::getUser($sale->cashier_id);
+                return $cashier->first_name . ' ' . $cashier->last_name;
+            })->editColumn('date', function ($sale) {
+                return date('Y-m-d H:i A', strtotime($sale->created_at));
             })->addColumn('customer', function ($sale) {
                 $customer_name = null;
                 if ($sale->customer_id) {
@@ -112,6 +114,7 @@ class SalesDataTable extends DataTable
             'date',
             'customer_id',
             'cashier_id',
+            'created_at'
         ];
     }
 

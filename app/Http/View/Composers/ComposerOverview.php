@@ -6,6 +6,7 @@ namespace App\Http\View\Composers;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 use App\Models\Stock;
 use App\Models\Sale;
 use App\Models\Damage;
@@ -13,8 +14,6 @@ use App\Models\Supplier;
 use App\Models\Customer;
 use App\Models\Expense;
 use App\Models\Role;
-use App\Models\TopCashier;
-use App\Models\DebtorsCustomer;
 use App\Models\DebtorsSupplier;
 use App\Models\Company;
 use App\User;
@@ -40,6 +39,10 @@ class ComposerOverview
     $totlActiveUsers = User::where('isActive', true)->count();
     $totlLockedUsers = User::where('isActive', false)->count();
     $fiveSuperAdmin = User::limit(5)->get();
+    $topItems = $this->getTopItemsByQuantity();
+    $salesByCashier = $this->getSalesByCashierReport();
+
+
 
 
     $company = Company::where('id', '!=', null)->first();
@@ -71,7 +74,11 @@ class ComposerOverview
       'totlSystemUsers' => $totlSystemUsers,
       'totlActiveUsers' => $totlActiveUsers,
       'totlLockedUsers' => $totlLockedUsers,
+      'topItemsByQty' =>  $topItems,
+      'topItemsByRevenue' => $this->getTopItemsByRevenue(),
+      'topItemsByProfit' => $this->getTopItemsByProfit(),
       'totlSuperAdmin' => $this->getNumberofSuperAdmin(),
+      'salesByCashier' => $salesByCashier,
       'superAdminArr' => $fiveSuperAdmin,
     );
 
@@ -89,28 +96,126 @@ class ComposerOverview
     }
   }
 
+  private function getTopItemsByQuantity()
+  {
+    try {
 
+      $top_items_data = Sale::select('item',  DB::raw('SUM(quantity) as total_quantity'))
+        ->groupBy('item')
+        ->orderBy('total_quantity', 'desc')
+        ->take(10)
+        ->get();
 
-  public function getRoles()
+      $top_items = $quantity = array();
+      foreach ($top_items_data as $item) {
+        array_push($top_items, $item->item);
+        array_push($quantity, $item->total_quantity);
+      }
+
+      $topItems = [
+        'items' => $top_items,
+        'quantity' => $quantity
+      ];
+      return $topItems;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
+  private function getTopItemsByRevenue()
+  {
+    try {
+
+      $top_items_data = Sale::select('item',  DB::raw('SUM(amount) as total_amount'))
+        ->groupBy('item')
+        ->orderBy('total_amount', 'desc')
+        ->take(10)
+        ->get();
+
+      $topItems = $row = array();
+      foreach ($top_items_data as $item) {
+        $row['name'] = $item->item;
+        $row['value'] = $item->total_amount;
+        array_push($topItems, $row);
+      }
+
+      return $topItems;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
+  private function getTopItemsByProfit()
+  {
+
+    try {
+
+      $top_items_data = Sale::select('item', DB::raw('SUM((selling_price - original_price) * quantity) as total_profit'))
+        ->groupBy('item')
+        ->orderBy('total_profit', 'asc')
+        ->take(10)
+        ->get();
+
+      $top_items = $profit = array();
+      foreach ($top_items_data as $item) {
+        array_push($top_items, $item->item);
+        array_push($profit, $item->total_profit);
+      }
+
+      $topItems = [
+        'items' => $top_items,
+        'profit' => $profit
+      ];
+      return $topItems;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
+  private function getSalesByCashierReport()
+  {
+    try {
+
+      $salesByCashier = Sale::join('users', 'sales.cashier_id', '=', 'users.id')
+        ->select(DB::raw('users.first_name as cashier, sum(sales.amount) as total_sales'))
+        ->groupBy('sales.cashier_id')
+        ->orderByDesc('total_sales')
+        ->get();
+
+      $data = $row = array();
+      foreach ($salesByCashier as $item) {
+        $row['name'] = $item->cashier;
+        $row['value'] = $item->total_sales;
+        array_push($data, $row);
+      }
+
+      return $data;
+
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
+  private function getRoles()
   {
     $roles = Role::get();
     return $roles;
   }
 
 
-  public function getUserRole()
+  private function getUserRole()
   {
     $userRole = Role::where('id', Auth::user()->role_id)->value('name');
     return $userRole;
   }
 
-  public function getRoleId($role)
+  private function getRoleId($role)
   {
     $role_id = Role::where("name", $role)->value("id");
     return $role_id;
   }
 
-  public function getNumberofSuperAdmin()
+  private function getNumberofSuperAdmin()
   {
     $role = "SuperAdministrator";
     $userRoleId = $this->getRoleId($role);

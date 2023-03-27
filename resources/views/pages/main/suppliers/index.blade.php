@@ -20,18 +20,19 @@
 
                     <div class="col-lg-3">
                         <h5>
-                            Credit: shs.<strong class="text-success totl_credit">
+                            Credit: shs.
+                            <strong class="text-success text-bold totl_credit">
                                 @isset($total_credit)
                                     {{ number_format($total_credit) }}
                                 @endisset
-
                             </strong>
                         </h5>
                     </div>
 
                     <div class="col-lg-3">
                         <h5>
-                            Debts: shs.<label class="text-danger totl_debt">
+                            Debts: shs. 
+                            <label class="text-danger totl_debt text-bold">
                                 @isset($total_debts)
                                     {{ number_format($total_debts) }}
                                 @endisset
@@ -40,37 +41,10 @@
                         </h5>
                     </div>
 
-                    <div class="col-lg-2">
-                        <h5>
-                            <a class="text-info bolded" href="javascript:void(0)" id="createNewSupplier"> Add supplier</a>
-                        </h5>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="btn-group">
-                            <button type="button"
-                                class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Action
-                            </button>
-                            <ul class="dropdown-menu">
-                                @can('isAdmin')
-                                    <li><a href="" class="add-link text-dark text-decoration-none" data-toggle="modal"
-                                            data-target="#importSuppliers"><strong>Import suppliers</strong>
-                                        </a></li>
-
-                                    <li>
-                                        <a class="text-decoration-none text-dark
-                nunito-font"
-                                            href="javascript:void(0)" id="removeAllSuppliers"> Delete all suppliers</a>
-                                    </li>
-                                @endcan
-                            </ul>
-                        </div>
-                    </div>
+                        <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mr-5 mb-2"
+                        id="createNewSupplier"><i class="fa fa-plus-circle pr-1"></i>Add supplier</button>
 
                 </div>
-
             </div>
         </div>
 
@@ -331,7 +305,7 @@
                 $('.addsupplierBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
                 $('.supplierId').val('');
                 $('#SuppliersForm').trigger("reset");
-                $('#modalHeading').html("Register new supplier");
+                $('#modalHeading').html("Add new supplier");
                 $('#addSuppliersModal').modal('show');
             });
 

@@ -26,8 +26,7 @@
             </div>
 
             <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
-                id="addSupplierCredit">
-                <i class="fa fa-plus-circle pr-1"></i>Add supplier credit</button>
+                id="addSupplierCredit"><i class="fa fa-plus-circle pr-1"></i>Add supplier credit</button>
         </div>
 
         <div class="panel-body">
