@@ -6,6 +6,7 @@ namespace App\Http\View\Composers;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 use App\Models\Stock;
 use App\Models\Sale;
 use App\Models\Damage;
@@ -41,7 +42,23 @@ class ComposerOverview
     $totlLockedUsers = User::where('isActive', false)->count();
     $fiveSuperAdmin = User::limit(5)->get();
 
-
+    $top_items_data = Sale::select('item',  DB::raw('SUM(quantity) as total_quantity'))
+      ->groupBy('item')
+      ->orderByDesc('total_quantity')
+      ->take(10)
+      ->get();
+    
+    $top_items = $quantity = array();
+    foreach($top_items_data as $item){
+      array_push($top_items, $item->item);
+      array_push($quantity, $item->total_quantity);
+    }
+    
+    $topItems = [
+      'items' => $top_items,
+      'quantity' => $quantity
+    ];
+    
     $company = Company::where('id', '!=', null)->first();
     if (empty($company)) {
 
@@ -71,6 +88,7 @@ class ComposerOverview
       'totlSystemUsers' => $totlSystemUsers,
       'totlActiveUsers' => $totlActiveUsers,
       'totlLockedUsers' => $totlLockedUsers,
+      'topItems' =>  $topItems,
       'totlSuperAdmin' => $this->getNumberofSuperAdmin(),
       'superAdminArr' => $fiveSuperAdmin,
     );

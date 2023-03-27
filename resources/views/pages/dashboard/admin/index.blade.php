@@ -58,12 +58,13 @@
         </a>
     </div>
 
+    <div id="top_items_by_qty_chart" class="chart-card"></div>
 
     <div class="row">
         <div class="col-md-6">
             <div class="tile">
                 <div class="embed-responsive">
-                    <div id="monthly_order_chart" class="chart-card"></div>
+                    <div id="top_items_by_qty_chart" class="chart-card"></div>
                 </div>
             </div>
         </div>
@@ -96,55 +97,58 @@
 
 </div>
 
-
+<script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
+<script src="{{ asset('js/echarts.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
 
-        let monthly_orders = {!! json_encode($customers) !!};
-        let paid_orders = {!! json_encode($customers) !!};
-        let cancelled_orders = {!! json_encode($customers) !!};
-        let completed_orders = {!! json_encode($customers) !!};
+        let topItems = {!! json_encode($data['topItems']) !!};
+        // let paid_orders = {!! json_encode($customers) !!};
+        // let cancelled_orders = {!! json_encode($customers) !!};
+        // let completed_orders = {!! json_encode($customers) !!};
 
-        console.log('Monthly orders', monthly_orders.length);
-        console.log('Paid orders', paid_orders);
-        console.log('Cancelled orders', cancelled_orders);
-        console.log('Completed orders', completed_orders);
+        console.log('Top items', topItems);
+        console.log('Top items', topItems.items);
+        console.log('Top items', topItems.quantity);
 
-
-
-        if (monthly_orders != undefined || monthly_orders.length > 0) {
-            eBarGraph('monthly_order_chart', 'Monthly Kitchen Orders', monthly_orders.orders, monthly_orders
-                .months, 'orders', '#0dcaf0');
-        }
-
-        if (paid_orders != undefined || paid_orders.length > 0) {
-            ePieChart('paid_order_chart', 'Monthly Paid Kitchen Orders', paid_orders);
-        }
-
-        if (cancelled_orders != undefined || cancelled_orders.length > 0) {
-            eLineGraph('cancelled_order_chart', 'Monthly Cancelled Kitchen Orders', cancelled_orders.orders,
-                cancelled_orders.months, 'orders', '#198754');
-        }
+        // console.log('Paid orders', paid_orders);
+        // console.log('Cancelled orders', cancelled_orders);
+        // console.log('Completed orders', completed_orders);
 
 
-        if ((monthly_orders != undefined || monthly_orders.length > 0) &&
-            (completed_orders != undefined || completed_orders.length > 0) &&
-            (cancelled_orders != undefined || cancelled_orders.length > 0)) {
 
-            let metricsData = [];
-            let metrics = ["Total orders", "Paid orders", "Cancelled orders"];
-            let title = "Total Orders vs Paid Orders vs Cancelled Orders";
+     
+        eBarGraph('top_items_by_qty_chart', 'Top sold items by quantity', topItems.items, topItems.quantity, 'items', '#0dcaf0');
+        
 
-            metricsData[0] = monthly_orders.orders;
-            metricsData[1] = completed_orders.orders;
-            metricsData[2] = cancelled_orders.orders;
-            get2BarsAndLineGraphOptions('overview_chart', title, metrics, monthly_orders.months, metricsData);
-        } else {
-            console.log("monthly orders", monthly_orders.length);
-            console.log("completed orders", completed_orders.length);
-            console.log("cancelled orders", cancelled_orders.length);
+        // if (paid_orders != undefined || paid_orders.length > 0) {
+        //     ePieChart('paid_order_chart', 'Monthly Paid Kitchen Orders', paid_orders);
+        // }
 
-        }
+        // if (cancelled_orders != undefined || cancelled_orders.length > 0) {
+        //     eLineGraph('cancelled_order_chart', 'Monthly Cancelled Kitchen Orders', cancelled_orders.orders,
+        //         cancelled_orders.months, 'orders', '#198754');
+        // }
+
+
+        // if ((monthly_orders != undefined || monthly_orders.length > 0) &&
+        //     (completed_orders != undefined || completed_orders.length > 0) &&
+        //     (cancelled_orders != undefined || cancelled_orders.length > 0)) {
+
+        //     let metricsData = [];
+        //     let metrics = ["Total orders", "Paid orders", "Cancelled orders"];
+        //     let title = "Total Orders vs Paid Orders vs Cancelled Orders";
+
+        //     metricsData[0] = monthly_orders.orders;
+        //     metricsData[1] = completed_orders.orders;
+        //     metricsData[2] = cancelled_orders.orders;
+        //     get2BarsAndLineGraphOptions('overview_chart', title, metrics, monthly_orders.months, metricsData);
+        // } else {
+        //     console.log("monthly orders", monthly_orders.length);
+        //     console.log("completed orders", completed_orders.length);
+        //     console.log("cancelled orders", cancelled_orders.length);
+
+        // }
 
     });
 </script>

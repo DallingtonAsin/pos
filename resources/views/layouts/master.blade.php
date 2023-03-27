@@ -29,13 +29,12 @@
     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
     <script src="{{ asset('vendors/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('vendors/js/customJs.js') }}"></script>
-    <script src="{{ asset('vendors/PrintPagePlugin/jquery.printPage.js') }}"></script>
     <script src="{{ asset('vendors/jquery-confirm/jquery-confirm.min.js') }}"></script>
     <script src="{{ asset('vendors/calendar/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('vendors/calendar/moment.min.js') }}"></script>
     <script src="{{ asset('vendors/calendar/fullcalendar.min.js') }}"></script>
     <script src="{{ asset('vendors/js/bootstrap3-typeahead.min.js') }}"></script>
-    <script src="{{ asset('js/Chart.min.js') }}"></script>
+    <script src="{{ asset('js/chart.min.js') }}"></script>
     <script src="{{ asset('vendors/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('vendors/magnific-popup/dist/jquery.magnific-popup.js') }}"></script>
     <script src="{{ asset('vendors/wickedpicker/src/wickedpicker.js') }}"></script>
@@ -43,12 +42,10 @@
     <script src="{{ asset('vendors/jquery-tabledit/jquery.tabledit.min.js') }}"></script>
     <script src="{{ asset('vendors/js/jquery.flot.js') }}"></script>
     <script src="{{ asset('vendors/js/jquery.flot.resize.js') }}"></script>
-    <script src="{{ asset('vendors/js/Chart.bundle.min.js') }}"></script>
+    <script src="{{ asset('vendors/js/chart.bundle.min.js') }}"></script>
     <script src="{{ asset('vendors/js/chart.flot.sampledata.js') }}"></script>
     <script src="{{ asset('vendors/js/azia.js') }}"></script>
     <script src="{{ asset('js/external.min.js') }}"></script>
-    <script src="{{ asset('vendors/echarts/echarts.min.js') }}"></script>
-    <script src="{{ asset('js/echarts.js') }}"></script>
     <script src="{{ asset('vendors/custom/js.js') }}"></script>
 
 
@@ -75,6 +72,7 @@
     <link href="{{ asset('vendors/magnific-popup/dist/magnific-popup.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
+    
     <style>
         tbody>tr>td {
             font-weight: normal !important;
