@@ -14,8 +14,6 @@ use App\Models\Supplier;
 use App\Models\Customer;
 use App\Models\Expense;
 use App\Models\Role;
-use App\Models\TopCashier;
-use App\Models\DebtorsCustomer;
 use App\Models\DebtorsSupplier;
 use App\Models\Company;
 use App\User;
@@ -76,6 +74,7 @@ class ComposerOverview
       'totlLockedUsers' => $totlLockedUsers,
       'topItemsByQty' =>  $topItems,
       'topItemsByRevenue' => $this->getTopItemsByRevenue(),
+      'topItemsByProfit' => $this->getTopItemsByProfit(),
       'totlSuperAdmin' => $this->getNumberofSuperAdmin(),
       'superAdminArr' => $fiveSuperAdmin,
     );
@@ -138,32 +137,60 @@ class ComposerOverview
       }
 
       return $topItems;
-
     } catch (\Exception $ex) {
       throw $ex;
     }
   }
 
-  public function getRoles()
+  private function getTopItemsByProfit()
+  {
+
+    try {
+
+      $top_items_data = Sale::select('item', DB::raw('SUM((selling_price - original_price) * quantity) as total_profit'))
+        ->groupBy('item')
+        ->orderBy('total_profit', 'asc')
+        ->take(10)
+        ->get();
+
+      $top_items = $profit = array();
+      foreach ($top_items_data as $item) {
+        array_push($top_items, $item->item);
+        array_push($profit, $item->total_profit);
+      }
+
+      $topItems = [
+        'items' => $top_items,
+        'profit' => $profit
+      ];
+      return $topItems;
+    } catch (\Exception $ex) {
+      throw $ex;
+    }
+  }
+
+
+
+  private function getRoles()
   {
     $roles = Role::get();
     return $roles;
   }
 
 
-  public function getUserRole()
+  private function getUserRole()
   {
     $userRole = Role::where('id', Auth::user()->role_id)->value('name');
     return $userRole;
   }
 
-  public function getRoleId($role)
+  private function getRoleId($role)
   {
     $role_id = Role::where("name", $role)->value("id");
     return $role_id;
   }
 
-  public function getNumberofSuperAdmin()
+  private function getNumberofSuperAdmin()
   {
     $role = "SuperAdministrator";
     $userRoleId = $this->getRoleId($role);

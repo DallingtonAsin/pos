@@ -62,16 +62,12 @@
     <div class="row">
         <div class="col-md-6">
             <div class="tile">
-                {{-- <div class="embed-responsive"> --}}
                     <div id="top_items_by_qty_chart" class="chart-card"></div>
-                {{-- </div> --}}
             </div>
         </div>
         <div class="col-md-6">
             <div class="tile">
-                {{-- <div class="embed-responsive"> --}}
-                    <div id="paid_order_chart" class="chart-card"></div>
-                {{-- </div> --}}
+                    <div id="top_items_by_revenue_chart" class="chart-card"></div>
             </div>
         </div>
 
@@ -80,16 +76,12 @@
     <div class="row">
         <div class="col-md-6">
             <div class="tile">
-                {{-- <div class="embed-responsive"> --}}
-                    <div id="cancelled_order_chart" class="chart-card"></div>
-                {{-- </div> --}}
+                    <div id="top_items_by_profit_chart" class="chart-card"></div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="tile">
-                {{-- <div class="embed-responsive"> --}}
                     <div id="overview_chart" class="chart-card"></div>
-                {{-- </div> --}}
             </div>
         </div>
     </div>
@@ -102,6 +94,8 @@
 
         let topItemsByQty = {!! json_encode($data['topItemsByQty']) !!};
         let topItemsByRevenue = {!! json_encode($data['topItemsByRevenue']) !!};
+        let topItemsByProfit = {!! json_encode($data['topItemsByProfit']) !!};
+
 
         // let paid_orders = {!! json_encode($customers) !!};
         // let cancelled_orders = {!! json_encode($customers) !!};
@@ -115,14 +109,11 @@
 
 
      
-       eBarGraph('top_items_by_qty_chart', 'Top Sold Items by Quantity', topItemsByQty.quantity, topItemsByQty.items, 'items', '#0dcaf0');
-       ePieChart('paid_order_chart', 'Top Sold Items by Revenue', topItemsByRevenue);
-        
+       eBarGraph('top_items_by_qty_chart', 'Top Sold Items By Quantity', topItemsByQty.quantity, topItemsByQty.items, 'items', '#0dcaf0');
+       ePieChart('top_items_by_revenue_chart', 'Top Sold Items By Revenue', topItemsByRevenue);
+       eLineGraph('top_items_by_profit_chart', 'Top Sold Items by Profit', topItemsByProfit.profit, topItemsByProfit.items, 'items', '#198754');
 
-        // if (cancelled_orders != undefined || cancelled_orders.length > 0) {
-        //     eLineGraph('cancelled_order_chart', 'Monthly Cancelled Kitchen Orders', cancelled_orders.orders,
-        //         cancelled_orders.months, 'orders', '#198754');
-        // }
+     
 
 
         // if ((monthly_orders != undefined || monthly_orders.length > 0) &&
