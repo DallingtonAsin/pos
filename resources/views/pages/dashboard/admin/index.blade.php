@@ -97,7 +97,7 @@
 
         ePieChart('sales_by_cashier_chart', 'Sales By Cashier', salesByCashier)
         ePieChart('top_items_by_revenue_chart', 'Top Sold Items By Revenue', topItemsByRevenue)
-        eBarGraph('top_items_by_qty_chart', 'Top Sold Items By Quantity', topItemsByQty.quantity, topItemsByQty.items, 'items', '#0dcaf0')
+        eBarGraph('top_items_by_qty_chart', 'Top Sold Items By Qty', topItemsByQty.quantity, topItemsByQty.items, 'items', '#0dcaf0')
         eLineGraph('top_items_by_profit_chart', 'Top Sold Items by Profit', topItemsByProfit.profit, topItemsByProfit.items, 'items', '#198754')
     });
 </script>

@@ -52,7 +52,8 @@ class SalesDataTable extends DataTable
                 $cashier = Helper::getUser($sale->cashier_id);
                 return $cashier->first_name . ' ' . $cashier->last_name;
             })->editColumn('date', function ($sale) {
-                return date('Y-m-d H:i A', strtotime($sale->created_at));
+                $date_of_sale = $sale->date . ' '.$sale->time;
+                return date('Y-m-d H:i A', strtotime($date_of_sale));
             })->addColumn('customer', function ($sale) {
                 $customer_name = null;
                 if ($sale->customer_id) {

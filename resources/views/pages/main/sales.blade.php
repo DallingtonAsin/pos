@@ -126,9 +126,9 @@
                             <th>S. Price</th>
                             <th>Disc</th>
                             <th>Total</th>
-                            <th>Amount</th>
+                            <th>Amt</th>
                             <th>Bal.</th>
-                            <th>Customer</th>
+                            {{-- <th>Customer</th> --}}
                             <th>Cashier</th>
                             <th>Date</th>
                             @can('isAdmin')
@@ -373,10 +373,10 @@
                     data: 'balance',
                     name: 'balance'
                 },
-                {
-                    data: 'customer',
-                    name: 'customer'
-                },
+                // {
+                //     data: 'customer',
+                //     name: 'customer'
+                // },
                 {
                     data: 'cashier',
                     name: 'cashier'
@@ -433,10 +433,10 @@
                     data: 'balance',
                     name: 'balance'
                 },
-                {
-                    data: 'customer',
-                    name: 'customer'
-                },
+                // {
+                //     data: 'customer',
+                //     name: 'customer'
+                // },
                 {
                     data: 'cashier',
                     name: 'cashier'
