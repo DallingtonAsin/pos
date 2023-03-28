@@ -28,7 +28,7 @@
      <div class="col-lg-6 today-amount">
        <span>
          <h5>
-          <strong> Amount in debts (Today): shs.</strong>
+          <strong> Amount in debts (Today): UGX.</strong>
           <strong class="text-danger volume">{{ number_format($volume_of_todaysales) }}</strong>
         </h5>
       </span>
@@ -46,7 +46,7 @@
 
   @isset($total_sales)
   <div class="col-lg-3 amount">
-    <label>Amount in debts: shs.</label>
+    <label>Amount in debts: UGX.</label>
     <strong class="text-danger totl_sales volume">{{ number_format($total_sales) }}</strong>
   </div>
   @endisset

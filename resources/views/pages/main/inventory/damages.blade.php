@@ -2,65 +2,40 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-title">
-                <span class="pl-0 mt-4 response"></span>
-                <div class="row nunito-font">
-                    <div class="col-lg-3 text-dark">
-                        <h6>
-                            <i class="fa fa-home text-success"> /</i>
-                            <strong>Recorded Damages</strong>
-                            <span class="badge nunito-font  totl_damages">
-                                @isset($number_of_damages)
-                                    {{ number_format($number_of_damages) }}
-                                @endisset
-                            </span>
-                        </h6>
-                    </div>
-                    @can('isAdmin')
-                        <div class="col-lg-3">
-                            <h5>
-                                <strong>Cost of damage: shs.</strong>
-                                <label class="text-danger totl_cost">
-                                    @isset($cost_of_damages)
-                                        {{ number_format($cost_of_damages) }}
-                                    @endisset
-                                </label>
-                            </h5>
-                        </div>
-                    @endcan
+        <div class="panel-heading d-flex align-items-center">
+            <span class="pl-0 mt-4 response"></span>
+            <div class="col-lg-4 text-dark">
+                <h6 class="panel-title">
+                    <i class="fa fa-home text-success"> /</i>
+                    <strong>Recorded Damages</strong>
+                    <span class="badge nunito-font  totl_damages">
+                        @isset($number_of_damages)
+                            {{ number_format($number_of_damages) }}
+                        @endisset
+                    </span>
+                </h6>
+            </div>
 
-                    <div class="col-lg-2">
-                        <h5>
-                            <a class="text-info bolded" href="javascript:void(0)" id="createNewDamage"> Add damage</a>
-                        </h5>
-                    </div>
-
-
-                    <div class="col-lg-2">
-                        <h5><a href="" class="add-link text-decoration-none" data-toggle="modal"
-                                data-target="#importDamages"><strong>Import Damages</strong></a></h5>
-                    </div>
-
-                    @can('isAdmin')
-                        <div class="col-lg-2">
-                            <div class="btn-group">
-                                <button type="button"
-                                    class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Action
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="text-decoration-none text-dark nunito-font" href="javascript:void(0)"
-                                            id="removeAllDamages"> Delete all damages</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    @endcan
-
+            @can('isAdmin')
+                <div class="col-lg-5">
+                    <h5 class="panel-title">
+                        <strong>Cost of damage: UGX.</strong>
+                        <label class="text-danger totl_cost">
+                            @isset($cost_of_damages)
+                                {{ number_format($cost_of_damages) }}
+                            @endisset
+                        </label>
+                    </h5>
                 </div>
+            @endcan
+
+
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
+                    id="createNewDamage"><i class="fa fa-plus-circle pr-1"></i>Add damage</button>
+
+                <a href="" class="btn btn-default btn-sm outline-none rounded-pill ml-auto mb-2" data-toggle="modal"
+                    data-target="#importDamages"><strong>Import damages</strong></a>
             </div>
         </div>
 
@@ -164,8 +139,7 @@
 
                                 <div class="form-group lamountDiv">
                                     <span>Lost amount</span>
-                                    <input type="text" class="form-control  text-danger lamount" value=""
-                                        readonly>
+                                    <input type="text" class="form-control  text-danger lamount" value="" readonly>
                                 </div>
 
                                 <div class="form-group record-date-div">
@@ -224,7 +198,7 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- end of modal Deletedamage-->
+        </div> <!-- end of modal Delete damage-->
 
         <!--Import Damaged Items -->
         <div class="modal fade nunito-font" id="importDamages" tabindex="-1" role="dialog"
@@ -424,7 +398,7 @@
                 var damage_id = $(this).data('id');
                 event.preventDefault();
                 ShowHideContent('hide');
-                $('.addDamageBtn').text("Edit damage");
+                $('.addDamageBtn').text("Update");
 
                 var Url = "{{ route('damaged-stock-items.show', ':id') }}";
                 Url = Url.replace(':id', damage_id);
@@ -437,7 +411,7 @@
 
                         $('#modalHeading').html("Edit details of damaged stock item " + data
                             .item + "");
-                        $('.addDamageBtn').text("Edit damage");
+                        $('.addDamageBtn').text("Update");
                         $('#addDamagesModal').modal('show');
                         $('.damageId').val(damage_id);
                         $('.item-name').val(data.item);

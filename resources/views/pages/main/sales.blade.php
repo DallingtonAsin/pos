@@ -2,77 +2,66 @@
 
 @section('content')
     <div class="panel panel-success">
-        <div class="panel-heading">
-            <div class="panel-title nunito-font">
-                <div class="row nunito-font">
-                    <span class="response"></span>
+        <div class="panel-heading d-flex align-items-center">
+            <span class="response"></span>
+            @can('isAdmin')
+                <div class="col-lg-4">
+                    <h5 class="panel-title">Sales
+                        <span class="badge nunito-font totl_no">
+                            @isset($totl_no)
+                                {{ number_format($totl_no) }}
+                            @endisset
 
-                    @can('isAdmin')
-                        <div class="col-lg-3">
-                            <label>Sales</label>
-                            <span class="badge nunito-font totl_no">
-                                @isset($totl_no)
-                                    {{ number_format($totl_no) }}
-                                @endisset
-
-                                @isset($totl_filtered)
-                                    {{ number_format($totl_filtered) }}
-                                @endisset
-                            </span>
-                        </div>
-                    @endcan
-
-                    @can('isCashier')
-                        @isset($volume_of_todaysales)
-                            <div class="col-lg-3 today-amount">
-                                <span>
-                                    <h5>
-                                        Today: shs.
-                                        <strong class="text-success volume">{{ number_format($volume_of_todaysales) }}</strong>
-                                    </h5>
-                                </span>
-                            </div>
-                            <div class="col-lg-3 amount hidden">
-                                <label>Net Value:</label>
-                                <strong class="net_value">
-                                    {{ number_format(0) }}
-                                </strong>
-                            </div>
-                        @endisset
-                    @endcan
-
-                    @can('isAdmin')
-                        @isset($total_sales)
-                            <div class="col-lg-3 amount">
-                                <label>Sales made: shs.</label>
-                                <strong class="text-success totl_sales">{{ number_format($total_sales) }}</strong>
-                            </div>
-                        @endisset
-
-
-
-
-                        @isset($netValue)
-                            <div class="col-lg-3 amount">
-                                <label>Net Value:</label>
-                                <strong class="net_value">
-                                    {{ number_format($netValue) }}
-                                </strong>
-                            </div>
-                        @endisset
-                    @endcan
-
-                    @cannot('isCashier')
-                        <div class="col-lg-3">
-                            <small>
-                                <a href="{{ Route('sales.index') }}" class="text-info bolded">Load all</a>
-                            </small>
-                        </div>
-                    @endcannot
-
+                            @isset($totl_filtered)
+                                {{ number_format($totl_filtered) }}
+                            @endisset
+                        </span>
+                    </h5>
                 </div>
+            @endcan
 
-            </div>
+            @can('isCashier')
+                @isset($volume_of_todaysales)
+                    <div class="col-lg-3 today-amount">
+                        <span>
+                            <h5 class="panel-title">
+                                Today: UGX.
+                                <strong class="text-success volume">{{ number_format($volume_of_todaysales) }}</strong>
+                            </h5>
+                        </span>
+                    </div>
+                    <div class="col-lg-3 amount hidden">
+                        <label>Net Value:</label>
+                        <strong class="net_value">
+                            {{ number_format(0) }}
+                        </strong>
+                    </div>
+                @endisset
+            @endcan
+
+            @can('isAdmin')
+                @isset($total_sales)
+                    <div class="col-lg-3 amount">
+                        <label>Sales made: UGX.</label>
+                        <strong class="text-success totl_sales">{{ number_format($total_sales) }}</strong>
+                    </div>
+                @endisset
+
+
+                @isset($netValue)
+                    <div class="col-lg-3 amount">
+                        <label>Net Value:</label>
+                        <strong class="net_value">
+                            {{ number_format($netValue) }}
+                        </strong>
+                    </div>
+                @endisset
+            @endcan
+
+            @cannot('isCashier')
+                <a href="{{ Route('sales.index') }}" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2">Load
+                    all</a>
+            @endcannot
         </div>
 
         <div class="panel-body">

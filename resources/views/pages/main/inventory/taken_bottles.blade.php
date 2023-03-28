@@ -5,7 +5,7 @@
         <div class="panel-heading row d-flex justify-content-between align-items-center">
             <span class="response"></span>
             <div class="col-md-5">
-                <h5 class="card-title mb-0 text-dark">
+                <h5 class="panel-title mb-0 text-dark">
                     <i class="fa fa-home text-success"> /</i>
                     <strong>Taken Bottles</strong>
                     <span class="badge badge-info no_of_bottles">

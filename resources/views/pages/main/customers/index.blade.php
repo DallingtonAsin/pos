@@ -2,32 +2,23 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-tile">
-
-                <div class="row nunito-font">
-                    <span class="response"></span>
-
-                    <div class="col-lg-6">
-                        <h6 class="text-dark">
-                            <i class="fa fa-home text-success"> /</i>
-                            <strong>Customers</strong>
-                            <span class="badge nunito-font  totl_customers">
-                                @isset($number_of_customers)
-                                    {{ number_format($number_of_customers) }}
-                                @endisset
-                            </span>
-                        </h6>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <h5>
-                            <a class="text-info bolded" href="javascript:void(0)" id="createNewCustomer"> Add customer</a>
-                        </h5>
-                    </div>
-                </div>
-
+        <div class="panel-heading d-flex align-items-center">
+            <span class="response"></span>
+            <div class="col-lg-6">
+                <h5 class="panel-title text-dark">
+                    <i class="fa fa-home text-success"> /</i>
+                    <strong>Customers</strong>
+                    <span class="badge nunito-font totl_customers">
+                        @isset($number_of_customers)
+                            {{ number_format($number_of_customers) }}
+                        @endisset
+                    </span>
+                </h5>
             </div>
+
+            <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2 mr-5"
+                id="createNewCustomer"><i class="fa fa-plus-circle pr-1"></i>Add customer</button>
+
         </div>
 
         <div class="panel-body">
@@ -146,8 +137,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
 
-                <form action="" method="post" enctype="multipart/form-data"
-                    name="inportCustomersForm">
+                <form action="" method="post" enctype="multipart/form-data" name="inportCustomersForm">
                     @csrf
 
                     <div class="modal-header text-center">
@@ -310,314 +300,314 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+
+            //  PopulateStockItems();
+
+            $("#item_taken").typeahead({
+                source: function(query, result) {
+                    $.ajax({
+                        url: "{{ Route('stock-item.search') }}",
+                        method: 'post',
+                        data: {
+                            query: query,
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            result($.map(data, function(item) {
+                                return item;
+                            }));
+                        },
+                        error: function(data) {
+                            console.log('am not getting anything');
+                        },
+                    });
+                }
+            });
+
+
+
+
+            $('#createNewCustomer').click(function(e) {
+                e.preventDefault();
+                DisableTableFields(false);
+                ShowBtns();
+                $('.AddcustomerBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
+                $('.customerId').val('');
+                $('#CustomersForm').trigger("reset");
+                $('#modalHeading').html("Add new customer");
+                $('#addCustomersModal').modal('show');
+            });
+
+            function PopulateStockItems() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('stock.ajax.fetch') }}",
+                    success: function(resp) {
+                        let obj = JSON.parse(resp);
+                        for (let i = 0; i < obj.length; i++) {
+                            let item_id = obj[i]['id'];
+                            let item_name = obj[i]['item'];
+                            $('.item_taken').append('<option value=' + item_id + '>' + item_name +
+                                '</option>');
+                        }
+                    },
+                    error: function(data) {
+                        console.log('Error:', data.error);
+                        ShowResponse('.response', data.error, 'error');
+                        $('.AddcustomerBtn').html('Save Changes');
+                    },
+                });
+            }
+
+            function Numberize(i) {
+                $(document).on("keyup", i, function() {
+                    if (this.value.length > 0) {
+                        let n = parseInt(this.value.replace(/\D/g, ''), 10);
+                        $(this).val(n.toLocaleString());
+                    }
+                });
+            }
+
+            //modal used to edit customer details [each row of the tbl]
+            $('body').on('click', '#edit-customer', function(event) {
+                let customer_id = $(this).data('id');
+                event.preventDefault();
+
+                $.get("{{ route('customers.index') }}" + '/' + customer_id + '/edit', function(data) {
+
+                    $('#modalHeading').html("Edit details of customer " + data.name + "");
+                    $('.AddcustomerBtn').text("Update");
+                    $('#addCustomersModal').modal('show');
+                    $('.customerId').val(data.id);
+                    $('.name').val(data.name);
+                    $('.contact').val(data.contact);
+                    $('.address').val(data.address);
+                    DisableTableFields(false);
+                    ShowBtns();
+                })
+            });
+
+
+            //View Modal used to view each row [customer details]
+            $('body').on('click', '#view-customer', function(event) {
+                let customer_id = $(this).data('id');
+                event.preventDefault();
+
+                $.get("{{ route('customers.index') }}" + '/' + customer_id + '', function(data) {
+
+                    $('#modalHeading').html("Details of customer " + data.name + "");
+                    $('#addCustomersModal').modal('show');
+                    $('.customerId').val(data.id);
+                    $('.name').val(data.name);
+                    $('.contact').val(data.contact);
+                    $('.address').val(data.address);
+                    DisableTableFields(true);
+                    HideBtns();
+                })
+            });
+
+
+            $('.AddcustomerBtn').click(function(e) {
+
+                e.preventDefault();
+
+                let Errors = validateForm();
+                if (Errors.length == 0) {
+                    $(this).html('Sending..');
+
+                    $.ajax({
+                        data: $('#CustomersForm').serialize(),
+                        url: "{{ route('customers.store') }}",
+                        type: "POST",
+                        dataType: 'json',
+                        success: function(data) {
+
+                            $('#CustomersForm').trigger("reset");
+                            $('#addCustomersModal').modal("hide");
+                            let resp = data.success;
+                            ShowResponse('.response', resp, 'success');
+                            ResetTblInfo(data);
+                            let tbl = $('#customers-table').DataTable();
+                            tbl.ajax.reload();
+
+                        },
+                        error: function(data) {
+                            console.log('Error:', data.error);
+                            ShowResponse('.response', data.error, 'error');
+                            $('.AddcustomerBtn').html('Save Changes');
                         }
                     });
+                } else {
+                    let i;
+                    let message = "";
+                    for (i = 0; i < Errors.length; i++) {
+                        message += Errors[i] + "<br>";
+                    }
+                    $('.errors-section').html(message);
+
+                }
+
+            });
+
+            //this pops up confirm delete modal
+            $('body').on('click', '#delete-customer', function(e) {
+                let customer_id = $(this).data("id");
+                e.preventDefault();
+                $("#deleteCustomersModal").modal('show');
+                $.get("{{ route('customers.index') }}" + '/' + customer_id + '', function(data) {
+                    $(".delete-alert-text").html(
+                        `Are you sure you want to delete customer ${data.name}?`);
+                    $('.delete-ok-btn').on('click', function() {
+                        ListenAndDoDeletion(customer_id);
+                    });
+                });
+
+            });
 
 
-                    //  PopulateStockItems();
+            function ListenAndDoDeletion(id) {
+                let deleteUrl = '{{ route('customers.destroy', ':id') }}';
+                deleteUrl = deleteUrl.replace(':id', id);
+                $('.delete-ok-btn').html('Deleting...');
+                $.ajax({
+                    type: "DELETE",
+                    url: deleteUrl,
+                    success: function(data) {
+                        let resp = data.success;
+                        $('.delete-ok-btn').html('Yes');
+                        $('#deleteCustomersModal').modal("hide");
+                        ShowResponse('.response', resp, 'success');
+                        ResetTblInfo(data);
+                        let tbl = $('#customers-table').DataTable();
+                        tbl.ajax.reload();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                        ShowResponse('.response', data.error, 'error');
+                    }
+                });
+            }
 
-                    $("#item_taken").typeahead({
-                        source: function(query, result) {
-                            $.ajax({
-                                url: "{{ Route('stock-item.search') }}",
-                                method: 'post',
+
+            function DisableTableFields(bool) {
+
+                $('.customerId').attr('disabled', bool);
+                $('.name').attr('disabled', bool);
+                $('.contact').attr('disabled', bool);
+                $('.address').attr('disabled', bool);
+            }
+
+            function HideBtns() {
+                $('.AddcustomerBtn').hide();
+                $('.clearBtn').hide();
+                $('.closeBtn').hide();
+            }
+
+            function ShowBtns() {
+                $('.AddcustomerBtn').show();
+                $('.clearBtn').show();
+                $('.closeBtn').show();
+            }
+
+            function ShowResponse(area, message, errorType) {
+                $(area).notify(message, {
+                    className: errorType,
+                    autoHide: true,
+                    clickToHide: true,
+                    autoHideDelay: 45000,
+                });
+            }
+
+            function FormatNumber(number) {
+                let FormattedNumber = parseFloat(number).toLocaleString('us', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+                return FormattedNumber;
+            }
+
+            function ResetTblInfo(response) {
+                let totl_number = FormatNumber(response.totl_no);
+                $('.totl_customers').html(totl_number);
+            }
+
+            function validateForm() {
+                let name = $('.name').val();
+                let address = $('.address').val();
+                let contact = $('.contact').val();
+                let errors = [];
+
+                if (name.length < 1) {
+                    errors.push("Please enter the name of the customer");
+                }
+
+                if (contact.length < 1) {
+                    errors.push("Please enter customer's contact");
+                }
+                return errors;
+            }
+
+
+
+            $("#removeAllCustomers").bind("click", function() {
+                removeAllCustomers();
+            });
+
+            function removeAllCustomers() {
+                $.confirm({
+                    boxWidth: '30%',
+                    icon: 'fa fa-warning',
+                    theme: 'light',
+                    closeIcon: true,
+                    draggable: true,
+                    closeIconClass: 'fa fa-close text-danger',
+                    title: 'Delete all customers',
+                    content: 'Are you sure you want to remove all customers',
+                    buttons: {
+                        confirm: function() {
+                            let self = this;
+                            return $.ajax({
                                 data: {
-                                    query: query,
+                                    "_token": "{{ csrf_token() }}",
                                 },
-                                dataType: 'json',
-                                success: function(data) {
-                                    result($.map(data, function(item) {
-                                        return item;
-                                    }));
-                                },
-                                error: function(data) {
-                                    console.log('am not getting anything');
-                                },
-                            });
-                        }
-                    });
+                                url: '{{ Route('customers.truncate') }}',
+                                type: 'POST',
+                                // dataType: 'json',
+                            }).done(function(data) {
 
-
-
-
-                    $('#createNewCustomer').click(function(e) {
-                        e.preventDefault();
-                        DisableTableFields(false);
-                        ShowBtns();
-                        $('.AddcustomerBtn').html("<i class='fa fa-plus-circle pr-1'></i>Submit");
-                        $('.customerId').val('');
-                        $('#CustomersForm').trigger("reset");
-                        $('#modalHeading').html("Add new customer");
-                        $('#addCustomersModal').modal('show');
-                    });
-
-                    function PopulateStockItems() {
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ route('stock.ajax.fetch') }}",
-                            success: function(resp) {
-                                let obj = JSON.parse(resp);
-                                for (let i = 0; i < obj.length; i++) {
-                                    let item_id = obj[i]['id'];
-                                    let item_name = obj[i]['item'];
-                                    $('.item_taken').append('<option value=' + item_id + '>' + item_name +
-                                        '</option>');
-                                }
-                            },
-                            error: function(data) {
-                                console.log('Error:', data.error);
-                                ShowResponse('.response', data.error, 'error');
-                                $('.AddcustomerBtn').html('Save Changes');
-                            },
-                        });
-                    }
-
-                    function Numberize(i) {
-                        $(document).on("keyup", i, function() {
-                            if (this.value.length > 0) {
-                                let n = parseInt(this.value.replace(/\D/g, ''), 10);
-                                $(this).val(n.toLocaleString());
-                            }
-                        });
-                    }
-
-                    //modal used to edit customer details [each row of the tbl]
-                    $('body').on('click', '#edit-customer', function(event) {
-                        let customer_id = $(this).data('id');
-                        event.preventDefault();
-
-                        $.get("{{ route('customers.index') }}" + '/' + customer_id + '/edit', function(data) {
-
-                            $('#modalHeading').html("Edit details of customer " + data.name + "");
-                            $('.AddcustomerBtn').text("Update");
-                            $('#addCustomersModal').modal('show');
-                            $('.customerId').val(data.id);
-                            $('.name').val(data.name);
-                            $('.contact').val(data.contact);
-                            $('.address').val(data.address);
-                            DisableTableFields(false);
-                            ShowBtns();
-                        })
-                    });
-
-
-                    //View Modal used to view each row [customer details]
-                    $('body').on('click', '#view-customer', function(event) {
-                        let customer_id = $(this).data('id');
-                        event.preventDefault();
-
-                        $.get("{{ route('customers.index') }}" + '/' + customer_id + '', function(data) {
-
-                            $('#modalHeading').html("Details of customer " + data.name + "");
-                            $('#addCustomersModal').modal('show');
-                            $('.customerId').val(data.id);
-                            $('.name').val(data.name);
-                            $('.contact').val(data.contact);
-                            $('.address').val(data.address);
-                            DisableTableFields(true);
-                            HideBtns();
-                        })
-                    });
-
-
-                    $('.AddcustomerBtn').click(function(e) {
-
-                        e.preventDefault();
-
-                        let Errors = validateForm();
-                        if (Errors.length == 0) {
-                            $(this).html('Sending..');
-
-                            $.ajax({
-                                data: $('#CustomersForm').serialize(),
-                                url: "{{ route('customers.store') }}",
-                                type: "POST",
-                                dataType: 'json',
-                                success: function(data) {
-
-                                    $('#CustomersForm').trigger("reset");
-                                    $('#addCustomersModal').modal("hide");
-                                    let resp = data.success;
-                                    ShowResponse('.response', resp, 'success');
-                                    ResetTblInfo(data);
-                                    let tbl = $('#customers-table').DataTable();
-                                    tbl.ajax.reload();
-
-                                },
-                                error: function(data) {
-                                    console.log('Error:', data.error);
-                                    ShowResponse('.response', data.error, 'error');
-                                    $('.AddcustomerBtn').html('Save Changes');
-                                }
-                            });
-                        } else {
-                            let i;
-                            let message = "";
-                            for (i = 0; i < Errors.length; i++) {
-                                message += Errors[i] + "<br>";
-                            }
-                            $('.errors-section').html(message);
-
-                        }
-
-                    });
-
-                    //this pops up confirm delete modal
-                    $('body').on('click', '#delete-customer', function(e) {
-                            let customer_id = $(this).data("id");
-                            e.preventDefault();
-                            $("#deleteCustomersModal").modal('show');
-                            $.get("{{ route('customers.index') }}" + '/' + customer_id + '', function(data) {
-                                    $(".delete-alert-text").html(
-                                        `Are you sure you want to delete customer ${data.name}?`);
-                                    $('.delete-ok-btn').on('click', function() {
-                                        ListenAndDoDeletion(customer_id);
-                                    });
+                                $.alert({
+                                    title: 'Message',
+                                    content: data.success,
                                 });
+                                $(".totl_customers").text(data.totl_no);
+                                let tbl = $('#customers-table').DataTable();
+                                tbl.ajax.reload();
+
+
+                            }).fail(function(data) {
+                                $.alert({
+                                    title: 'Response',
+                                    content: "Customers not deleted:" + data
+                                        .fail,
+                                });
+                                console.log(data);
 
                             });
 
-
-                        function ListenAndDoDeletion(id) {
-                            let deleteUrl = '{{ route('customers.destroy', ':id') }}';
-                            deleteUrl = deleteUrl.replace(':id', id);
-                            $('.delete-ok-btn').html('Deleting...');
-                            $.ajax({
-                                type: "DELETE",
-                                url: deleteUrl,
-                                success: function(data) {
-                                    let resp = data.success;
-                                    $('.delete-ok-btn').html('Yes');
-                                    $('#deleteCustomersModal').modal("hide");
-                                    ShowResponse('.response', resp, 'success');
-                                    ResetTblInfo(data);
-                                    let tbl = $('#customers-table').DataTable();
-                                    tbl.ajax.reload();
-                                },
-                                error: function(data) {
-                                    console.log('Error:', data);
-                                    ShowResponse('.response', data.error, 'error');
-                                }
-                            });
-                        }
-
-
-                        function DisableTableFields(bool) {
-
-                            $('.customerId').attr('disabled', bool);
-                            $('.name').attr('disabled', bool);
-                            $('.contact').attr('disabled', bool);
-                            $('.address').attr('disabled', bool);
-                        }
-
-                        function HideBtns() {
-                            $('.AddcustomerBtn').hide();
-                            $('.clearBtn').hide();
-                            $('.closeBtn').hide();
-                        }
-
-                        function ShowBtns() {
-                            $('.AddcustomerBtn').show();
-                            $('.clearBtn').show();
-                            $('.closeBtn').show();
-                        }
-
-                        function ShowResponse(area, message, errorType) {
-                            $(area).notify(message, {
-                                className: errorType,
-                                autoHide: true,
-                                clickToHide: true,
-                                autoHideDelay: 45000,
-                            });
-                        }
-
-                        function FormatNumber(number) {
-                            let FormattedNumber = parseFloat(number).toLocaleString('us', {
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0
-                            });
-                            return FormattedNumber;
-                        }
-
-                        function ResetTblInfo(response) {
-                            let totl_number = FormatNumber(response.totl_no);
-                            $('.totl_customers').html(totl_number);
-                        }
-
-                        function validateForm() {
-                            let name = $('.name').val();
-                            let address = $('.address').val();
-                            let contact = $('.contact').val();
-                            let errors = [];
-
-                            if (name.length < 1) {
-                                errors.push("Please enter the name of the customer");
-                            }
-
-                            if (contact.length < 1) {
-                                errors.push("Please enter customer's contact");
-                            }
-                            return errors;
-                        }
-
-
-
-                        $("#removeAllCustomers").bind("click", function() {
-                            removeAllCustomers();
-                        });
-
-                        function removeAllCustomers() {
-                            $.confirm({
-                                boxWidth: '30%',
-                                icon: 'fa fa-warning',
-                                theme: 'light',
-                                closeIcon: true,
-                                draggable: true,
-                                closeIconClass: 'fa fa-close text-danger',
-                                title: 'Delete all customers',
-                                content: 'Are you sure you want to remove all customers',
-                                buttons: {
-                                    confirm: function() {
-                                        let self = this;
-                                        return $.ajax({
-                                            data: {
-                                                "_token": "{{ csrf_token() }}",
-                                            },
-                                            url: '{{ Route('customers.truncate') }}',
-                                            type: 'POST',
-                                            // dataType: 'json',
-                                        }).done(function(data) {
-
-                                            $.alert({
-                                                title: 'Message',
-                                                content: data.success,
-                                            });
-                                            $(".totl_customers").text(data.totl_no);
-                                            let tbl = $('#customers-table').DataTable();
-                                            tbl.ajax.reload();
-
-
-                                        }).fail(function(data) {
-                                            $.alert({
-                                                title: 'Response',
-                                                content: "Customers not deleted:" + data
-                                                    .fail,
-                                            });
-                                            console.log(data);
-
-                                        });
-
-                                    },
-                                    cancel: function() {
-
-                                    }
-                                },
-                            });
+                        },
+                        cancel: function() {
 
                         }
-                    });
+                    },
+                });
+
+            }
+        });
     </script>
 @endsection

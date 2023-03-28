@@ -9,8 +9,8 @@
 
 <p>Hi manager<br>
 Today, the business has sold {{ number_format($totl_sold) }} items in number 
-of amount <strong>shs. <span class="text-danger">{{ number_format($amount) }}
-and the net value is shs.
+of amount <strong>UGX. <span class="text-danger">{{ number_format($amount) }}
+and the net value is UGX.
 @if($netValue > 0)
  <strong class="text-success">{{ number_format($netValue) }}</strong>
  @else
