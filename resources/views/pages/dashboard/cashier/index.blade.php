@@ -1,4 +1,4 @@
 
 
 
-@include('pages.main.cart')
+@include('pages.main.pos.index')

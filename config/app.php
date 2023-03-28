@@ -186,7 +186,6 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Jorijn\LaravelSecurityChecker\ServiceProvider::class,
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
-        Nexmo\Laravel\NexmoServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
 
 

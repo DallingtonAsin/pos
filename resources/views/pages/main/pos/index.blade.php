@@ -5,7 +5,6 @@
     <div class="panel panel-success" id="panel">
         <div class="panel-heading cartPanelHeader" id="panel-heading">
             <div class="panel-title nunito-font">
-
                 <div class="row">
                     <span class='response'></span>
                     <div class="col-lg-4">
@@ -14,16 +13,13 @@
                             <span id="num">0</span>
                         </span>
                     </div>
-
                     <div class="col-lg-4 mt-2 amount">
                         <strong>Amount: </strong>
                         <strong class="text-danger amountToPay" id="amountToPay">0</strong>
                         <input type="hidden" value="@isset($item_total) {{ $item_total }} @endisset"
                             class="payment">
                     </div>
-
                 </div>
-
             </div>
         </div>
 
@@ -173,16 +169,17 @@
                         <tbody id="cart-table-body">
                         </tbody>
 
-                      <tfoot>
-                        <tr>
-                            <td colspan="10"></td> <!-- empty cells for column spacing -->
-                            <td>
-                                <a id="printBtn" class="btn btn-sm btn-primary text-white col-md-12">
-                                    <i class="fa fa-check-circle pr-2"></i> <strong class="f-15 print-btn-text">Submit Sale</strong>
-                                </a>
-                            </td>
-                        </tr>
-                      </tfoot>
+                        <tfoot>
+                            <tr>
+                                <td colspan="10"></td> <!-- empty cells for column spacing -->
+                                <td>
+                                    <a id="printBtn" class="btn btn-sm btn-primary text-white col-md-12">
+                                        <i class="fa fa-check-circle pr-2"></i> <strong class="f-15 print-btn-text">Submit
+                                            Sale</strong>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tfoot>
 
 
 

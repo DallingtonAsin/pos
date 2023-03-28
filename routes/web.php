@@ -131,13 +131,12 @@ Route::group(["middleware" => "restricted"], function () {
 
 	Route::get('/email', 'MailController@MailWelcome');
 	Route::get('/home', 'HomeController@index')->name('home');
-	Route::get('/overview', 'HomeController@overview')->name('overview');
 	Route::get('/reports', 'ReportsController@index')->name('reports');
 	Route::get('/reports/charts/purchases', 'ReportsController@purchaseReports')->name('reports.charts.purchases');
 
 
 	Route::post('pos/session/update', 'CartController@updateItemInSession')->name('session.update');
-	Route::post('pos/record', 'CartController@MakeSaleGateway')->name('sale.transact');
+	Route::post('pos/record', 'CartController@storeTransaction')->name('sale.transact');
 	Route::post('sale/transact', 'CartController@recordSale')->name('sale.record');
 
 	Route::post('pos/barcode/getItem', 'CartController@GetCartData')->name('item.get');

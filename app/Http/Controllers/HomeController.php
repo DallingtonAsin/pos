@@ -32,12 +32,5 @@ class HomeController extends Controller
         }
         return redirect('/');
     }
-
-    public function overview()
-    {
-        if (Auth::check()) {
-            return view('pages.main.overview');
-        }
-        return redirect('/');
-    }
+ 
 }
