@@ -2,12 +2,10 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-title">
+        <div class="panel-heading d-flex align-items-center">
                 <span class="pl-0 mt-4 response"></span>
-                <div class="row nunito-font">
-                    <div class="col-lg-3 text-dark">
-                        <h6>
+                    <div class="col-lg-4 text-dark">
+                        <h5 class="panel-title">
                             <i class="fa fa-home text-success"> /</i>
                             <strong>Purchases</strong>
                             <span class="badge nunito-font totl-no">
@@ -16,15 +14,15 @@
                                 @endisset
 
                             </span>
-                        </h6>
+                        </h5>
                     </div>
 
                     @can('isAdmin')
-                        <div class="col-lg-3">
+                        <div class="col-lg-5">
                             <span>
-                                <h5>
+                                <h5 class="panel-title">
                                     <strong>Total cost:</strong>
-                                    <span class="text-success text-center">shs.
+                                    <span class="text-success text-center">UGX.
                                         <strong class="purchase-value totl-purchases">
                                             @isset($totl_cost_of_purchases)
                                                 {{ number_format($totl_cost_of_purchases) }}
@@ -35,20 +33,14 @@
                             </span>
                         </div>
                     @endcan
-                    <div class="col-lg-2">
-                        <h5>
-                            <a class="add-link text-info text-decoration-none" href="javascript:void(0)"
-                                id="createNewpurchase"><strong>Add purchase</strong> </a>
-                        </h5>
-                    </div>
 
-                    <div class="col-lg-2">
-                        <h5><a href="" class="add-link text-info text-decoration-none" data-toggle="modal"
-                                data-target="#importPurchases">
-                                <strong>Import purchase</strong></a></h5>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
+                            id="createNewpurchase"><i class="fa fa-plus-circle pr-1"></i>Add purchase</button>
+
+                        <a href="" class="btn btn-default btn-sm outline-none rounded-pill ml-auto mb-2"
+                            data-toggle="modal" data-target="#importPurchases"><strong>Import purchases</strong></a>
                     </div>
-                </div>
-            </div>
         </div>
 
         <div class="panel-body">
@@ -377,7 +369,7 @@
             }
 
             function populateStockItemDetails(item_id) {
-                
+
                 let url = "{{ route('stock.item.find', ':id') }}";
                 url = url.replace(':id', item_id);
                 $.get(url, function(response) {
@@ -426,7 +418,7 @@
                 HideContentOnEditing('hide');
 
                 ShowHideBtns('show');
-                $('.addPurchaseBtn').text("Edit purchase");
+                $('.addPurchaseBtn').text("Update");
                 $('#addPurchaseModal').modal('show');
                 let Url = "{{ route('purchases.show', ':id') }}";
                 Url = Url.replace(':id', purchase_id);

@@ -4,15 +4,13 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-   <div class="panel-title nunito-font">
-
     <div class="row">
-      <h5 class="nunito-font pl-3"><i class="fa fa-chart-line text-success"></i> 
+      <h5 class="oabel-title nunito-font pl-3">
+        <i class="fa fa-chart-line text-success"></i> 
        <strong class="pl-1">
          Report <i class="zmdi zmdi-play "></i> Customer debtors
        </strong></h5>
      </div>
-   </div>
  </div>
  
  <div class="panel-body">

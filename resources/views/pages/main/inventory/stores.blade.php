@@ -4,7 +4,7 @@
     <div class="panel panel-default">
         <div class="panel-heading d-flex align-items-center">
             <span class="response"></span>
-            <h6 class="card-title mb-0 text-dark">
+            <h5 class="panel-title mb-0 text-dark">
                 <i class="fa fa-home text-success"> /</i>
                 <strong>Stores</strong>
                 <span class="badge badge-info total_stores">
@@ -12,9 +12,9 @@
                         {{ number_format($total_stores) }}
                     @endisset
                 </span>
-            </h6>
+            </h5>
             <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2" id="addNewStore">
-                <i class="fa fa-plus-circle pr-1"></i>Add stores</button>
+                <i class="fa fa-plus-circle pr-1"></i>Add store</button>
         </div>
 
         <div class="panel-body">

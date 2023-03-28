@@ -3,37 +3,32 @@
 @section('content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <div class="panel-tile">
-
-                <div class="row nunito-font">
-                    <span class="response"></span>
-                    <div class="col-lg-4">
-                        <h5 class="text-dark">
-                            <i class="fa fa-home text-success"> /</i>
-                            <strong>Customers with debts</strong>
-                        </h5>
-                    </div>
-
-                    @can('isAdmin')
-                        <div class="col-lg-4">
-                            <h5>
-                                <strong>Current Total Debts: UGX. </strong><label class="text-danger total_debts">
-                                    @isset($total_debts)
-                                        {{ number_format($total_debts) }}
-                                    @endisset
-                                </label>
-                            </h5>
-                        </div>
-                    @endcan
+            <div class="row nunito-font">
+                <span class="response"></span>
+                <div class="col-lg-4">
+                    <h6 class="panel-title text-dark">
+                        <i class="fa fa-home text-success"> /</i>
+                        <strong>Customers with debts</strong>
+                    </h6>
                 </div>
+
+                @can('isAdmin')
+                    <div class="col-lg-4">
+                        <h6 class="panel-title">
+                            <strong>Current Total Debts: UGX. </strong><label class="text-danger total_debts">
+                                @isset($total_debts)
+                                    {{ number_format($total_debts) }}
+                                @endisset
+                            </label>
+                        </h6>
+                    </div>
+                @endcan
             </div>
         </div>
 
         <div class="panel-body">
-
             <div class="row">
                 <div class="col-lg-8 text-center nunito-font">
-
                     @if (session()->get('success'))
                         <div class='alert alert-success alert-dismissible' role='alert'>
                             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
@@ -54,7 +49,6 @@
             </div>
 
             <div class="table-responsive custom-family">
-
                 <table class="table table-bordered table-hover customers-with-debts-table" id="customers-with-debts-table">
                     <thead>
                         <tr>
@@ -64,7 +58,6 @@
                             <th>Total Initial Debt</th>
                             <th>Amount Paid</th>
                             <th>Current Debt</th>
-
                         </tr>
                     </thead>
                 </table>

@@ -2,12 +2,10 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-tile">
+        <div class="panel-heading d-flex align-items-center">
                 <span class="pl-0 mt-4 response"></span>
-                <div class="row nunito-font">
-                    <div class="col-lg-2">
-                        <h6 class="text-dark">
+                    <div class="col-lg-3">
+                        <h5 class="panel-title">
                             <i class="fa fa-home text-success"> /</i>
                             <strong>Suppliers</strong>
                             <span class="badge nunito-font  totl_suppliers">
@@ -15,12 +13,12 @@
                                     {{ number_format($number_of_suppliers) }}
                                 @endisset
                             </span>
-                        </h6>
+                        </h5>
                     </div>
 
                     <div class="col-lg-3">
-                        <h5>
-                            Credit: shs.
+                        <h5 class="panel-title">
+                            Credit: UGX.
                             <strong class="text-success text-bold totl_credit">
                                 @isset($total_credit)
                                     {{ number_format($total_credit) }}
@@ -30,8 +28,8 @@
                     </div>
 
                     <div class="col-lg-3">
-                        <h5>
-                            Debts: shs. 
+                        <h5 class="panel-title">
+                            Debts: UGX.
                             <label class="text-danger totl_debt text-bold">
                                 @isset($total_debts)
                                     {{ number_format($total_debts) }}
@@ -41,11 +39,9 @@
                         </h5>
                     </div>
 
-                        <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mr-5 mb-2"
+                    <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mr-5 mb-2"
                         id="createNewSupplier"><i class="fa fa-plus-circle pr-1"></i>Add supplier</button>
 
-                </div>
-            </div>
         </div>
 
         <div class="panel-body">
@@ -163,8 +159,7 @@
     </div>
 
     <!--Import Suppliers -->
-    <div class="modal fade nunito-font" id="importSuppliers" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel">
+    <div class="modal fade nunito-font" id="importSuppliers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
 

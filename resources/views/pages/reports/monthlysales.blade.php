@@ -7,7 +7,7 @@
    <div class="panel-title nunito-font">
       <strong>
         <i class="fa fa-chart-line text-success pr-2"></i> 
-        Monthly statistics as of  {{ date('d-M-Y H:i A')}}
+        Monthly sales statistics
       </strong>
   </div>
 </div>
@@ -17,11 +17,11 @@
     <table class="table table-bordered" id="MonthlySales-table">
       <thead>
         <tr>
-          <th>No.</th>
+          {{-- <th>No.</th> --}}
           <!-- <th>Period</th> -->
-          <th>Month</th>
           <th>Year</th>
-          <th>Purchases</th>
+          <th>Month</th>
+          {{-- <th>Purchases</th> --}}
           <th>Sales</th>
           <th>% of total sales</th>
           <th>Profits</th>
@@ -43,11 +43,11 @@
  var columns = [0,1,2,3,4];
 
  var dataColumns = [
-  {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+  // {data: 'DT_RowIndex', name: 'DT_RowIndex'},
   // {data: 'period', name:'period'},
-  {data: 'month', name:'month'},
   {data: 'year', name:'year'},
-  {data: 'TotalPurchases', name:'TotalPurchases'},
+  {data: 'month', name:'month'},
+  // {data: 'TotalPurchases', name:'TotalPurchases'},
   {data: 'sales', name:'sales'},
   {data: 'percent',name:'percent'},
   {data: 'profits', name:'profits'},

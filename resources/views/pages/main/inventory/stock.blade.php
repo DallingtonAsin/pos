@@ -2,12 +2,10 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-title">
+        <div class="panel-heading d-flex align-items-center">
                 <span class="pl-0 mt-4 response"></span>
-                <div class="row nunito-font">
-                    <div class="col-lg-3 text-dark">
-                        <h6>
+                    <div class="col-lg-4">
+                        <h5 class="panel-title mb-0 text-dark">
                             <i class="fa fa-home text-success"> /</i>
                             <strong>Stock</strong>
                             <span class="badge nunito-font  totl-stock">
@@ -15,15 +13,14 @@
                                     {{ number_format($number_of_stockItems) }}
                                 @endisset
                             </span>
-                        </h6>
+                        </h5>
                     </div>
 
                     @can('isAdmin')
-                        <div class="col-lg-3">
-                            <span>
-                                <h5>
+                        <div class="col-lg-5">
+                                <h5 class="panel-title mb-0 text-dark">
                                     Current stock value:
-                                    <span class="text-success text-center">shs.
+                                    <span class="text-success text-center">UGX.
                                         <strong class="stock-value">
                                             @isset($stock_value)
                                                 {{ number_format($stock_value) }}
@@ -31,43 +28,16 @@
                                         </strong>
                                     </span>
                                 </h5>
-                            </span>
-                        </div>
-                    @endcan
-                    <div class="col-lg-2">
-                        <h5>
-                            <a class="add-link text-info text-decoration-none" href="javascript:void(0)"
-                                id="createNewStock"><strong>Add Stock</strong> </a>
-                        </h5>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <h5><a href="" class="add-link text-info text-decoration-none" data-toggle="modal"
-                                data-target="#importStock"><strong>Import stock</strong></a></h5>
-                    </div>
-
-                    @can('isAdmin')
-                        <div class="col-lg-2">
-                            <div class="btn-group">
-                                <button type="button"
-                                    class="btn border-info text-success bolded form-control text-center dropdown-toggle downloadfilebtn"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Action
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="text-decoration-none text-dark
-      nunito-font" href="javascript:void(0)"
-                                            id="removeAllStockItems">
-                                            <i class="fa fa-trash-alt text-danger"></i> Delete all stock</a>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                     @endcan
 
-                </div>
-            </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
+                            id="createNewStock"><i class="fa fa-plus-circle pr-1"></i>Add stock</button>
+        
+                        <a href="" class="btn btn-default btn-sm outline-none rounded-pill ml-auto mb-2" data-toggle="modal"
+                            data-target="#importStock"><strong>Import stock</strong></a>
+                    </div>
         </div>
 
         <div class="panel-body">
@@ -105,13 +75,13 @@
                             <th>Item</th>
                             <th>Code</th>
                             <th>Store</th>
-                            @can('isAdmin')
+                            {{-- @can('isAdmin')
                                 <th>Category</th>
-                            @endcan
+                            @endcan --}}
                             <th>Qty</th>
-                            @can('isAdmin')
+                            {{-- @can('isAdmin')
                                 <th>Thresh</th>
-                            @endcan
+                            @endcan --}}
                             @can('isAdmin')
                                 <th>B. Price</th>
                             @endcan
@@ -367,18 +337,18 @@
                     data: 'store',
                     name: 'store'
                 },
-                {
-                    data: 'category',
-                    name: 'category'
-                },
+                // {
+                //     data: 'category',
+                //     name: 'category'
+                // },
                 {
                     data: 'quantity',
                     name: 'quantity'
                 },
-                {
-                    data: 'threshold_qty',
-                    name: 'threshold_qty'
-                },
+                // {
+                //     data: 'threshold_qty',
+                //     name: 'threshold_qty'
+                // },
                 {
                     data: 'buying_price',
                     name: 'buying_price'
@@ -501,7 +471,7 @@
                 event.preventDefault();
 
                 ShowHideBtns('show');
-                $('.addStockBtn').text("Edit stock");
+                $('.addStockBtn').text("Update");
                 $('#addStockModal').modal('show');
                 var Url = "{{ route('stock.show', ':id') }}";
                 Url = Url.replace(':id', stock_id);

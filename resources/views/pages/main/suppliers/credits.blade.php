@@ -20,7 +20,7 @@
                 <h5 class="panel-title mb-0 text-dark">
                     <strong>Total Credits: UGX.</strong>
                     @isset($total_credits)
-                        <span class="text-success total_credits"> {{ number_format($total_credits) }}</span>
+                        <strong class="text-success total_credits"> {{ number_format($total_credits) }}</strong>
                     @endisset
                 </h5>
             </div>
