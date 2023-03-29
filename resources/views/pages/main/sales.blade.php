@@ -113,10 +113,9 @@
                             <th>Item</th>
                             <th>Qty</th>
                             <th>S. Price</th>
+                            <th>Subtotal</th>
                             <th>Disc</th>
-                            <th>Total</th>
-                            <th>Amt</th>
-                            <th>Bal.</th>
+                            <th>Amount</th>
                             {{-- <th>Customer</th> --}}
                             <th>Cashier</th>
                             <th>Date</th>
@@ -351,16 +350,12 @@
                     name: 'discount'
                 },
                 {
+                    data: 'total_cost',
+                    name: 'total_cost'
+                },
+                {
                     data: 'amount',
                     name: 'amount'
-                },
-                {
-                    data: 'paid_amount',
-                    name: 'paid_amount'
-                },
-                {
-                    data: 'balance',
-                    name: 'balance'
                 },
                 // {
                 //     data: 'customer',
@@ -407,20 +402,16 @@
                     name: 'selling_price'
                 },
                 {
+                    data: 'total_cost',
+                    name: 'total_cost'
+                },
+                {
                     data: 'discount',
                     name: 'discount'
                 },
                 {
                     data: 'amount',
                     name: 'amount'
-                },
-                {
-                    data: 'paid_amount',
-                    name: 'paid_amount'
-                },
-                {
-                    data: 'balance',
-                    name: 'balance'
                 },
                 // {
                 //     data: 'customer',

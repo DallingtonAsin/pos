@@ -337,6 +337,10 @@
                             alert(
                                 `There isn't enough ${row.item} in stock. Current quantity in the system is ${row.quantity}. If you are sure there's enough ${row.item} in stock, please first update quantity in the system`
                             )
+                            $('.barcode').val('');
+                            $('.item-name').val("");
+                            $('#qty').val("");
+                            $('#discount').val("");
                         }
 
                     });

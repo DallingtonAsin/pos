@@ -30,4 +30,9 @@ class Sale extends Model
     ];
 
     public $timestamps = true;
+
+    public function creditSales()
+    {
+        return $this->hasMany(CreditSale::class, 'sale_order_number');
+    }
 }

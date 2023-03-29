@@ -21,4 +21,9 @@ class CreditSale extends Model
     ];
 
     public $timestamps = true;
+
+    public function sale()
+    {
+        return $this->hasMany(Sale::class, 'order_number');
+    }
 }

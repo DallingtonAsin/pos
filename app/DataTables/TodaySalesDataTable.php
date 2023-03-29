@@ -74,7 +74,7 @@ class TodaySalesDataTable extends DataTable
 
     public function query(Sale $model)
     {
-        return $model->newQuery()->select('*')->where('fully_paid', 1)->where('balance', 0)->where("date", Date('Y-m-d'));
+        return $model->newQuery()->select('*')->where("date", Date('Y-m-d'));
     }
 
     /**

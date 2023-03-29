@@ -3,14 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\CreditSale;
+use App\Repositories\CustomerDebtPaymentRepository;
 
 class CreditSaleRepository
 {
-    protected $creditSale;
+    protected $creditSale, $customerDebtPaymentRepository;
 
-    public function __construct(CreditSale $creditSale)
+    public function __construct(CreditSale $creditSale, CustomerDebtPaymentRepository $customerDebtPaymentRepository)
     {
         $this->creditSale = $creditSale;
+        $this->customerDebtPaymentRepository = $customerDebtPaymentRepository;
     }
 
     public function create($creditSaleData)
@@ -34,7 +36,27 @@ class CreditSaleRepository
     public function get()
     {
         try {
-            return $this->creditSale->get();
+
+            return $this->creditSale->join('sales', 'credit_sales.sale_order_number', '=', 'sales.order_number')
+                ->select(
+                    'sales.order_number',
+                    'sales.item_code',
+                    'sales.item',
+                    'sales.quantity',
+                    'sales.original_price',
+                    'sales.selling_price',
+                    'sales.total_buying_cost',
+                    'sales.total_cost',
+                    'sales.cashier_id',
+                    'sales.discount',
+                    'sales.date',
+                    'sales.time',
+                    'credit_sales.customer_id',
+                    'credit_sales.amount_paid',
+                    'credit_sales.amount_due'
+                )
+                ->orderBy('sales.id', 'desc')
+                ->get();
         } catch (\Exception $ex) {
             throw $ex;
         }
@@ -63,7 +85,54 @@ class CreditSaleRepository
     public function count()
     {
         try {
-            return $this->creditSale->count();
+            return $this->creditSale->join('sales', 'credit_sales.sale_order_number', '=', 'sales.order_number')
+                ->select(
+                    'sales.order_number',
+                    'sales.item_code',
+                    'sales.item',
+                    'sales.quantity',
+                    'sales.original_price',
+                    'sales.selling_price',
+                    'sales.total_buying_cost',
+                    'sales.total_cost',
+                    'sales.cashier_id',
+                    'sales.discount',
+                    'sales.date',
+                    'sales.time',
+                    'credit_sales.customer_id',
+                    'credit_sales.amount_paid',
+                    'credit_sales.amount_due'
+                )
+                ->orderBy('sales.id', 'desc')
+                ->count();
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function totalCreditSales($year = null, $month = null, $date = null)
+    {
+        $data = $this->creditSale;
+        if (!empty($year)) {
+            $data = $data->whereYear('date', $year);
+        }
+        if (!empty($month)) {
+            $data = $data->whereMonth('date', $month);
+        }
+        if (!empty($date)) {
+            $data = $data->whereDate('date', $date);
+        }
+        return $data->sum('amount_due');
+    }
+
+    public function outstandingCreditFromSales($year = null, $month = null, $date = null)
+    {
+        try {
+
+            $total_customer_debt_payments = $this->customerDebtPaymentRepository->totalPaid($year, $month, $date);
+            $total_credit_sales = $this->totalCreditSales($year, $month, $date);
+            $outstanding_credit = $total_credit_sales - $total_customer_debt_payments;
+            return $outstanding_credit;
         } catch (\Exception $ex) {
             throw $ex;
         }

@@ -42,8 +42,6 @@ class CustomersWithDebtsDataTable extends DataTable
     public function query(Sale $model)
     {
 
-        // return $model->newQuery()->select('*')->where('balance', '>', 0)->where('fully_paid', 0);
-
         return Customer::distinct()
             ->join('sales', 'customers.id', '=', 'sales.customer_id')
             ->select('customers.id as customer_id', 'customers.contact as customer_contact', 'customers.name as customer_name')
