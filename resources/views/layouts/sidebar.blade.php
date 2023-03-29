@@ -162,10 +162,12 @@
                     <ul class="nav-sub">
                         <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a>
                         </li>
-                        <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Credit Transactions</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly
-                                statistics</a></li>
-
+                        <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Credit
+                                Transactions</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('customers.with.debts') }}"
+                                class="nav-sub-link">Customer with debts</a></li>
+                        <li class="nav-sub-item"><a href="{{ route('customer-debt-payments.index') }}"
+                                class="nav-sub-link">Customer debt payments</a></li>
                     </ul>
                 </li>
 
@@ -173,13 +175,10 @@
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="fa fa-chart-area"></i>Reports</a>
                     <ul class="nav-sub">
+                        <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly sale
+                                statistics</a></li>
                         <li class="nav-sub-item"><a href="{{ route('top-cashiers') }}" class="nav-sub-link">Cashier
                                 performance</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('customers.with.debts') }}"
-                                class="nav-sub-link">Customer debts</a></li>
-                        <li class="nav-sub-item"><a href="{{ route('customer-debt-payments.index') }}"
-                                class="nav-sub-link">Customer debt payments</a></li>
-
                         <li class="nav-item">
                             <a href="" class="nav-link with-sub">Stock</a>
                             <ul class="nav-sub">

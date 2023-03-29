@@ -8,6 +8,7 @@ use App\DataTables\CustomersWithDebtsDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CustomerDebtPayment;
 use App\Repositories\CustomerDebtPaymentRepository;
+use App\Repositories\CreditSaleRepository;
 use App\Models\Customer;
 use App\Helpers\Helper;
 
@@ -15,12 +16,13 @@ use App\Helpers\Helper;
 class CustomerDebtPaymentController extends Controller
 {
 
-    protected $helper, $customerDebtPaymentRepository;
+    protected $helper, $customerDebtPaymentRepository, $creditSaleRepository;
 
-    public function __construct(Helper $helper, CustomerDebtPaymentRepository $customerDebtPaymentRepository)
+    public function __construct(Helper $helper, CustomerDebtPaymentRepository $customerDebtPaymentRepository, CreditSaleRepository $creditSaleRepository)
     {
         $this->helper = $helper;
         $this->customerDebtPaymentRepository = $customerDebtPaymentRepository;
+        $this->creditSaleRepository = $creditSaleRepository;
     }
     /**
      * Display a listing of the resource.
@@ -31,12 +33,23 @@ class CustomerDebtPaymentController extends Controller
     {
 
         $total_records = $this->customerDebtPaymentRepository->count();
+        $total_credit_sales = $this->creditSaleRepository->totalCreditSales();
+        $total_debt_paid = $this->customerDebtPaymentRepository->totalPaid();
+        $credit_balance = $total_credit_sales - $total_debt_paid;
+
         $customers = Customer::distinct()
             ->join('credit_sales', 'customers.id', '=', 'credit_sales.customer_id')
             ->select('customers.id', 'customers.name')
             ->get();
+
         return view('pages.main.customers.customer-debt-payment-records')
-        ->with(compact('total_records', 'customers'));
+            ->with(compact(
+                'total_records',
+                'total_credit_sales',
+                'total_debt_paid',
+                'credit_balance',
+                'customers'
+            ));
     }
 
     public function getCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable)
