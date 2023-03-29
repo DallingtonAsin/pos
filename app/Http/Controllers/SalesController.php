@@ -202,7 +202,7 @@ class SalesController extends Controller
     return $dataTable->render('pages.main.sales');
   }
 
-  public function GetTodaySales(TodaySalesDataTable $dataTable)
+  public function getTodaySales(TodaySalesDataTable $dataTable)
   {
     return $dataTable->render('pages.main.sales-with-debts');
   }
@@ -212,7 +212,7 @@ class SalesController extends Controller
     return $dataTable->render('pages.main.sales-with-debts');
   }
 
-  public function GetTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable)
+  public function getTodaySalesWithDebts(TodaySalesWithDebtsDataTable $dataTable)
   {
     return $dataTable->render('pages.main.sales');
   }
@@ -249,8 +249,9 @@ class SalesController extends Controller
     $today_sales = Sale::whereDate('date', $today)->get();
     $all_sales = Sale::where('date', Date('Y-m-d'))->get();
 
-    $volume_of_todaysales = Sale::whereDate('date', $today)
-      ->sum('amount');
+    $sales_made_today = Sale::whereDate('date', $today)->sum('amount');
+    $today_credit_sales =  $this->creditSaleRepository->outstandingCreditFromSales(null, null, $today);
+    $sales_made_today = $sales_made_today - $today_credit_sales;
 
     $totl_no =  $arr['totl_no'];
     $total_sales =  $arr['totl_sales'];
@@ -260,10 +261,6 @@ class SalesController extends Controller
       ? $net_title = "Net Profit made: shs"
       : $net_title = "Losses made: shs";
 
-    // if ($request->ajax()) {
-    //   $this->GetSales();
-    // }
-
     $menu_selected = 'sales';
 
     return view('pages.main.sales')->with(
@@ -272,7 +269,7 @@ class SalesController extends Controller
         'totl_no',
         'all_sales',
         'netValue',
-        'volume_of_todaysales',
+        'sales_made_today',
         'total_sales',
         'menu_selected'
       )
@@ -295,8 +292,9 @@ class SalesController extends Controller
     $today_sales = Sale::whereDate('date', $today)->get();
     $all_sales = Sale::get();
 
-    $volume_of_todaysales = Sale::whereDate('date', $today)
-      ->sum('amount');
+    $sales_made_today = Sale::whereDate('date', $today)->sum('amount');
+    $today_credit_sales =  $this->creditSaleRepository->outstandingCreditFromSales(null, null, $today);
+    $sales_made_today = $sales_made_today - $today_credit_sales;
 
     $totl_no = $arr['totl_no'];
     $total_sales = $arr['totl_sales'];
@@ -316,7 +314,7 @@ class SalesController extends Controller
         'totl_no',
         'all_sales',
         'netValue',
-        'volume_of_todaysales',
+        'sales_made_today',
         'total_sales'
       )
     );
@@ -328,16 +326,12 @@ class SalesController extends Controller
   {
 
     $today = Date('Y-m-d');
-    $request->session()->forget('filtered_sales');
-    $today_sales = Sale::whereDate('date', $today)->get();
-
     $no_of_credit_sales =  $this->creditSaleRepository->count();
     $today_credit_sales =  $this->creditSaleRepository->outstandingCreditFromSales(null, null, $today);
     $outstanding_credit_sales = $this->creditSaleRepository->outstandingCreditFromSales();
 
     return view('pages.main.sales-with-debts')->with(
       compact(
-        'today_sales',
         'no_of_credit_sales',
         'today_credit_sales',
         'outstanding_credit_sales'

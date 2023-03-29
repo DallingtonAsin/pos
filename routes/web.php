@@ -50,7 +50,7 @@ Route::get('reports/ajax/debtors/customers', 'ReportsController@GetCustomerDebto
 
 Route::get('/customers/with-debts/ajax', 'CustomerDebtPaymentController@GetCustomersWithDebts')->name('customers.with.debts.ajax');
 Route::get('/customers/debt-payments', 'CustomerDebtPaymentController@index')->name('customers.debts.payments.index');
-Route::get('/customers/debt-payments/ajax', 'CustomerDebtPaymentController@GetCustomerDebtPayments')->name('customers.debts.payments.ajax');
+Route::get('/customers/debt-payments/ajax', 'CustomerDebtPaymentController@getCustomerDebtPayments')->name('customers.debts.payments.ajax');
 Route::get('/customers/debt/{customer_id}', 'CustomerDebtPaymentController@getCustomerDebt')->name('customer.debt.ajax');
 Route::get('/customers/with-debts', 'CustomerDebtPaymentController@customersWithDebtsIndex')->name('customers.with.debts');
 
@@ -71,13 +71,13 @@ Route::group(["middleware" => "restricted"], function () {
 
 
 	Route::get('/sales/get-data', 'SalesController@GetSales')->name('get-sales');
-	Route::get('/sales/fetch/today', 'SalesController@GetTodaySales')->name('get-daily-sales');
+	Route::get('/sales/fetch/today', 'SalesController@getTodaySales')->name('get-daily-sales');
 	Route::get('/sales/today', 'SalesController@salesForToday')->name('dailysales.index');
 	Route::get('/sales/item/{id}', 'SalesController@GetItem')->name('getItemName');
 
 	Route::get('/sales/debts', 'SalesController@salesWithDebtsIndex')->name('sales.debts');
 	Route::get('/sales/debts/ajax', 'SalesController@GetSalesWithDebts')->name('get-sales-with-debts');
-	Route::get('/sales/today/debts/ajax', 'SalesController@GetTodaySalesWithDebts')->name('get-daily-sales-with-debts');
+	Route::get('/sales/today/debts/ajax', 'SalesController@getTodaySalesWithDebts')->name('get-daily-sales-with-debts');
 
 	Route::get('/events/get', 'EventsController@GetEvents')->name('get-events');
 	Route::get('/events/getTitle/{id}', 'EventsController@GetEventTitle')->name('getEventTitle');

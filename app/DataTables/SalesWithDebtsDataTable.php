@@ -5,7 +5,6 @@ namespace App\DataTables;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Facades\Gate;
 use App\Helpers\Helper;
-use App\Models\CreditSale;
 use App\Repositories\CreditSaleRepository;
 
 class SalesWithDebtsDataTable extends DataTable
@@ -78,7 +77,7 @@ class SalesWithDebtsDataTable extends DataTable
     }
 
 
-    public function query(CreditSale $model)
+    public function query()
     {
         return $this->creditSaleRepository->get();
     }

@@ -34,30 +34,10 @@
                 <a href="" class="btn btn-default btn-sm outline-none rounded-pill ml-auto mb-2" data-toggle="modal"
                     data-target="#importExpenses"><strong>Import Expenses</strong></a>
             </div>
-
         </div>
 
 
         <div class="panel-body">
-            <div class="col-lg-8 text-center">
-                @if (session()->get('success'))
-                    <div class='alert alert-success alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Yello!</strong> {{ session()->get('success') }}<i class="fa fa-check-circle"></i>
-                    </div>
-                @endif
-
-                @if (session()->get('fail'))
-                    <div class='alert alert-danger alert-dismissible' role='alert'>
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span></button>
-                        <strong>Oops!</strong> {{ session()->get('fail') }}
-                    </div>
-                @endif
-
-            </div>
-
             <div class="table table-responsive custom-family">
                 <table class="table table-bordered expenses-table">
                     <thead>
@@ -73,7 +53,6 @@
             </div>
         </div>
     </div>
-
 
 
     <!--Add expenses -->

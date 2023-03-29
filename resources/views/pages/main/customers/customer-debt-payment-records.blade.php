@@ -2,38 +2,118 @@
 
 @section('content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-tile">
+        <div class="panel-heading d-flex align-items-center">
+            <span class="pl-0 response"></span>
+            <div class="col-lg-3 text-dark">
+                <h5 class="panel-title mb-0 text-dark">
+                    <i class="fa fa-home text-success"> /</i>
+                    <strong>Customer Debt Payments</strong>
+                    <span class="badge nunito-font total_records">
+                        @isset($total_records)
+                            {{ number_format($total_records) }}
+                        @endisset
+                    </span>
+                </h5>
+            </div>
 
-                <div class="row nunito-font">
-                    <span class="response"></span>
-                    <div class="col-lg-4">
-                        <h6 class="text-dark">
-                            <i class="fa fa-home text-success"> /</i>
-                            <strong>Customers Debt Payment Records</strong>
-                            </span>
-                        </h6>
-                    </div>
+            <div class="col-lg-3">
+                <h5 class="panel-title mb-0 text-dark">
+                    Total Credit Sales: UGX.
+                    <strong class="text-dark total_credit_sales">
+                        @isset($total_credit_sales)
+                            {{ number_format($total_credit_sales) }}
+                        @endisset
+                    </strong>
+                </h5>
+            </div>
 
-                    <div class="col-lg-4">
-                        <h5>
-                            <a class="text-info bolded" href="javascript:void(0)" id="addNewPayment"> Add payment</a>
-                        </h5>
-                    </div>
+            <div class="col-lg-3">
+                <h5 class="panel-title mb-0 text-dark">
+                    Total Paid Credit : UGX.
+                    <label class="text-success total_debt_paid">
+                        @isset($total_debt_paid)
+                            {{ number_format($total_debt_paid) }}
+                        @endisset
+                    </label>
+                </h5>
+            </div>
 
-                </div>
+            <div class="col-lg-2">
+                <h5 class="panel-title mb-0 text-dark">
+                    Current Debt: UGX.
+                    <label class="text-danger credit_balance">
+                        @isset($credit_balance)
+                            {{ number_format($credit_balance) }}
+                        @endisset
+                    </label>
+                </h5>
+            </div>
+
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
+                    id="addNewPayment"><i class="fa fa-plus-circle pr-1"></i>Add payment</button>
             </div>
         </div>
 
-        <div class="panel-body">
 
+        {{-- <div class="panel-heading d-flex align-content-center">
+            <span class="response"></span>
+            <div class="col-lg-3">
+                <h5 class="panel-title">
+                    <i class="fa fa-home text-success"> /</i>
+                    <strong>Customer Debt Payments</strong>
+                    <span class="badge nunito-font">
+                        @isset($total_records)
+                            <strong>{{ number_format($total_records) }}</strong>
+                        @endisset
+                    </span>
+                </h5>
+            </div>
+
+            @can('isAdmin')
+                <div class="col-lg-3">
+                    <h5 class="panel-title mb-0 text-dark">
+                        <span>Total Credit Sales:</span>
+                        @isset($total_credit_sales)
+                            <strong class="text-danger"> UGX. {{ number_format($total_credit_sales) }}</strong>
+                        @endisset
+                    </h5>
+                </div>
+
+                <div class="col-lg-2">
+                    <h5 class="panel-title mb-0 text-dark">
+                        <span>Total Credit Paid:</span>
+                        @isset($total_debt_paid)
+                            <strong>UGX. {{ number_format($total_debt_paid) }}</strong>
+                        @endisset
+                    </h5>
+                </div>
+
+
+                <div class="col-lg-2">
+                    <h5 class="panel-title mb-0 text-dark">
+                        <span>Current Debt:</span>
+                        @isset($credit_balance)
+                            <strong class="text-success">UGX. {{ number_format($credit_balance) }}</strong>
+                        @endisset
+                    </h5>
+                </div>
+            @endcan
+
+            <div class="col-lg-2">
+                <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
+                    id="addNewPayment"><i class="fa fa-plus-circle pr-1"></i>Add payment</button>
+            </div>
+        </div> --}}
+
+        <div class="panel-body">
             <div class="table-responsive custom-family">
                 <table class="table table-bordered table-hover debt-payment-records-table" id="debt-payment-records-table">
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Date</th>
                             <th>Customer Name</th>
+                            <th>Date</th>
                             <th>Amount Paid</th>
                             <th>Balance</th>
                             <th>Recorded By</th>
@@ -47,7 +127,6 @@
                 aria-labelledby="myModalLabel">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content">
-
                         <form name="customers" id="PaymentForm">
                             @csrf
                             <div class="modal-header text-center">
@@ -59,7 +138,6 @@
                             </div>
 
                             <div class="modal-body">
-
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Customer</span>
                                     <input type="hidden" class="form-control paymentId" name="paymentId">
@@ -139,13 +217,14 @@
                     searchable: false
                 },
                 {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
                     data: 'customer',
                     name: 'customer'
                 },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+
                 {
                     data: 'paid_amount',
                     name: 'paid_amount'
@@ -172,13 +251,14 @@
                     searchable: false
                 },
                 {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
                     data: 'customer',
                     name: 'customer'
                 },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+
                 {
                     data: 'paid_amount',
                     name: 'paid_amount'
