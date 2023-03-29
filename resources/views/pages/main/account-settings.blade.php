@@ -1,9 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    {{-- <div class="card-table nunito-font"> --}}
     <div class="card card-dashboard-table-six">
-
         <div class="card-title">
             <strong class="col-lg-10 text-success">
                 <i class="fa fa-gear"></i>
@@ -15,9 +13,7 @@
 
         <div class="card-body pt-3">
             <div class="panel panel-default">
-
                 <div class="panel-body">
-
                     <form class="profileForm" method="POST" action="{{ route('profile.update', Auth::user()->id) }}"
                         id="profileForm" enctype='multipart/form-data'>
                         @csrf
@@ -112,9 +108,6 @@
                             <div class="col-lg-3">
                                 <button type="submit" class="btn btn-success addProfileBtn" name="addProfileBtn">Update
                                     Profile</button>
-                                {{-- <input type="button" 
-           class="btn overview-item--c4 text-white addProfileBtn"
-            id="addProfileBtn" value="Update Profile"> --}}
                             </div>
 
                             <div class="col-lg-9">
@@ -187,9 +180,6 @@
                 confirmpassword.type = "password";
             }
         });
-
-
-
 
         // $('.addProfileBtn').click(function (e) {
         //     let id = $(".user_id").val();

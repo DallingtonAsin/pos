@@ -69,7 +69,7 @@ class StockRepository
         }
     }
 
-  
+
     public function exists($name)
     {
         try {
@@ -83,6 +83,25 @@ class StockRepository
     {
         try {
             return $this->stock->where('id', '!=', $id)->where('name', $name)->exists();
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function getItemByCode($item_id)
+    {
+        return $this->stock->where('item_code', $item_id)->get();
+    }
+
+    public function getItemByName($item_name)
+    {
+        return $this->stock->where('item', $item_name)->get();
+    }
+
+    public function updateByItemName($item, $stockData)
+    {
+        try {
+            return $this->stock->where('item', $item)->update($stockData);
         } catch (\Exception $ex) {
             throw $ex;
         }

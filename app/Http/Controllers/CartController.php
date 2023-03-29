@@ -2,774 +2,312 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
-use App\Models\Cart;
 use App\Models\Stock;
-use App\Models\Sale;
 use App\Models\Customer;
 use App\Models\Tax;
-use App\Models\SalesTaxTracker;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
-use App\Services\ReceiptGenerator;
+use App\Repositories\SaleRepository;
+use App\Repositories\CreditSaleRepository;
+use App\Repositories\StockRepository;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
 
-
-    private $total_amount_of_sales = 0;
     private $sold_items = array();
+    protected $salesRepository, $creditSaleRepository, $stockRepository;
 
-    public function __construct()
+    public function __construct(SaleRepository $salesRepository, CreditSaleRepository $creditSaleRepository, StockRepository $stockRepository)
     {
-
+        $this->salesRepository = $salesRepository;
+        $this->stockRepository = $stockRepository;
+        $this->creditSaleRepository = $creditSaleRepository;
     }
 
-    public function GetCartData(Request $request){
-
-      if($request->input('itemId')){
-
-          $itemId = $request->input('itemId');
-          $isBarcode = $request->input('isBarcode');
-
-          if($isBarcode == 1){
-              $itemData = Stock::where('item_code', $itemId)->get();
-          }
-          else{
-              $itemData = Stock::where('item', $itemId)->get();
-          }
-          return json_encode(array('data'=>$itemData));
-
-      }
-  }
-
-
-  protected function GetIndexOfArr($arr, $code)
-  {
-    for($i=0; $i<count($arr); $i++){
-        if($arr[$i]["code"] == $code){
-            return $i;
-        }
-    }
-
-}
-
-
-       /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-       public function index()
-       {
-        try{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        try {
             $customers = Customer::select(['id', 'name'])->get();
-            return view('pages.main.cart')->with(compact('customers'));
-        }catch(\Exception $ex) {
-           dd($ex->getMessage());
+            return view('pages.main.pos.index')->with(compact('customers'));
+        } catch (\Exception $ex) {
+            throw $ex;
         }
     }
 
     /**
-    * Show the form for creating a new resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        return view('pages.main.cart');
+        return view('pages.main.pos.index');
     }
 
-    /**
-    * Store a newly created resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    */
-    public function store(Request $req)
+
+    public function recordSale(Request $request)
     {
 
-        $req->validate([
-            'item-name' => 'required',
+        $validator = Validator::make($request->all(), [
+            'tabledata' => 'required',
+            'total_cost' => 'required',
+            'amount_paid' => 'required',
+            'customer' => 'sometimes|nullable',
+            'is_credit' => 'required'
         ]);
 
-        $cart = new Cart();
-        $item = $req->input('item-name');
-        $qty =  trim($req->input('qty'));
-        $discount = trim($req->input('discount'));
+        try {
+            if ($validator->fails()) {
+                $message = $validator->errors()->all();
+                return response()->json(['error' => $message]);
+            } else {
 
-
-        (empty($qty))? $quantity = 1: $quantity =  floatval($qty);
-
-        $dataCheck = $this->GetItemRef($item);
-        $refId = $dataCheck['refId'];
-
-        if($refId != null){
-
-
-                //get quantity available before adding to cart
-            $qty_available = $this->getQtyBeforeSale($item);
-
-            if($qty_available >= $quantity){
-
-                $priceArr = $this->getPrices($item);
-                    $price = floatval($priceArr["sprice"]); //method call for selling price of an item
-
-                    if(isset($discount))
-                    {
-                        $discount = floatval($discount);
-                        $amount = $quantity * ($price -$discount);
-                    }
-                    else
-                    {
-                        $discount = 0;
-                        $amount = $quantity * $price;
-                    }
-
-
-                    if($refId == 'name')
-                    {
-                        $item_code = $dataCheck['ref'];
-                        $item_name = $item;
-                    }
-                    else if($refId == 'id')
-                    {
-                        $item_code = $item;
-                        $item_name =  $dataCheck['ref'];
-                    }
-
-
-                    $cart->item_code = $item_code;
-                    $cart->item = $item_name;
-                    $cart->quantity = $quantity;
-                    $cart->price = $price;
-                    $cart->discount = $discount;
-                    $cart->amount = $amount;
-
-                    $save_status = $cart->save();
-
-                    if($save_status)
-                    {
-                        $action = "added item ".$item." to the cart";
-                        LogsController::logger($req, $action, now());
-                        $dataArr = array("code" => '200',
-                            "message" => $action,
-                            "method" => "CartController@store");
-                        LogAfterRequest::LogRequest($req, $dataArr);
-                        return back();
-                    }
-                    else
-                    {
-
-                        $error_message = "cart item not added failed!";
-                        $dataArr = array("code" => '101',
-                            "message" => $error_message,
-                            "method" => "CartController@store");
-                        LogAfterRequest::LogRequest($req, $dataArr);
-                        return back()->with('fail', $error_message);
-
-                    }
-
-
-                }
-                else if($qty_available < $quantity && $qty_available != -1)
-                {
-                    $error_message = "Quantity for item ".$item." is not enough,Available is ".$qty_available."";
-                    $dataArr = array("code" => '101',
-                        "message" => $error_message,
-                        "method" => "CartController@store");
-                    LogAfterRequest::LogRequest($req, $dataArr);
-                    return back()->with("fail", $error_message);
-                }
-                else
-                {
-                    $error_message = "couldn't find this product ".$item."";
-                    $dataArr = array("code" => '404',
-                        "message" => $error_message,
-                        "method" => "CartController@store");
-                    LogAfterRequest::LogRequest($req, $dataArr);
-                    return back()
-                    ->with("fail", $error_message);
-
+                $data = $request->input('tabledata');
+                $cost = Helper::Numberize($request->input('total_cost'));
+                $amount_paid = Helper::Numberize($request->input('amount_paid'));
+                $customer_id = $request->input('customer');
+                $cashier_id = $request->user()->id;
+                $itemArr = json_decode($data, true);
+                $on_credit = $cost > $amount_paid;
+                if ($on_credit && empty($customer_id)) {
+                    return response()->json(['error' => 'Please select customer since items are being taken on credit']);
                 }
 
-            }
+                if (is_array($itemArr) && count($itemArr) > 0) {
 
+                    $order_number = $this->salesRepository->generateOrderNumber();
+                    $total_cost  = 0;
 
-        } // end of method store
+                    foreach ($itemArr as $item) {
 
-        /**
-        * Display the specified resource.
-        *
-        * @param  int  $id
-        * @return \Illuminate\Http\Response
-        */
-        public function show($id)
-        {
-            //
-        }
+                        $item_code = $item['barcode'];
+                        $item_name = $item['item'];
+                        $this->sold_items[] = $item_name;
+                        $quantity = Helper::Numberize($item['quantity']);
+                        $price = Helper::Numberize($item['price']);
+                        $discount = Helper::Numberize($item['discount']);
+                        $total = Helper::Numberize($item['total']);
+                        $date_of_sale = $item['date_of_sale'];
+                        $arr = $this->getPrices($item_name);
+                        $original_price = $arr['bprice'];
+                        $total_cost += $total;
 
-        /**
-        * Show the form for editing the specified resource.
-        *
-        * @param  int  $id
-        * @return \Illuminate\Http\Response
-        */
-        public function edit($id)
-        {
-            //
-        }
+                        // Get new quantity of item after sale
+                        $qty_beforeSale = $this->getQtyBeforeSale($item_name);
+                        $newqty = ($qty_beforeSale - $quantity);
+                        $date = !empty($date_of_sale) ? date('Y-m-d', strtotime($date_of_sale)) : date('Y-m-d');
+                        $time = date('H:i:s');
 
-        /**
-        * Update the specified resource in storage.
-        *
-        * @param  \Illuminate\Http\Request  $request
-        * @param  int  $id
-        * @return \Illuminate\Http\Response
-        */
-        public function update(Request $req, $id)
-        {
+                        $taxAmount = $this->GetTax($total);
 
-            $req->validate([
-                'qty' => 'required',
-            ]);
+                        $sale_data = [
+                            'order_number' => $order_number,
+                            'item_code' => $item_code,
+                            'item' => $item_name,
+                            'quantity' => $quantity,
+                            'original_price' => $original_price,
+                            'selling_price' => $price,
+                            'discount' => $discount,
+                            'amount' => $total,
+                            'tax' => $taxAmount,
+                            'date' => $date,
+                            'time' => $time,
+                            'customer_id' => $customer_id,
+                            'cashier_id' => $cashier_id
+                        ];
 
-
-            try{
-
-                $cart = Cart::find($id);
-                $item = $cart->item;
-                $qty = trim($req->input('qty'));
-
-                ($req->input('discount') && $req->filled('discount'))
-                ? $discount = trim($req->input('discount'))
-                : $discount = 0;
-
-
-                (empty($qty))? $quantity = 1: $quantity =  floatval($qty);
-
-                $dataCheck = $this->GetItemRef($item);
-                $refId = $dataCheck['refId'];
-
-                if($refId != null){
-
-
-                        //get quantity available before adding to cart
-                    $qty_available = $this->getQtyBeforeSale($item);
-
-                    if($qty_available >= $quantity){
-
-                        $priceArr = $this->getPrices($item);
-                            $price = floatval($priceArr["sprice"]); //method call for selling price of an item
-
-                            if(isset($discount))
-                            {
-                                $discount = floatval($discount);
-                                $amount = $quantity * ($price -$discount);
-                            }
-                            else
-                            {
-                                $discount = 0;
-                                $amount = $quantity * $price;
-                            }
-
-
-                            if($refId == 'name')
-                            {
-                                $item_code = $dataCheck['ref'];
-                                $item_name = $item;
-                            }
-                            else if($refId == 'id')
-                            {
-                                $item_code = $item;
-                                $item_name =  $dataCheck['ref'];
-                            }
-
-
-                            $cart->item_code = $item_code;
-                            $cart->item = $item_name;
-                            $cart->quantity = $quantity;
-                            $cart->price = $price;
-                            $cart->discount = $discount;
-                            $cart->amount = $amount;
-
-                            $save_status = $cart->save();
-
-                            if($save_status)
-                            {
-                                $action = "added item ".$item." to the cart";
-                                LogsController::logger($req, $action, now());
-                                $dataArr = array("code" => '200',
-                                    "message" => $action,
-                                    "method" => "CartController@store");
-                                LogAfterRequest::LogRequest($req, $dataArr);
-                                return back();
-                            }
-                            else
-                            {
-
-                                $error_message = "cart item not added failed!";
-                                $dataArr = array("code" => '101',
-                                    "message" => $error_message,
-                                    "method" => "CartController@store");
-                                LogAfterRequest::LogRequest($req, $dataArr);
-                                return back()->with('fail', $error_message);
-
-                            }
-
-
-                        }
-                        else if($qty_available < $quantity && $qty_available != -1)
-                        {
-                            $error_message = "Quantity for item ".$item." is not enough,Available is ".$qty_available."";
-                            $dataArr = array("code" => '101',
-                                "message" => $error_message,
-                                "method" => "CartController@store");
-                            LogAfterRequest::LogRequest($req, $dataArr);
-                            return back()->with("fail", $error_message);
-                        }
-                        else
-                        {
-                            $error_message = "couldn't find this product ".$item."";
-                            $dataArr = array("code" => '404',
-                                "message" => $error_message,
-                                "method" => "CartController@store");
-                            LogAfterRequest::LogRequest($req, $dataArr);
-                            return back()
-                            ->with("fail", $error_message);
-
-                        }
-
+                        $this->salesRepository->create($sale_data); // insert into sales
+                        $this->stockRepository->updateByItemName($item_name, ['quantity' => $newqty]); // update stock
                     }
-                }catch(Exception $exception)
-                {
-                    parent::report($exception);
+
+                    $is_credit = $total_cost > $amount_paid;
+                    if ($is_credit) {
+
+                        $amount_due = $total_cost - $amount_paid;
+                        $credit_sale = [
+                            'sale_order_number' => $order_number,
+                            'customer_id' => $customer_id,
+                            'date' =>  date('Y-m-d'),
+                            'total_cost' => $total_cost,
+                            'amount_paid' => $amount_paid,
+                            'amount_due' => $amount_due
+                        ];
+
+                        $this->creditSaleRepository->create($credit_sale);
+                    }
+
+                    $action = "recorded a sale of items " . json_encode($this->sold_items) . " at  " . number_format($total_cost) . " ";
+                    LogsController::logger($request, $action, now());
+                    $dataArr = [
+                        "code" => '200',
+                        "message" => $action,
+                        "method" => "CartController@recordSale"
+                    ];
+                    LogAfterRequest::LogRequest($request, $dataArr);
+                    $message = $this->ActionMessage($action);
+
+                    return response()->json(['success' => 'Sale transaction recorded successfully']);
                 }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(['error' =>  $ex->getMessage()]);
+        }
+    }
 
+    protected function getPrices($item)
+    {
+        try {
+
+            $data = DB::select('select buying_price, selling_price from stock where item = ? or item_code = ?', [$item, $item]);
+            foreach ($data as $value) {
+                $bprice = $value->buying_price;
+                $sprice = $value->selling_price;
             }
 
+            return ["bprice" => $bprice,  "sprice" => $sprice];
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
 
-            private function DoTaxMathTracking($data){
+    protected function getQtyBeforeSale($item)
+    {
+        try {
+            $arr = $this->getListOfStockItemsData();
+            $stockArr = $arr['items'];
+            $stockIdArr = $arr['itemsIds'];
 
-              $itemId = $data[0];
-              $item = $data[1];
-              $qty = $data[2];
-              $amount = $data[3];
-              $tax = $data[4];
-              $soldOn = $data[5];
+            if (in_array($item, $stockArr) || in_array($item, $stockIdArr)) {
+                $data = Stock::where("item_code", "like", "%" . $item . "%")->orWhere("item", "like", "%" . $item . "%")->get();
+                foreach ($data as $value) {
+                    $qty = $value->quantity;
+                }
+            } else {
+                $qty = -1;
+            }
+            return $qty;
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
 
-              $tracker = new SalesTaxTracker;
-              $tracker->item_code = $this->customCrypt($itemId);
-              $tracker->item = $this->customCrypt($item);
-              $tracker->quantity = $this->customCrypt($qty);
-              $tracker->amount = $this->customCrypt($amount);
-              $tracker->tax = $this->customCrypt($tax);
-              $tracker->date_of_sale = $this->customCrypt($soldOn);
+    protected function searchItem(Request $request)
+    {
 
-              $tracker->save();
-          }
+        if ($request->input('query')) {
+            $query = $request->input('query');
+            $data = array();
+            $items = Stock::where("item_code", "like", "%" . $query . "%")
+                ->orWhere("item", "like", "%" . $query . "%")
+                ->get();
+
+            foreach ($items as $item) {
+                $data[] = $item->item;
+                $data[] = $item->item_code;
+            }
+            echo json_encode($data);
+        }
+    }
+
+    protected function getItemPrice(Request $request)
+    {
+        if ($request->input('item')) {
+            $query = $request->input('item');
+            $data = array();
+            $items = Stock::where("item_code", "like", "%" . $query . "%")
+                ->orWhere("item", "like", "%" . $query . "%")
+                ->get();
+            foreach ($items as $item) {
+                $data[] = $item->selling_price;
+            }
+            echo json_encode($data);
+        }
+    }
 
 
-          private function customCrypt($str){
-              $customKey = config('app.cipherKey');
-              $newEncrypter = new \Illuminate\Encryption\Encrypter($customKey, config('app.cipher'));
-              return $newEncrypter->encrypt($str);
-          }
+    public function getItemData(Request $request)
+    {
 
+        if ($request->input('itemId')) {
 
-          protected function StoreIntoCart($data)
-          {
+            $query_str = $request->input('itemId');
+            $isBarcode = $request->input('isBarcode');
 
-            $cart = new Cart;
-            $cart->item_code = $data['item_code'];
-            $cart->item = $data['item_name'];
-            $cart->quantity = $data['quantity'];
-            $cart->price = $data['price'];
-            $cart->amount = $data['subtotal'];
-            $cart->save();
+            if ($isBarcode == 1) {
+                $itemData = $this->stockRepository->getItemByCode($query_str);
+            } else {
+                $itemData = $this->stockRepository->getItemByName($query_str);
+            }
 
+            return response()->json(['data' => $itemData]);
+        }
+    }
+
+    protected function ActionMessage($action)
+    {
+        $message = "You have successfully " . $action . "";
+        return $message;
+    }
+
+    protected function getListOfStockItemsData()
+    {
+
+        $items = Stock::get();
+        $itemsArr = $itemsIdArr = array();
+        foreach ($items as $item) {
+            array_push($itemsArr, $item->item);
+            array_push($itemsIdArr, $item->item_code);
         }
 
+        return array(
+            'items' => $itemsArr,
+            'itemsIds' => $itemsIdArr
+        );
+    }
 
 
+    protected function GetItemRef($item)
+    {
+        $arr = $this->getListOfStockItemsData();
+        $stockList = $arr['items'];
+        $stockIdsList = $arr['itemsIds'];
 
-
-        public function MakeSaleGateway(Request $request)
-        {
-            $add2CartResponse = $this->GetSaleAndTransact($request);
-            if($add2CartResponse == true)
-            {
-                $response =  $this->recordSale($request);
-            }else{
-                $response = "Unable to insert sale details into cart";
-            }
-            return response()->json([
-                'response' => $response
-            ]);
-
+        if (in_array($item, $stockList)) {
+            $ref = Stock::where('item', $item)->value('item_code');
+            $refId = 'name';
+        } else if (in_array($item, $stockIdsList)) {
+            $ref = Stock::where('item_code', $item)->value('item');
+            $refId = 'id';
+        } else {
+            $ref = null;
+            $refId = null;
         }
 
-        public function GetSaleAndTransact(Request $request)
-        {
-            $data = $request->input('tabledata');
-            $dataArr = json_decode($data, true);
-
-            for($i=0; $i<count($dataArr); $i++){
-
-                $item_code = $dataArr[$i]['barcode'];
-                $item_name = $dataArr[$i]['item'];
-                $quantity = $dataArr[$i]['quantity'];
-                $price = $dataArr[$i]['price'];
-                $subtotal = $dataArr[$i]['subtotal'];
-
-                $data = array(
-                    'item_code' => $item_code,
-                    'item_name' => $item_name,
-                    'quantity' => $quantity,
-                    'price' => $price,
-                    'subtotal' => $subtotal,
-                );
-                $this->StoreIntoCart($data);
-
-            }
-
-            return true;
-
-        }
-
-        public function recordSale(Request $req){
-
-            $method = "CartController@recordSale";
-
-            $data = $req->input('tabledata');
-            $customer_id = $req->input('customer');
-            $cashier_id = $req->user()->id;
-            $extra_money = $req->input('extra_money');
-
-            if(!empty($extra_money)){
-                $extra_money = floatval($extra_money);
-            }else{
-                $extra_money = 0;
-            }
-            $dataArr = json_decode($data, true);
-
-            if(is_array($dataArr) && count($dataArr) > 0){
-
-                foreach($dataArr as $key){
-
-                    $item_code = $key['barcode'];
-                    $item = $key['item'];
-                    $this->sold_items[] = $item;
-                    $quantity = floatval(str_replace(',', '', $key['quantity']));
-                    $price = floatval(str_replace(',', '', $key['price']));
-                    $subtotal = floatval(str_replace(',', '', $key['subtotal']));
-                    $discount = floatval(str_replace(',', '', $key['discount']));
-                    $total = floatval(str_replace(',', '', $key['total']));
-                    $paid_amount = floatval(str_replace(',', '', $key['paid']));
-
-
-                    $isCredit = filter_var($key['is_credit'], FILTER_VALIDATE_BOOLEAN);
-
-                    if( $isCredit == true && $total == $paid_amount){
-                        $amount_paid = 0;
-                        $balance = $paid_amount;
-                    }else{
-                        $amount_paid = $paid_amount;
-                        $balance = $total-$paid_amount;
-                    }
-
-                    if( $isCredit == true){
-                        $is_credit = 1;
-                        $fully_paid = 0;
-                    }else{
-                        $is_credit = 0;
-                        $fully_paid = 1;
-                    }
-
-                    $date_of_sale = $key['date_of_sale'];
-
-                    $arr = $this->getPrices($item);
-                    $original_price = $arr['bprice'];
-                    $this->total_amount_of_sales += floatval($subtotal);
-
-                    // Get new quantity of item after sale
-                    $qty_beforeSale = $this->getQtyBeforeSale($item);
-                    $newqty = ( $qty_beforeSale - $quantity );
-                    $date = isset($date_of_sale) ? $date_of_sale : date('Y-m-d');
-                    $time = date('H:i:s');
-
-                    $taxAmount = $this->GetTax($total);
-
-                     // insert cart data into database
-                    $hasInsertedInSalesTbl = Sale::insert([
-                        'item_code' => $item_code,
-                        'item' => $item,
-                        'quantity' => $quantity,
-                        'original_price' => $original_price,
-                        'selling_price' => $price,
-                        'discount' => $discount,
-                        'amount' => $total,
-                        'paid_amount' => $amount_paid,
-                        'is_credit' => $is_credit,
-                        'fully_paid' => $fully_paid,
-                        'balance' => $balance,
-                        'extra_money' => $extra_money,
-                        'tax' => $taxAmount,
-                        'date' => $date,
-                        'time' => $time,
-                        'customer_id' => $customer_id,
-                        'cashier_id' => $cashier_id
-                    ]);
-
-                    $datetime = $date." ".$time;
-                    $taxArr = array($item_code,$item,$quantity,$subtotal,$taxAmount,$datetime);
-                    $this->DoTaxMathTracking($taxArr);
-
-                                //If insertion is OK, reduce stock levels and clear cart
-                    if($hasInsertedInSalesTbl){
-
-                        $hasUpdatedStock = Stock::where('item', $item)
-                        ->update(['quantity' => $newqty ]);
-                                        //message the user about state of sale
-                        if($hasUpdatedStock){
-
-                            $action = "recorded a sale of items ".json_encode($this->sold_items)." at
-                            ".number_format($this->total_amount_of_sales)." ";
-                            LogsController::logger($req, $action, now());
-                            $dataArr = array("code" => '200',
-                                "message" => $action,
-                                "method" => $method);
-                            LogAfterRequest::LogRequest($req, $dataArr);
-                                            $response = $this->ActionMessage($action); // back()->with('success', $this->ActionMessage($action));
-
-                                        } else {
-                                            $stockErr = "Failed to update stock after transaction";
-                                            $dataArr = array("code" => '101',
-                                                "message" => $stockErr,
-                                                "method" => $method);
-                                            LogAfterRequest::LogRequest($req, $dataArr);
-                                            $response = $stockErr;
-                                        }
-
-                                    }
-                                    else {
-                                        $cartInsertionErr = "Failed to insert sale details into sales table";
-                                        $dataArr = array("code" => '101',
-                                            "message" => $cartInsertionErr,
-                                            "method" => $method);
-                                        LogAfterRequest::LogRequest($req, $dataArr);
-                                        $response = $cartInsertionErr;
-
-                                    }
-
-                            } // end of foreach
-
-                            return $response;
-                        }
-                    }
-
-
-
-
-                    public function getReceipt(ReceiptGenerator $rg){
-                        try{
-                            $rg = new ReceiptGenerator();
-                            return $rg->generateReceipt();
-                        }catch(\Exception $ex){
-                            throw $ex;
-                        }
-                    }
-
-
-                    /**
-                    * Remove the specified resource from storage.
-                    *
-                    * @param  int  $id
-                    * @return \Illuminate\Http\Response
-                    */
-                    public function destroy(Request $request, $id){
-
-                        $cart = Cart::find($id);
-                        $cart = $cart->item;
-                        $delete_status = $cart->delete();
-                        if($delete_status)
-                        {
-
-                            $action = "removed ".$cart." from the list of items in cart";
-                            LogsController::logger($request, $action, now());
-                            $dataArr = array("code" => '200',
-                                "message" => $action,
-                                "method" => "CartController@destroy");
-                            LogAfterRequest::LogRequest($request, $dataArr);
-                            return back()->with("success", $this->ActionMessage($action));
-
-                        }
-                        else
-                        {
-                            $failErr = "item in cart not deleted!";
-                            $dataArr = array("code" => '101',
-                                "message" => $failErr,
-                                "method" => "CartController@destroy");
-                            LogAfterRequest::LogRequest($request, $dataArr);
-                            return back()->with('fail', $failErr);
-                        }
-
-
-                    }
-
-                    protected function getPrices($item)
-                    {
-
-                        $data = DB::select('select buying_price, selling_price
-                            from stock where item = ? or item_code = ?',[$item, $item]);
-                        foreach ($data as $value) {
-                            $bprice = $value->buying_price;
-                            $sprice = $value->selling_price;
-
-                        }
-                        return array("bprice" => $bprice,
-                            "sprice" => $sprice,
-                        );
-                    }
-
-                    protected function getQtyBeforeSale($item)
-                    {
-                        $arr = $this->getListOfStockItemsData();
-                        $stockArr = $arr['items'];
-                        $stockIdArr = $arr['itemsIds'];
-
-                        if(in_array($item, $stockArr) || in_array($item, $stockIdArr)){
-                            $data = Stock::where("item_code", "like", "%".$item."%")
-                            ->orWhere("item", "like", "%".$item."%")
-                            ->get();
-               
-                            foreach ($data as $value) {
-                                $qty = $value->quantity;
-                            }
-                        }else
-                        {
-                            $qty = -1;
-                        // return back()
-                        //        ->with("fail", "couldn't find this product");
-                        }
-                        return $qty;
-
-                    }
-
-
-                    protected function getCartItems()
-                    {
-                        $items =  Cart::get();
-                        return $items;
-                    }
-
-
-
-                    public function ClearCart()
-                    {
-                         Cart::truncate();
-                        return back();
-                    }
-
-                    protected function searchItem(Request $request)
-                    {
-
-                        if($request->input('query')){
-                            $query = $request->input('query');
-                            $data = array();
-                            $items = Stock::where("item_code", "like", "%".$query."%")
-                            ->orWhere("item", "like", "%".$query."%")
-                            ->get();
-
-                            foreach($items as $item){
-                                $data[] = $item->item;
-                                $data[] = $item->item_code;
-                            }
-                            echo json_encode($data);
-                        }
-
-                    }
-
-                    protected function getItemPrice(Request $request)
-                    {
-                        if($request->input('item')){
-                            $query = $request->input('item');
-                            $data = array();
-                            $items = Stock::where("item_code", "like", "%".$query."%")
-                            ->orWhere("item", "like", "%".$query."%")
-                            ->get();
-                            foreach($items as $item){
-                                $data[] = $item->selling_price;
-                            }
-                            echo json_encode($data);
-                        }
-                    }
-
-                    protected function ActionMessage($action)
-                    {
-                        $message = "You have successfully ".$action."";
-                        return $message;
-                    }
-
-                    protected function getListOfStockItemsData()
-                    {
-
-                        $items = Stock::get();
-                        $itemsArr = $itemsIdArr = array();
-                        foreach($items as $item)
-                        {
-                            array_push($itemsArr, $item->item);
-                            array_push($itemsIdArr, $item->item_code);
-                        }
-
-                        return array(
-                            'items' => $itemsArr,
-                            'itemsIds' => $itemsIdArr
-                        );
-
-                    }
-
-
-                    protected function GetItemRef($item)
-                    {
-                        $arr = $this->getListOfStockItemsData();
-                        $stockList = $arr['items'];
-                        $stockIdsList = $arr['itemsIds'];
-
-                        if(in_array($item, $stockList)){
-                            $ref =Stock::where('item', $item)->value('item_code');
-                            $refId = 'name';
-                        }
-                        else if(in_array($item, $stockIdsList)){
-                            $ref = Stock::where('item_code', $item)->value('item');
-                            $refId = 'id';
-                        }
-                        else{
-                            $ref = null;
-                            $refId = null;
-                        }
-
-                        $dataArr = array(
-                            "item" => $item,
-                            "ref" => $ref,
-                            "refId" => $refId,
-
-                        );
-
-                        return $dataArr;
-
-                    }
-
-
-                    private function GetTax($amount){
-                      $sale = Tax::where('tax_name', 'sales')->value('tax_percentage');
-                      $salesPercent = floatval($sale);
-                      $taxCharge = 0.01*$salesPercent*$amount;
-                      return $taxCharge;
-                  }
-
-
-
-
-              }
+        $dataArr = array(
+            "item" => $item,
+            "ref" => $ref,
+            "refId" => $refId,
+
+        );
+
+        return $dataArr;
+    }
+
+
+    private function GetTax($amount)
+    {
+        $sale = Tax::where('tax_name', 'sales')->value('tax_percentage');
+        $salesPercent = floatval($sale);
+        $taxCharge = 0.01 * $salesPercent * $amount;
+        return $taxCharge;
+    }
+}

@@ -19,10 +19,6 @@ Route::get('/', function () {
 })->name('re-login');
 
 Auth::routes();
-
-//Auth::routes(['register' => false]);
-// Auth::route(['login'])->middleware(CheckStatus::class)
-
 Route::post('/user/validate', 'Auth\CustomLoginController@authenticate')->name('authenticate');
 Route::get('/sign-out', 'Auth\CustomLoginController@logout')->name('signout');
 
@@ -33,10 +29,6 @@ Route::group(["middleware" => "OTPlayer"], function () {
 
 
 Route::get("/export/excel", "SalesController@GetSalesExcelFileReport");
-Route::get("/sale/make-receipt", "CartController@getReceipt");
-
-// Route::get("/users/active", "UserController@ActiveUsersIndex")->name('user-account.active');
-// Route::get("/users/locked", "UserController@LockedUsersIndex")->name('user-account.locked');
 Route::get('/fetch/company-details', 'SettingsController@GetCompanies')->name('companies.home');
 Route::get('stock/fetch', 'StockController@fetchStockItemsAjax')->name('stock.ajax.fetch');
 Route::get('roles/fetch', 'UserController@fetchRolesAjax')->name('roles.ajax.fetch');
@@ -100,11 +92,11 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::get('/users/cashiers', 'UserController@fetchCashiers')->name('cashiers.home');
 	Route::get('/users/cashiers/ajax', 'UserController@GetCashiers')->name('cashiers.index.ajax');
 	Route::get('/users/fetch/ajax', 'UserController@GetUsers')->name('users.index.ajax');
-	
+
 	Route::get('stores/fetch/ajax', 'StoreController@getStoresDataTable')->name('stores.index.ajax');
 	Route::get('taken-bottles/fetch/ajax', 'TakenBottleController@getTakenBottleDataTable')->name('taken-bottles.index.ajax');
 
-	
+
 	Route::resources([
 		'stock' => 'StockController',
 		'taken-bottles' => 'TakenBottleController',
@@ -131,25 +123,19 @@ Route::group(["middleware" => "restricted"], function () {
 
 	Route::get('/email', 'MailController@MailWelcome');
 	Route::get('/home', 'HomeController@index')->name('home');
-	Route::get('/overview', 'HomeController@overview')->name('overview');
 	Route::get('/reports', 'ReportsController@index')->name('reports');
 	Route::get('/reports/charts/purchases', 'ReportsController@purchaseReports')->name('reports.charts.purchases');
 
 
-	Route::post('pos/session/update', 'CartController@updateItemInSession')->name('session.update');
-	Route::post('pos/record', 'CartController@MakeSaleGateway')->name('sale.transact');
+	Route::post('pos/barcode/getItem', 'CartController@getItemData')->name('item.get');
 	Route::post('sale/transact', 'CartController@recordSale')->name('sale.record');
-
-	Route::post('pos/barcode/getItem', 'CartController@GetCartData')->name('item.get');
 	Route::post('pos/search', 'CartController@searchItem')->name('item.search');
 	Route::post('pos/searchprice', 'CartController@getItemPrice')->name('cart.searchprice');
-	Route::post('users/search/role', 'UserController@searchRole')->name('user.searchrole');
+
 
 	Route::post('/sales/filtered-sales', 'SalesController@filterSales')->name('filtersales');
 	Route::post('/sales/debts/search', 'SalesController@filterSalesWithDebts')->name('sales.debts.filter');
-
-	Route::put('/sales/records/update/', 'SalesController@updateSaleRecord')
-		->name('sales.records.update');
+	Route::put('/sales/records/update/', 'SalesController@updateSaleRecord')->name('sales.records.update');
 	Route::get('sales/export-sales', 'SalesController@exportSales')->name('sales.export');
 
 	Route::post('stock/import-stock', 'StockController@importStock')->name('stock.import');
@@ -174,18 +160,18 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::post("/customers/remove/selected", "CustomersController@RemoveSelected")->name("selected-customers.remove");
 	Route::post("/stockcat/remove/selected", "StockCatsController@RemoveSelected")->name("selected-stockcats.remove");
 	Route::post("/sales/remove/selected", "SalesController@RemoveSelected")->name("selected-sales.remove");
+
+
 	Route::post("/users/remove/selected", "UserController@RemoveSelected")->name("selected-users.remove");
-
-
+	Route::post('users/search/role', 'UserController@searchRole')->name('user.searchrole');
 	Route::get('/customers/home', 'CustomersController@GetCustomers')->name('customers.home');
-
 	Route::post('suppliers/import-suppliers', 'SuppliersController@importSuppliers')->name('suppliers.import');
 	Route::get('suppliers/export-suppliers', 'SuppliersController@exportSuppliers')->name('suppliers.export');
 	Route::get('suppliers/getSuppliers4DT', 'SuppliersController@GetSuppliersData')->name('getSuppliers4DT');
 	Route::get('suppliers/credits/ajax', 'SupplierCreditController@getSupplierCreditDataTable')->name('suppliers.credits.ajax');
 	Route::get('suppliers/debts/ajax', 'SupplierDebtController@getSupplierDebtDataTable')->name('suppliers.debts.ajax');
 
-	
+
 	Route::post('product-categories/import-categories', 'StockCatsController@importCategories')->name('categories.import');
 	Route::get('product-categories/export-categories', 'StockCatsController@exportCategories')->name('categories.export');
 
@@ -214,11 +200,9 @@ Route::group(["middleware" => "restricted"], function () {
 
 	Route::get('sms', 'SmsController@index')->name('sms');
 	Route::post('send-sms', 'SmsController@SendSMS')->name('sms.store');
-	Route::post('pos/handler', 'CartController@PopulateCart')->name('cart.handle');
 	Route::get('events/event-form', 'EventsController@ShowEventForm')->name('events.showForm');
 
 	Route::post('purchases/deleteAll', 'PurchasesController@deleteAllPurchases')->name('purchases.truncate');
-	Route::post('pos/clear', 'CartController@ClearCart')->middleware('password.confirm');
 	Route::post('stock/deleteAll', 'StockController@deleteAllStockItems')->name('stock.truncate');
 	Route::post('suppliers/deleteAll', 'SuppliersController@deleteAllSuppliers')->name('suppliers.truncate');
 	Route::post('expenses/deleteAll', 'ExpensesController@deleteAllExpenses')->name('expenses.truncate');
@@ -229,18 +213,9 @@ Route::group(["middleware" => "restricted"], function () {
 	Route::post('logs/truncate', 'LogsController@truncateLogs')->name('logs.truncate');
 
 	Route::get('stock/find/{id}', 'StockController@findStockItem')->name('stock.item.find');
-
 	Route::get('users/active/remove', 'UserController@RemoveAllActiveUsers')->name('active-users.remove')->middleware('password.confirm');
 	Route::get('users/locked/remove', 'UserController@RemoveAllLockedUsers')->name('locked-users.remove')->middleware('password.confirm');
-
 	Route::get('/user/lockunlock/{id}/{status}/{name}', 'UserController@LockUnlockAccount')->name('user.lockunlock');
-
 	Route::post('/user/lockunlock/', 'UserController@LockUnlockUserAccount')->name('account.change');
-
 	Route::get('/cashier/change-account/{id}/{status}/{name}', 'CashiersController@ChangeAccountStatus')->name('cashiers.changestatus');
-
-
-	// Route::put('/profile/update/{id}', 'ProfileController@update')->name('profile.update');
-
-
 });
