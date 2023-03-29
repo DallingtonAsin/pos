@@ -97,4 +97,10 @@ class CustomerRepository
         $total_debt_paid = $this->customerDebtPaymentRepository->getCustomerPaidDebtAmount($customer_id);
         return $credit_sales - $total_debt_paid;
     }
+
+    public function getTotalCutomerDebt(){
+        $total_credit_sales = $this->creditSaleRepository->totalCreditSales();
+        $total_debt_paid = $this->customerDebtPaymentRepository->totalPaid();
+        return $total_credit_sales - $total_debt_paid;
+    }
 }

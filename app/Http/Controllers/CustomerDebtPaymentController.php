@@ -7,6 +7,7 @@ use App\DataTables\CustomerDebtPaymentRecordsDataTable;
 use App\DataTables\CustomersWithDebtsDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CustomerDebtPayment;
+use App\Repositories\CustomerRepository;
 use App\Repositories\CustomerDebtPaymentRepository;
 use App\Repositories\CreditSaleRepository;
 use App\Models\Customer;
@@ -16,13 +17,36 @@ use App\Helpers\Helper;
 class CustomerDebtPaymentController extends Controller
 {
 
-    protected $helper, $customerDebtPaymentRepository, $creditSaleRepository;
+    protected $helper, $customerDebtPaymentRepository, $creditSaleRepository, $customerRepository;
 
-    public function __construct(Helper $helper, CustomerDebtPaymentRepository $customerDebtPaymentRepository, CreditSaleRepository $creditSaleRepository)
-    {
+    public function __construct(
+        Helper $helper,
+        CustomerDebtPaymentRepository $customerDebtPaymentRepository,
+        CreditSaleRepository $creditSaleRepository,
+        CustomerRepository $customerRepository
+    ) {
         $this->helper = $helper;
         $this->customerDebtPaymentRepository = $customerDebtPaymentRepository;
         $this->creditSaleRepository = $creditSaleRepository;
+        $this->customerRepository =  $customerRepository;
+    }
+
+    private function getCreditStatistics()
+    {
+        try {
+            $total_records = $this->customerDebtPaymentRepository->count();
+            $total_credit_sales = $this->creditSaleRepository->totalCreditSales();
+            $total_debt_paid = $this->customerDebtPaymentRepository->totalPaid();
+            $credit_balance = $this->customerRepository->getTotalCutomerDebt();
+            return [
+                'total_records' => $total_records,
+                'total_credit_sales' => $total_credit_sales,
+                'total_debt_paid' => $total_debt_paid,
+                'credit_balance' => $credit_balance
+            ];
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
     }
     /**
      * Display a listing of the resource.
@@ -32,10 +56,12 @@ class CustomerDebtPaymentController extends Controller
     public function index()
     {
 
-        $total_records = $this->customerDebtPaymentRepository->count();
-        $total_credit_sales = $this->creditSaleRepository->totalCreditSales();
-        $total_debt_paid = $this->customerDebtPaymentRepository->totalPaid();
-        $credit_balance = $total_credit_sales - $total_debt_paid;
+        $stats = $this->getCreditStatistics();
+
+        $total_records = $stats['total_records'];
+        $total_credit_sales = $stats['total_credit_sales'];
+        $total_debt_paid = $stats['total_debt_paid'];
+        $credit_balance = $stats['credit_balance'];
 
         $customers = Customer::distinct()
             ->join('credit_sales', 'customers.id', '=', 'credit_sales.customer_id')
@@ -60,11 +86,11 @@ class CustomerDebtPaymentController extends Controller
 
     public function customersWithDebtsIndex()
     {
-        $total_debts = Helper::getTotalCustomerDebt();
+        $total_debts =  $this->customerRepository->getTotalCutomerDebt();
         return view('pages.main.customers.customers-with-debts')->with(compact('total_debts'));
     }
 
-    public function GetCustomersWithDebts(CustomersWithDebtsDataTable $dataTable)
+    public function getCustomersWithDebts(CustomersWithDebtsDataTable $dataTable)
     {
         return $dataTable->render('pages.main.customers.customers-with-debts');
     }
@@ -111,8 +137,8 @@ class CustomerDebtPaymentController extends Controller
 
                 if (CustomerDebtPayment::create($data)) {
                     $message = "Customer payment has been recorded successfully";
-
-                    $data = ['success' => $message];
+                    $stats = $this->getCreditStatistics();
+                    $data = ['success' => $message, 'data' => $stats];
                 } else {
                     $message = "Technical error in adding customer payment";
                     $data = [

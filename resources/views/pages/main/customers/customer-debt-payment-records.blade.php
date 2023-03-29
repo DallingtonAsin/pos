@@ -420,20 +420,29 @@
 
                 let Errors = validateForm();
                 if (Errors.length == 0) {
-                    $(this).html('Updating..');
+                    $(this).html('Adding..');
 
                     $.ajax({
                         data: $('#PaymentForm').serialize(),
                         url: "{{ route('customer-debt-payments.store') }}",
                         type: "POST",
                         dataType: 'json',
-                        success: function(data) {
-
+                        success: function(response) {
+                            console.log("Yes i am passing here")
                             $('#PaymentForm').trigger("reset");
                             $('#addPaymentModal').modal("hide");
 
-                            let message = data.success || data.error;
-                            let type = data.success ? 'success' : 'error';
+                            let message = response.success || response.error;
+                            let type = response.success ? 'success' : 'error';
+                            if (response.data) {
+                                let data = response.data;
+
+                                $('.total_records').html(formatNumber(data.total_records))
+                                $('.total_credit_sales').html(formatNumber(data
+                                    .total_credit_sales))
+                                $('.total_debt_paid').html(formatNumber(data.total_debt_paid))
+                                $('.credit_balance').html(formatNumber(data.credit_balance))
+                            }
 
                             ShowResponse('.response', message, type);
                             let tbl = $('#debt-payment-records-table').DataTable();
@@ -492,7 +501,7 @@
                 });
             }
 
-            function FormatNumber(number) {
+            function formatNumber(number) {
                 let FormattedNumber = parseFloat(number).toLocaleString('us', {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0
@@ -502,8 +511,8 @@
 
             function ResetTblInfo(response) {
                 let total_debtors, total_debts;
-                total_debtors = FormatNumber(response.total_debtors);
-                total_debts = FormatNumber(response.total_debts);
+                total_debtors = formatNumber(response.total_debtors);
+                total_debts = formatNumber(response.total_debts);
 
                 $('.total_debtors').html(total_debtors);
                 $('.total_debts').html(total_debts);
