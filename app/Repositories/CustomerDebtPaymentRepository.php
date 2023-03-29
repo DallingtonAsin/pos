@@ -88,4 +88,8 @@ class CustomerDebtPaymentRepository
             throw $ex;
         }
     }
+
+    public function getCustomerPaidDebtAmount($customer_id){
+        return $this->customerDebtPayment->where('customer_id', $customer_id)->sum('paid_amount');
+    }
 }

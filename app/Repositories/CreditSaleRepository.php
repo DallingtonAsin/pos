@@ -137,4 +137,8 @@ class CreditSaleRepository
             throw $ex;
         }
     }
+
+    public function getCustomerCreditSales($customer_id){
+        return $this->creditSale->where('customer_id', $customer_id)->sum('amount_due');
+    }
 }

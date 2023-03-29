@@ -3,14 +3,18 @@
 namespace App\Repositories;
 
 use App\Models\Customer;
+use App\Repositories\CreditSaleRepository;
+use App\Repositories\CustomerDebtPaymentRepository;
 
 class CustomerRepository
 {
-    protected $customer;
+    protected $customer, $creditSaleRepository, $customerDebtPaymentRepository;
 
-    public function __construct(Customer $customer)
+    public function __construct(Customer $customer, CreditSaleRepository $creditSaleRepository, CustomerDebtPaymentRepository $customerDebtPaymentRepository)
     {
         $this->customer = $customer;
+        $this->creditSaleRepository = $creditSaleRepository;
+        $this->customerDebtPaymentRepository = $customerDebtPaymentRepository;
     }
 
     public function create($customerData)
@@ -69,7 +73,7 @@ class CustomerRepository
         }
     }
 
-  
+
     public function exists($name, $contact)
     {
         try {
@@ -86,5 +90,11 @@ class CustomerRepository
         } catch (\Exception $ex) {
             throw $ex;
         }
+    }
+
+    public function getCustomerOutstandingDebt($customer_id){
+        $credit_sales = $this->creditSaleRepository->getCustomerCreditSales($customer_id);
+        $total_debt_paid = $this->customerDebtPaymentRepository->getCustomerPaidDebtAmount($customer_id);
+        return $credit_sales - $total_debt_paid;
     }
 }

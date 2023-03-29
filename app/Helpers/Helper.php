@@ -11,7 +11,6 @@ use App\Models\Sale;
 use App\Models\Expense;
 use App\Models\Damage;
 use App\Models\CustomerDebtPayment;
-use App\Models\Supplier;
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogsController;
@@ -22,15 +21,17 @@ use  App\Helpers\Constants as Constant;
 use App\Models\SupplierCredit;
 use App\Models\SupplierDebt;
 use App\Repositories\CreditSaleRepository;
+use App\Repositories\CustomerRepository;
 
 class Helper
 {
 
-  protected $creditSaleRepository;
+  protected $creditSaleRepository, $customerRepository;
 
-  public function __construct(CreditSaleRepository $creditSaleRepository)
+  public function __construct(CreditSaleRepository $creditSaleRepository, CustomerRepository $customerRepository)
   {
     $this->creditSaleRepository = $creditSaleRepository;
+    $this->customerRepository = $customerRepository;
   }
 
   public static function logError($data)
@@ -476,23 +477,20 @@ class Helper
     return Auth::user()->role_id === $cashier_role_id;
   }
 
-  public static function customerDebt($customer_id)
+  public function getCustomerDebt($customer_id)
   {
     try {
-      $debt = Sale::where('customer_id', $customer_id)->sum('amount')
-        - Sale::where('customer_id', $customer_id)->sum('amount')
-        - CustomerDebtPayment::where('customer_id', $customer_id)->sum('paid_amount');
+      $debt = $this->customerRepository->getCustomerOutstandingDebt($customer_id);
       return $debt;
     } catch (\Exception $ex) {
       throw $ex;
     }
   }
 
-  public static function totalCustomerDebt($customer_id)
+  public function totalCustomerDebt($customer_id)
   {
     try {
-      return  Sale::where('customer_id', $customer_id)->sum('amount')
-        - Sale::where('customer_id', $customer_id)->sum('amount');
+      return $this->customerRepository->getCustomerOutstandingDebt($customer_id);
     } catch (\Exception $ex) {
       throw $ex;
     }

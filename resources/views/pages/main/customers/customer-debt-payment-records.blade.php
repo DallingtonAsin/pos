@@ -158,8 +158,6 @@
                     data: 'recorded_by',
                     name: 'recorded_by'
                 },
-
-                //  {data: 'action', name: 'action',orderable: false,searchable: false},
             ];
             makeDataTable2(table, title, columns, dataColumns);
         </script>

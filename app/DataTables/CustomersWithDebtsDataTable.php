@@ -3,12 +3,20 @@
 namespace App\DataTables;
 
 use Yajra\DataTables\Services\DataTable;
-use App\Models\Sale;
 use App\Models\Customer;
 use App\Helpers\Helper;
+use App\Repositories\CreditSaleRepository;
 
 class CustomersWithDebtsDataTable extends DataTable
 {
+
+    protected $helper, $creditSaleRepository;
+
+    public function __construct(Helper $helper, CreditSaleRepository $creditSaleRepository)
+    {
+        $this->helper = $helper;
+        $this->creditSaleRepository = $creditSaleRepository;
+    }
     /**
      * Build DataTable class.
      *
@@ -30,20 +38,20 @@ class CustomersWithDebtsDataTable extends DataTable
 
                 return $btn;
             })->addColumn('total_debt', function ($data) {
-                return number_format(Helper::totalCustomerDebt($data->customer_id));
+                return number_format($this->creditSaleRepository->getCustomerCreditSales($data->customer_id));
             })->addColumn('total_paid', function ($data) {
                 return number_format(Helper::totalCustomerPayments($data->customer_id));
             })->addColumn('current_debt', function ($data) {
-                return number_format(Helper::customerDebt($data->customer_id));
+                return number_format($this->helper->getCustomerDebt($data->customer_id));
             })->rawColumns(['action']);
     }
 
 
-    public function query(Sale $model)
+    public function query()
     {
 
         return Customer::distinct()
-            ->join('sales', 'customers.id', '=', 'sales.customer_id')
+            ->join('credit_sales', 'customers.id', '=', 'credit_sales.customer_id')
             ->select('customers.id as customer_id', 'customers.contact as customer_contact', 'customers.name as customer_name')
             ->get();
     }
@@ -62,18 +70,7 @@ class CustomersWithDebtsDataTable extends DataTable
 
     protected function getColumns()
     {
-        return [
-            'id',
-            'item_id',
-            'item',
-            'quantity',
-            'selling_price',
-            'discount',
-            'amount',
-            'date',
-            'customer_id',
-            'cashier_id'
-        ];
+        return [ ];
     }
 
     /**

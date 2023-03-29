@@ -3,40 +3,51 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\CustomerDebtPayment;
 use App\DataTables\CustomerDebtPaymentRecordsDataTable;
 use App\DataTables\CustomersWithDebtsDataTable;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+use App\Models\CustomerDebtPayment;
+use App\Models\Customer;
 use App\Helpers\Helper;
 
 
 class CustomerDebtPaymentController extends Controller
 {
+
+    protected $helper;
+
+    public function __construct(Helper $helper)
+    {
+        $this->helper = $helper;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
-        $customers = DB::table('customers')->distinct()
-            ->join('sales', 'customers.id', '=', 'sales.customer_id')
+    public function index()
+    {
+        $customers = Customer::distinct()
+            ->join('credit_sales', 'customers.id', '=', 'credit_sales.customer_id')
             ->select('customers.id', 'customers.name')
             ->get();
         return view('pages.main.customers.customer-debt-payment-records')->with(compact('customers'));
     }
 
-    public function GetCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable){
+    public function GetCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable)
+    {
         return $dataTable->render('pages.main.customers.customer-debt-payment-records');
     }
 
 
-    public function customersWithDebtsIndex(){
+    public function customersWithDebtsIndex()
+    {
         $total_debts = Helper::getTotalCustomerDebt();
         return view('pages.main.customers.customers-with-debts')->with(compact('total_debts'));
     }
 
-    public function GetCustomersWithDebts(CustomersWithDebtsDataTable $dataTable){
+    public function GetCustomersWithDebts(CustomersWithDebtsDataTable $dataTable)
+    {
         return $dataTable->render('pages.main.customers.customers-with-debts');
     }
 
@@ -68,7 +79,7 @@ class CustomerDebtPaymentController extends Controller
                 $customer_id = $request->input('customer');
                 $paid_amount = $request->input('paid_amount');
                 $paid_amount =  Helper::Numberize($paid_amount);
-                $balance = Helper::customerDebt($customer_id) - $paid_amount;
+                $balance = $this->helper->getCustomerDebt($customer_id) - $paid_amount;
                 $payment_date = $request->input('payment_date');
 
                 $recorded_by = $request->user()->id;
@@ -97,11 +108,11 @@ class CustomerDebtPaymentController extends Controller
         }
     }
 
-  
+
     public function getCustomerDebt($customer_id)
     {
         try {
-            $debt = Helper::customerDebt($customer_id);
+            $debt = $this->helper->getCustomerDebt($customer_id);
             return response()->json(['success' => 'OK', 'data' => $debt]);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()]);
@@ -167,7 +178,7 @@ class CustomerDebtPaymentController extends Controller
                     $customer_id = $request->input('customer');
                     $paid_amount = $request->input('paid_amount');
                     $payment_date = $request->input('payment_date');
-                    $balance = Helper::customerDebt($customer_id) - intval($paid_amount);
+                    $balance = $this->helper->getCustomerDebt($customer_id) - intval($paid_amount);
 
                     $created_by = $request->user()->id;
                     $data = [
