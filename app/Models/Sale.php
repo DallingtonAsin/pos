@@ -12,9 +12,21 @@ class Sale extends Model
     protected $table = 'sales';
 
     protected $fillable = [
-        'order_number', 'item', 'quantity', 'selling_price',
-        'total_cost', 'discount', 'amount', 'customer',
-        'date_of_sale,cashier'
+        'order_number',
+        'item_code',
+        'item',
+        'quantity',
+        'original_price',
+        'selling_price',
+        'total_cost',
+        'discount',
+        'amount',
+        'customer',
+        'tax',
+        'date',
+        'time',
+        'customer_id',
+        'cashier_id'
     ];
 
     public $timestamps = true;

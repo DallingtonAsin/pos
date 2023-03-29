@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Sale;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Str;
 
 class SaleRepository
@@ -74,37 +73,11 @@ class SaleRepository
     public function generateOrderNumber()
     {
         try {
-
-            // $lastOrder = Sale::orderBy('id', 'desc')->first();
-            // $newId = $lastOrder ? $lastOrder->id + 1 : 1;
-            // $order_number = 'SO' . str_pad($newId, 5, '0', STR_PAD_LEFT);
-            // $order_number = $this->generateUniqueNumber('sales', 'order_number', 12, 'SO');
             $order_number = date('YmdHis') . Str::uuid()->toString();
-            dd($order_number);
             return $order_number;
         } catch (\Exception $ex) {
             throw $ex;
         }
     }
 
-    private function generateUniqueNumber($table, $column = null, $length, $prefix)
-    {
-      try {
-  
-        $config = [
-          'table' => $table,
-          'length' => $length,
-          'prefix' => $prefix
-        ];
-  
-        if ($column != null) {
-          $config['field'] = $column;
-        }
-  
-        $order_number = IdGenerator::generate($config);
-        return $order_number;
-      } catch (\Exception $ex) {
-        throw $ex;
-      }
-    }
 }

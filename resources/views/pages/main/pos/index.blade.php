@@ -6,18 +6,11 @@
         <div class="panel-heading cartPanelHeader" id="panel-heading">
             <div class="panel-title nunito-font">
                 <div class="row">
-                    <span class='response'></span>
                     <div class="col-lg-4">
                         <i class="typcn typcn-shopping-cart"></i> cart
                         <span class="badge">
                             <span id="num">0</span>
                         </span>
-                    </div>
-                    <div class="col-lg-4 mt-2 amount">
-                        <strong>Amount: </strong>
-                        <strong class="text-danger amountToPay" id="amountToPay">0</strong>
-                        <input type="hidden" value="@isset($item_total) {{ $item_total }} @endisset"
-                            class="payment">
                     </div>
                 </div>
             </div>
@@ -26,29 +19,21 @@
         <header class="mt-3 mx-4">
             <form id="CartForm" class="form">
                 @csrf
-
                 <div class="row">
+
+                    <div class="form-group col-md-2">
+                        <label>Total Cost</label>
+                        <input type="text" class="form-control text-primary amountToPay" id="amountToPay" readonly
+                            placeholder="Total cost of items">
+                    </div>
 
                     <div class="form-group col-md-2">
                         <label>Tendered Amount</label>
                         <input type="text" class="form-control tendered" id='tendered' placeholder="Tendered amount">
                     </div>
-
                     <div class="form-group col-md-2">
                         <label>Balance</label>
                         <input type="text" class="form-control  balance" readonly placeholder="Customer balance">
-                    </div>
-
-                    <div class="form-group col-md-2">
-                        <label>Extra Money Paid</label>
-                        <input type="text" class="form-control  extra_money" value="" id="extra_money"
-                            placeholder="0">
-                    </div>
-
-                    <div class="form-group col-md-2">
-                        <label>Cashier</label>
-                        <input type="text" class="form-control  cashier" id="cashier" name="cashier"
-                            value="{{ Auth::user()->name }}" placeholder="WorkedOn By" readonly>
                     </div>
 
                     <div class="form-group col-md-2">
@@ -60,26 +45,24 @@
                             @endforeach
                         </select>
                     </div>
-
+                    <div class="form-group col-md-2">
+                        <label>Date of sale</label>
+                        <input type="date" name="date_of_sale" id="date_of_sale" class="form-control date_of_sale"
+                            value="{{ date('Y-m-d') }}">
+                    </div>
                     <div class="form-group col-md-2 mt-4 pt-3">
                         <a href="javascript:void(0)" id="emptyCart" class="btn btn-sm btn-danger">
                             <i class="fa f-10 fa-times-circle pr-2"></i>Empty cart
                         </a>
-
                     </div>
-
-
                 </div>
 
                 <div class="row nunito-font">
                     <div class="form-group col">
                         <label>Barcode</label>
-
                         <input type="text" id="barcode" name="barcode" class="form-control barcode"
                             placeholder="Barcode" autocomplete="off" spellcheck="false" required autofocus>
-
                     </div>
-
                     <div class="form-group col">
                         <label>Item name</label>
                         <input type="text" id="item-name" name="item-name" class="form-control item-name"
@@ -90,12 +73,10 @@
                         <input type="text" name="qty" id="qty" class="form-control" val=""
                             placeholder="Qty">
                     </div>
-
                     <div class="form-group col">
                         <label>Discount</label>
                         <input type="text" name="discount" id="discount" class="form-control" placeholder="discount">
                     </div>
-
                     <div class="form-group col">
                         <label>Price category</label>
                         <select name="priceCategory" class="form-control" id="priceCategory">
@@ -103,14 +84,6 @@
                             <option value="wholesale">wholesale</option>
                         </select>
                     </div>
-
-                    <div class="form-group col">
-                        <label>Date of sale</label>
-                        <input type="date" name="date_of_sale" id="date_of_sale" class="form-control date_of_sale"
-                            value="{{ date('Y-m-d') }}">
-                    </div>
-
-
 
                     <div class="form-group col mt-4 pt-2">
                         <label></label>
@@ -122,32 +95,8 @@
         </header>
 
         <div class="panel-body">
-
             <span class="response"></span>
-            <div class="row">
-                <div class="col-lg-12 text-center nunito-font">
-                    @if (session('success'))
-                        <div class='alert alert-success alert-dismissible' role='alert'>
-                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                <span aria-hidden='true'>&times;</span></button>
-                            <strong>Yello!</strong> {{ session('success') }}<i class="fa fa-check-circle"></i>
-                        </div>
-                    @endif
-
-                    @if (session('fail'))
-                        <div class='alert alert-danger alert-dismissible' role='alert'>
-                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                <span aria-hidden='true'>&times;</span></button>
-                            <strong>Sorry!</strong> {{ session('fail') }}
-                        </div>
-                    @endif
-
-                </div>
-
-            </div>
-
             <main>
-
                 <div class="table table-responsive fixedTableHead" id="cart-div">
                     <table id="cart-table" class="table table-bordered cart-table">
                         <thead>
@@ -159,39 +108,43 @@
                                 <th>total</th>
                                 <th>Discount/Item</th>
                                 <th>Amount</th>
-                                <th>Amount Paid</th>
-                                <th>Is Credit</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-
                         <tbody id="cart-table-body">
                         </tbody>
-
                         <tfoot>
                             <tr>
-                                <td colspan="10"></td> <!-- empty cells for column spacing -->
-                                <td>
-                                    <a id="printBtn" class="btn btn-sm btn-primary text-white col-md-12">
-                                        <i class="fa fa-check-circle pr-2"></i> <strong class="f-15 print-btn-text">Submit
-                                            Sale</strong>
-                                    </a>
+                                <td colspan="12" style="text-align: right;">
+                                    <div class="row">
+                                        <div class="col-lg-6"></div>
+                                        <div class="d-flex col-lg-6">
+
+                                            <label class="pr-2 mt-3 text-danger">Taken on Credit ?</label>
+                                            <select name="is_credit" class="form-control is_credit mt-2" id="is_credit">
+                                                <option value="1">Yes</option>
+                                                <option value="0" selected="true">No</option>
+                                            </select>
+
+                                            <input type="text" class="form-control h-90 paid_amount mt-2 mx-4"
+                                                value="" id="paid_amount" placeholder="Enter paid amount"
+                                                name="paid_amount">
+
+                                            <a id="printBtn" class="btn btn-sm btn-primary text-white mx-3">
+                                                <i class="fa fa-check-circle pr-2"></i> <strong
+                                                    class="print-btn-text">Submit Sale</strong>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </tfoot>
-
-
-
                     </table>
                 </div>
             </main>
-            {{-- @include('pages.receipt.index') --}}
         </div>
     </div>
-
-
-
 
 
     <style>
@@ -202,8 +155,6 @@
 
     <script src="{{ asset('vendors/notify/notify.js') }}"></script>
     <script src="{{ asset('vendors/jquery-tabledit/jquery.tabledit.min.js') }}"></script>
-
-
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -217,27 +168,27 @@
         designCartTable();
 
         function designCartTable() {
-            var rowCount = $('#cart-table tbody tr').length;
+            let rowCount = $('#cart-table tbody tr').length;
             if (rowCount > 0) {
-                var table = $("#cart-table");
-                var title = "Receipt";
+                let table = $("#cart-table");
+                let title = "Receipt";
                 columns = [0, 1, 2, 3, 4, 5, 6];
                 cartTable(table, title, columns);
             }
         }
 
         $('#addToCartBtn').on('click', function() {
-            var itemName = $('.item-name').val();
-            var isBarcode = 0;
-            AddItemToCart(isBarcode, itemName);
+            let itemName = $('.item-name').val();
+            let isBarcode = 0;
+            addItemtoCart(isBarcode, itemName);
             $('.item-name').val("");
         });
 
         function getCurrentDate() {
-            var today = new Date();
-            var day = String(today.getDate()).padStart(2, '0');
-            var month = String(today.getMonth() + 1).padStart(2, '0');
-            var year = today.getFullYear();
+            let today = new Date();
+            let day = String(today.getDate()).padStart(2, '0');
+            let month = String(today.getMonth() + 1).padStart(2, '0');
+            let year = today.getFullYear();
             today = month + '/' + day + '/' + year;
             return today;
         }
@@ -246,29 +197,41 @@
         Numberize("#discount");
         Numberize(".edit_quantity");
         Numberize(".edit_discount");
-        Numberize(".extra_money");
+        Numberize(".paid_amount");
+
+        $('#paid_amount').on('input', function() {
+            let paid_amount_str, paid_amount;
+            let total_cost_str, total_cost;
+
+            paid_amount_str = $('#paid_amount').val();
+            paid_amount = convertToNumber(paid_amount_str);
+
+            total_cost_str = $('#amountToPay').val();
+            total_cost = convertToNumber(total_cost_str);
+
+            if (paid_amount >= total_cost) {
+                $('.is_credit').val('0');
+            } else {
+                $('.is_credit').val('1');
+            }
+        });
 
 
-        function AddItemToCart(searchId, item) {
+        function addItemtoCart(searchId, item) {
 
-            var url = "{{ route('item.get') }}";
+            let url = "{{ route('item.get') }}";
 
-            var quantity = $('#qty').val();
-            var priceCategory = $('#priceCategory').val();
-            var quantity;
-            (quantity) ?
-            quantity = quantity: quantity = 1;
+            let qty = $('#qty').val();
+            let priceCategory = $('#priceCategory').val();
+            let quantity = qty ? qty : 1;
 
+            let discount_amount = $('#discount').val();
+            let discount = discount_amount ? discount_amount : 0;
 
-            var discount = $('#discount').val();
-            (discount) ?
-            discount = discount: discount = 0;
+            let date = $('#date_of_sale').val();
+            let date_of_sale = date ? date : getCurrentDate();
 
-            var date_of_sale = $('#date_of_sale').val();
-            (date_of_sale) ?
-            date_of_sale = date_of_sale: date_of_sale = getCurrentDate();
-
-            var inc = 0;
+            let inc = 0;
 
 
             $.ajax({
@@ -281,85 +244,94 @@
                 },
                 cache: false,
                 dataType: 'json',
-                success: function(dataResult) {
-                    console.log(dataResult);
-                    var resultData = dataResult.data;
-                    var bodyData = '';
+                success: function(response) {
+
+                    let resultData = response.data;
+                    let bodyData = '';
 
                     $.each(resultData, function(index, row) {
 
-                        var selling_price;
-                        priceCategory == 'retail' ?
-                            selling_price = row.selling_price :
-                            selling_price = row.wholesale_price;
+                        if (row.quantity >= quantity) {
 
-                        var sub_total = Convert2Num(quantity) * selling_price;
-                        var sellingPrice = FormatNumber(selling_price);
-                        var subTotal = FormatNumber(sub_total);
-                        var total_discount = Convert2Num(quantity) * Convert2Num(discount);
+                            let selling_price = (priceCategory == 'retail') ? row.selling_price : row
+                                .wholesale_price;
+                            let sub_total = convertToNumber(quantity) * selling_price;
+                            let sellingPrice = FormatNumber(selling_price);
+                            let subTotal = FormatNumber(sub_total);
+                            let total_discount = convertToNumber(quantity) * convertToNumber(discount);
 
-                        var total = FormatNumber(sub_total - total_discount);
-                        var paid = total;
+                            let total = FormatNumber(sub_total - total_discount);
 
-                        bodyData += "<tr data-name='" + row.item + "' data-quantity='" + quantity +
-                            "' data-discount='" + discount + "' data-paid='" + paid +
-                            "' data-sprice='" + selling_price + "' data-date='" + date_of_sale + "'>"
-                        bodyData += "<td>" + row.item + "</td><td>" + row.item_code + "</td><td>" +
-                            quantity + "</td>" +
-                            "<td>" + sellingPrice + "</td><td>" + subTotal + "</td><td>" + discount +
-                            "</td><td>" + total + "</td><td>" + paid +
-                            "</td><td><input type='checkbox' name='is_credit' id='is_credit'/> Is credit</td><td>" +
-                            date_of_sale +
-                            "</td><td><button class='btn btn-info btn-xs btn-edit edit-row' style='margin-left:20px;'>Edit</button>" +
-                            "<button class='btn btn-danger btn-xs btn-delete delete-row' style='margin-left:20px;'>Delete</button></td>";
-                        bodyData += "</tr>";
+                            bodyData += "<tr data-name='" + row.item + "' data-quantity='" + quantity +
+                                "' data-discount='" + discount + "' data-sprice='" + selling_price +
+                                "' data-date='" + date_of_sale +
+                                "'>"
+                            bodyData += "<td>" + row.item + "</td><td>" + row.item_code + "</td><td>" +
+                                quantity + "</td>" +
+                                "<td>" + sellingPrice + "</td><td>" + subTotal + "</td><td>" +
+                                discount +
+                                "</td><td>" + total + "</td><td>" + date_of_sale +
+                                "</td><td><button class='btn btn-info btn-xs btn-edit edit-row' style='margin-left:20px;'>Edit</button>" +
+                                "<button class='btn btn-danger btn-xs btn-delete delete-row' style='margin-left:20px;'>Delete</button></td>";
+                            bodyData += "</tr>";
 
-                        $('#cart-table tbody tr').each(function(i, tr) {
-                            var tblItemId = $(tr).children().eq(1).text();
-                            var itemQty = $(tr).children().eq(2).text();
-                            var ItemPrice = $(tr).children().eq(3).text();
-                            $('.barcode').val('');
-                            $('.item-name').val("");
-                            $('#qty').val("");
-                            $('#discount').val("");
-                            let newQty = Convert2Num(itemQty);
+                            $('#cart-table tbody tr').each(function(i, tr) {
 
-                            // if(tblItemId == row.item_code){
-                            //   $(this).css({'background': '#ffa500', 'color': '#fff'});
-                            // }
+                                let tblItemName = $(tr).children().eq(0).text();
+                                let tblItemId = $(tr).children().eq(1).text();
+                                let itemQty = $(tr).children().eq(2).text();
+                                let ItemPrice = $(tr).children().eq(3).text();
 
-                            if (tblItemId == row.item_code) {
-                                newQty = Convert2Num(itemQty) + quantity;
+                                let newQty = convertToNumber(itemQty);
 
-                                var newSubTotal = newQty * Convert2Num(ItemPrice);
-                                let newTotalDiscount = Convert2Num(newQty) * Convert2Num(
-                                    discount);
-                                let newTotal = newSubTotal - newTotalDiscount;
-                                newTotal % 1 != 0 ? newTotal = newTotal.toFixed(2) : newTotal =
-                                    newTotal;
+                                // if(tblItemId == row.item_code){
+                                //   $(this).css({'background': '#ffa500', 'color': '#fff'});
+                                // }
 
-                                $(this).children(":eq(2)").text(FormatNumber(newQty));
-                                $(this).children(":eq(4)").text(FormatNumber(newSubTotal));
-                                $(this).children(":eq(6)").text(FormatNumber(newTotal));
-                                $(this).children(":eq(7)").text(FormatNumber(newTotal));
+                                if (tblItemId == row.item_code || tblItemName == row.item) {
+                                    newQty = convertToNumber(itemQty) + quantity;
+
+                                    let newSubTotal = newQty * convertToNumber(ItemPrice);
+                                    let newTotalDiscount = convertToNumber(newQty) *
+                                        convertToNumber(
+                                            discount);
+                                    let newTotal = newSubTotal - newTotalDiscount;
+                                    newTotal % 1 != 0 ? newTotal = newTotal.toFixed(2) :
+                                        newTotal =
+                                        newTotal;
+
+                                    $(this).children(":eq(2)").text(FormatNumber(newQty));
+                                    $(this).children(":eq(4)").text(FormatNumber(newSubTotal));
+                                    $(this).children(":eq(6)").text(FormatNumber(newTotal));
+                                    updateSubTotal();
+                                    ComputeBalance();
+                                    inc += 1;
+                                }
+
+                                $('.barcode').val('');
+                                $('.item-name').val("");
+                                $('#qty').val("");
+                                $('#discount').val("");
+
+
+                            });
+
+                            if (inc == 0) {
+                                $("#cart-table-body").append(bodyData);
+                                $('.barcode').val('');
+                                $('.item-name').val("");
+                                $('#qty').val("");
+                                $('#discount').val("");
                                 updateSubTotal();
                                 ComputeBalance();
-                                inc += 1;
+                            } else {
+
                             }
 
-
-                        });
-
-                        if (inc == 0) {
-                            $("#cart-table-body").append(bodyData);
-                            $('.barcode').val('');
-                            $('.item-name').val("");
-                            $('#qty').val("");
-                            $('#discount').val("");
-                            updateSubTotal();
-                            ComputeBalance();
                         } else {
-
+                            alert(
+                                `There isn't enough ${row.item} in stock. Current quantity in the system is ${row.quantity}. If you are sure there's enough ${row.item} in stock, please first update quantity in the system`
+                            )
                         }
 
                     });
@@ -369,20 +341,14 @@
 
 
         $(document).on("click", ".btn-edit", function() {
-            var paid;
-            var quantity = $(this).parents('tr').find('td:eq(2)').html();
-            var discount = $(this).parents('tr').find('td:eq(5)').html();
 
+            let quantity = $(this).parents('tr').find('td:eq(2)').html();
+            let discount = $(this).parents('tr').find('td:eq(5)').html();
 
-            // if(parseFloat(discount) != 0){
-            //   paid =  $(this).parents('tr').find("input[name='edit_amt_paid']").val();
-            // }else{
-            paid = $(this).parents('tr').attr('data-paid');
-            // }
-            var date_of_sale = $(this).parents('tr').attr('data-date');
+            let date_of_sale = $(this).parents('tr').attr('data-date');
 
-            var $checkbox = $(this).parents('tr').find('input[type="checkbox"]');
-            var status;
+            let $checkbox = $(this).parents('tr').find('input[type="checkbox"]');
+            let status;
             if ($checkbox.length) {
                 status = $checkbox.prop('checked');
             }
@@ -393,67 +359,39 @@
             $(this).parents('tr').find('td:eq(5)').html(
                 '<input name="edit_discount" class="edit_discount" value="' + discount +
                 '"  style="width:80px"> ');
-            $(this).parents('tr').find('td:eq(7)').html(
-                '<input name="edit_amt_paid" class="edit_amt_paid" value="' + paid + '"  style="width:80px"> ');
-
-            $(this).parents('tr').find('td:eq(8)').html(
-                '<input type="checkbox" name="is_credit" id="is_credit"> Is credit');
-            $(this).parents('tr').find('td:eq(9)').html('<input type="date" name="edit_date" value="' +
+            $(this).parents('tr').find('td:eq(7)').html('<input type="date" name="edit_date" value="' +
                 date_of_sale + '" style="width:135px">');
-            $(this).parents('tr').find('td:eq(10)').prepend(
+            $(this).parents('tr').find('td:eq(8)').prepend(
                 '<button class="btn btn-info btn-xs btn-update">Update</button><button class="btn btn-warning ml-3 btn-xs btn-cancel">Cancel</button>'
             );
-            // $('#is_credit').prop('checked', status);
-            $(this).parents('tr').find('input[type="checkbox"]').prop('checked', status);
+
 
             $(this).hide();
-            $('.btn-delete').hide();
+            $('.btn-delete').show();
 
         });
 
         $(document).on("click", ".btn-update", function() {
 
-            var name = $(this).parents('tr').attr('data-name');
-            var quantity = $(this).parents('tr').find("input[name='edit_quantity']").val();
-            var quantity = $(this).parents('tr').find("input[name='edit_quantity']").val();
-            var discount = $(this).parents('tr').find("input[name='edit_discount']").val();
-            var date_of_sale = $(this).parents('tr').find("input[name='edit_date']").val();
-            var paid_amount;
+            let name = $(this).parents('tr').attr('data-name');
+            let quantity = $(this).parents('tr').find("input[name='edit_quantity']").val();
+            let discount = $(this).parents('tr').find("input[name='edit_discount']").val();
+            let date_of_sale = $(this).parents('tr').find("input[name='edit_date']").val();
 
-            var checkbox = $(this).parents('tr').find('input[type="checkbox"]');
-            var status;
-            if (checkbox.length) {
-                status = checkbox.prop('checked');
-            }
-            var sprice = $(this).parents('tr').find('td:eq(3)').text();
-            var newSubTotal = Convert2Num(quantity) * Convert2Num(sprice);
-            var newTotalDiscount = Convert2Num(quantity) * Convert2Num(discount);
-            var newTotal = newSubTotal - newTotalDiscount;
+            let sprice = $(this).parents('tr').find('td:eq(3)').text();
+            let newSubTotal = convertToNumber(quantity) * convertToNumber(sprice);
+            let newTotalDiscount = convertToNumber(quantity) * convertToNumber(discount);
+            let newTotal = newSubTotal - newTotalDiscount;
 
             newTotal % 1 != 0 ? newTotal = newTotal.toFixed(2) : newTotal = newTotal;
 
-            $(this).parents('tr').find('td:eq(2)').html(quantity);
-            $(this).parents('tr').find('td:eq(5)').html(discount);
-            $(this).parents('tr').find('td:eq(4)').html(FormatNumber(newSubTotal));
-            $(this).parents('tr').find('td:eq(6)').html(FormatNumber(newTotal));
-
-            if (status == true) {
-                paid_amount = $(this).parents('tr').find("input[name='edit_amt_paid']").val();
-                $(this).parents('tr').find('td:eq(7)').html(FormatNumber(paid_amount));
-            } else {
-                paid_amount = newTotal;
-                $(this).parents('tr').find('td:eq(7)').html(FormatNumber(newTotal));
-            }
-
-            $(this).parents('tr').find('td:eq(8)').html(
-                '<input type="checkbox" name="is_credit" id="is_credit"> Is credit');
-            $(this).parents('tr').find('td:eq(9)').html(date_of_sale);
-            $(this).parents('tr').attr('data-quantity', quantity);
-            $(this).parents('tr').attr('data-discount', discount);
-            $(this).parents('tr').attr('data-paid', newTotal);
-
-            $(this).parents('tr').find('input[type="checkbox"]').prop('checked', status);
-            // $('#is_credit').prop('checked', status);
+            $(this).parents('tr').find('td:eq(2)').html(quantity)
+            $(this).parents('tr').find('td:eq(5)').html(discount)
+            $(this).parents('tr').find('td:eq(4)').html(FormatNumber(newSubTotal))
+            $(this).parents('tr').find('td:eq(6)').html(FormatNumber(newTotal))
+            $(this).parents('tr').find('td:eq(7)').html(date_of_sale)
+            $(this).parents('tr').attr('data-quantity', quantity)
+            $(this).parents('tr').attr('data-discount', discount)
             updateSubTotal();
             ComputeBalance();
 
@@ -469,14 +407,11 @@
 
             let quantity = $(this).parents('tr').attr('data-quantity');
             let discount = $(this).parents('tr').attr('data-discount');
-            let amount_paid = $(this).parents('tr').attr('data-paid');
             let date_of_sale = $(this).parents('tr').attr('data-date');
 
             $(this).parents('tr').find('td:eq(2)').html(quantity);
             $(this).parents('tr').find('td:eq(5)').html(discount);
-            $(this).parents('tr').find('td:eq(7)').html(amount_paid);
-            $(this).parents('tr').find('td:eq(8)').html(date_of_sale);
-
+            $(this).parents('tr').find('td:eq(7)').html(date_of_sale);
             $(this).parents('tr').find('.btn-update').hide();
             $(this).parents('tr').find('.btn-cancel').hide();
             $(this).parents('tr').find('.btn-edit').show();
@@ -495,32 +430,24 @@
             ComputeBalance();
         });
 
-        // $('.barcode').on('change',function(){
-        //        var barcode = $('.barcode').val();
-        //        var isBarcode = 1;
-        //        if(barcode.length >= 13){
-        //          AddItemToCart(isBarcode, barcode);
-        //        }
-        //   });
-
 
         $(document).keypress(function(event) {
-            var keycode = (event.keyCode ? event.keyCode : event.which);
+            let keycode = (event.keyCode ? event.keyCode : event.which);
             if (keycode == 13) {
-                var barcode = $('.barcode').val();
-                var isBarcode = 1;
+                let barcode = $('.barcode').val();
+                let isBarcode = 1;
                 if (barcode.length >= 13) {
-                    AddItemToCart(isBarcode, barcode);
+                    addItemtoCart(isBarcode, barcode);
                 }
             }
         });
 
 
         // $(document).keydown(function(event){
-        //   var key = event.keyCode || event.charCode;
+        //   let key = event.keyCode || event.charCode;
         //   if(key == 13 || key == '13' ){
-        //     var table = document.getElementById('cart-table');
-        //     var rowCount = (table.rows.length - 1);
+        //     let table = document.getElementById('cart-table');
+        //     let rowCount = (table.rows.length - 1);
         //     if(rowCount > 0){
         //       PrintReceipt();
         //     }else{
@@ -535,11 +462,7 @@
             let table = document.getElementById('cart-table-body');
             let rowCount = table.rows.length;
             if (rowCount > 0) {
-                if (confirm("Are you sure you want to submit this sale?")) {
-                    PrintReceipt();
-                } else {
-                    // do nothing
-                }
+                PrintReceipt();
             } else {
                 alert('Add items to the cart');
             }
@@ -557,88 +480,91 @@
 
         function PrintReceipt() {
 
-            var TableData = new Array();
-            var credit_arr = [];
+            let TableData = new Array();
 
             $('#cart-table tbody tr').each(function(row, tr) {
-                var $chkbox = $(this).find('input[type="checkbox"]');
-                var status;
-                if ($chkbox.length) {
-                    status = $chkbox.prop('checked');
-                }
-                credit_arr.push(status);
-                TableData[row] = {
-                    "item": $(tr).find('td:eq(0)').text(), // Name.
-                    "barcode": $(tr).find('td:eq(1)').text(), // Barcode
-                    "quantity": $(tr).find('td:eq(2)').text(), // Quantity
-                    "price": $(tr).find('td:eq(3)').text(), // Price
-                    "subtotal": $(tr).find('td:eq(4)').text(), // Subtotal
-                    "discount": $(tr).find('td:eq(5)').text(), // Price
-                    "total": $(tr).find('td:eq(6)').text(), // Subtotal
-                    "paid": $(tr).find('td:eq(7)').text(), // Subtotal
-                    "is_credit": status, // Is credit
-                    "date_of_sale": $(tr).find('td:eq(9)').text(), // Subtotal
 
+                TableData[row] = {
+                    "item": $(tr).find('td:eq(0)').text(),
+                    "barcode": $(tr).find('td:eq(1)').text(),
+                    "quantity": $(tr).find('td:eq(2)').text(),
+                    "price": $(tr).find('td:eq(3)').text(),
+                    "subtotal": $(tr).find('td:eq(4)').text(),
+                    "discount": $(tr).find('td:eq(5)').text(),
+                    "total": $(tr).find('td:eq(6)').text(),
+                    "date_of_sale": $(tr).find('td:eq(9)').text()
                 }
             });
 
             let customer = $("#customer").val();
-            let cashier = $("#cashier").val();
-            let extra_money = $("#extra_money").val();
+            let amount_paid = $("#paid_amount").val();
+            let is_credit = $("#is_credit").val();
+            let total_cost = $('#amountToPay').val();
+            
 
-            if (extra_money) {
-                extra_money = parseFloat(extra_money.replace(/,/g, ''));
-            }
-
-            if (credit_arr.includes(true) && !customer) {
-                alert("Enter the customer name to cater for the items being taken on credit.");
-            } else if (!cashier) {
-                alert("Enter the person who has worked on the sale");
+            if (!amount_paid) {
+                alert(`Please enter amount paid by the customer`);
+            } else if ((convertToNumber(total_cost) > convertToNumber(amount_paid)) && !customer) {
+                alert(`Please select customer since items are being sold on credit`);
             } else {
 
-                var cart_data = JSON.stringify(TableData);
-                console.log("Table data", cart_data);
-                $('.print-btn-text').html("saving...");
+                if (confirm("Are you sure you want to submit this sale?")) {
 
-                var postUrl = "{{ route('sale.record') }}";
-                $.ajax({
-                    type: 'POST',
-                    url: postUrl,
-                    data: {
-                        tabledata: cart_data,
-                        customer: customer,
-                        cashier: cashier,
-                        extra_money: extra_money,
-                    },
-                    success: function(data) {
-                        EmptyCartTable();
-                        $("#customer").val('');
-                        $("#extra_money").val('');
-                        var user = "{{ Auth::user()->name }}";
-                        $("#cashier").val(user);
-                        var message = data.response;
-                        $('.print-btn-text').html("Submit Sale");
-                        updateSubTotal();
-                    },
-                    error: function(data) {
-                        console.log(data);
-                        var message = data.response;
-                        console.log(message);
-                        ShowResponse('.response', message, 'error');
-                    }
-                });
+                    let cart_data = JSON.stringify(TableData);
+                    console.log("Table data", cart_data);
+                    $('.print-btn-text').html("saving...");
+
+                    let postUrl = "{{ route('sale.record') }}";
+                    $.ajax({
+                        type: 'POST',
+                        url: postUrl,
+                        data: {
+                            tabledata: cart_data,
+                            customer: customer,
+                            total_cost: total_cost,
+                            amount_paid: amount_paid,
+                            is_credit: is_credit
+                        },
+
+                        success: function(response) {
+
+                            let message = response.success || response.error
+                            let type = response.success ? 'success' : 'error'
+
+                            if (response.success) {
+                                EmptyCartTable();
+                                $('.is_credit').val('0');
+                                $("#customer").val('');
+                                $("#extra_money").val('');
+                                $('.print-btn-text').html("Submit Sale");
+                                updateSubTotal();
+                            }
+
+                            displayResponse('.response', message, type);
+                            $('.print-btn-text').html('Submit Sale')
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            let message = data.response;
+                            console.log(message);
+                            displayResponse('.response', message, 'error');
+                        }
+                    });
+                } else {
+                    // transaction submission cancelled
+                }
             }
 
         }
 
-        var query = $('#item-name').val();
+        let item_name = $('#item-name').val();
         $("#item-name").typeahead({
-            source: function(query, result) {
+            source: function(item_name, result) {
                 $.ajax({
                     url: "{{ Route('item.search') }}",
                     method: 'post',
                     data: {
-                        query: query,
+                        query: item_name,
                     },
                     dataType: 'json',
                     success: function(data) {
@@ -655,7 +581,7 @@
 
 
 
-        function ShowResponse(area, message, errorType) {
+        function displayResponse(area, message, errorType) {
             $(area).notify(message, {
                 className: errorType,
                 autoHide: true,
@@ -668,23 +594,13 @@
             return false;
         });
 
-        var query = $('#item').val();
-
-
-        // var fnf = document.getElementById("tendered");
-        // fnf.addEventListener('keyup', function(evt){
-        //  var n = parseInt(this.value.replace(/\D/g,''), 10);
-        //  $(this).val(n.toLocaleString());
-        //  ComputeBalance();
-        // });
-
         $(document).on("keyup", ".tendered", function() {
             if (this.value.length > 0) {
-                var n = parseInt(this.value.replace(/\D/g, ''), 10);
+                let n = parseInt(this.value.replace(/\D/g, ''), 10);
                 $(this).val(n.toLocaleString());
                 ComputeBalance();
             } else {
-                var paymentString = document.getElementById('amountToPay').innerHTML;
+                let paymentString = $('.amountToPay').val(); // document.getElementById('amountToPay').innerHTML;
                 if (paymentString.length > 0 && paymentString != '0') {
                     let letCustomerPay = "-" + paymentString;
                     $('.balance').val(letCustomerPay);
@@ -700,16 +616,16 @@
 
         function ComputeBalance() {
 
-            var tenderedMoneyStr = $(".tendered").val();
-            var paymentStr = document.getElementById('amountToPay').innerHTML;
+            let tenderedMoneyStr = $(".tendered").val();
+            let paymentStr = $('.amountToPay').val(); // document.getElementById('amountToPay').innerHTML;
 
             if (tenderedMoneyStr.length > 0) {
 
-                var tenderedmoney = tenderedMoneyStr.replace(/,/g, '').trim();
-                var payment = paymentStr.replace(/,/g, '').trim();
-                var balance = (parseFloat(tenderedmoney) - parseFloat(payment));
+                let tenderedmoney = tenderedMoneyStr.replace(/,/g, '').trim();
+                let payment = paymentStr.replace(/,/g, '').trim();
+                let balance = (parseInt(tenderedmoney) - parseInt(payment));
                 (balance < 0) ? $('.balance').css("color", "red"): $('.balance').css("color", "blue");
-                var balanceStr = FormatNumber(balance);
+                let balanceStr = FormatNumber(balance);
                 $('.balance').val(balanceStr);
 
             } else {
@@ -723,42 +639,36 @@
         }
 
         //Computation of how much the customer must pay
-
         function updateSubTotal() {
-            var table = document.getElementById('cart-table-body');
+            let table = document.getElementById('cart-table-body');
             let subTotal = Array.from(table.rows).reduce((total, row) => {
-                var Total = row.cells[7].innerHTML;
-                var subTotl = Total.replace(/,/g, '').trim();
-                return total + parseFloat(subTotl);
+                let Total = row.cells[6].innerHTML;
+                let subTotl = Total.replace(/,/g, '').trim();
+                return total + parseInt(subTotl);
             }, 0);
 
             let rowCount = table.rows.length;
             document.getElementById('num').innerHTML = FormatNumber(rowCount.toFixed(0));
-            document.getElementById('amountToPay').innerHTML = FormatNumber(subTotal.toFixed(2));
+            $('.amountToPay').val(FormatNumber(subTotal.toFixed(2)));
+            //document.getElementById('amountToPay').innerHTML = FormatNumber(subTotal.toFixed(2));
         }
 
         function Numberize(i) {
-            // $(document).on("keyup", i , function(){
-            //   if(this.value.length > 0){
-            //     var n = parseInt(this.value.replace(/\D/g,''), 10);
-            //     $(this).val(n.toLocaleString());
-            //   }
-            // });
             $(document).on("keyup", i, function(event) {
                 if (event.which >= 37 && event.which <= 40) {
                     event.preventDefault();
                 }
                 $(this).val(function(index, value) {
-                    value = value.replace(/,/g, ''); // remove commas from existing input
-                    return numberWithCommas(value); // add commas back in
+                    value = value.replace(/,/g, '');
+                    return numberWithCommas(value);
                 });
             });
 
         }
 
         function formatString2Number(num) {
-            var number = num.replace(/,/g, '').trim();
-            var FormattedNumber = parseFloat(number).toLocaleString('us', {
+            let number = num.replace(/,/g, '').trim();
+            let FormattedNumber = parseInt(number).toLocaleString('us', {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
             });
@@ -767,7 +677,7 @@
 
 
         function FormatNum(number) {
-            var FormattedNumber = parseFloat(number).toLocaleString('us', {
+            let FormattedNumber = parseInt(number).toLocaleString('us', {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
             });
@@ -779,21 +689,20 @@
         }
 
         function numberWithCommas(x) {
-            var parts = x.toString().split(".");
+            let parts = x.toString().split(".");
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             return parts.join(".");
         }
 
         function SanitizeString(str) {
-            var newStr = str.replace(/,/g, '').trim();
+            let newStr = str.replace(/,/g, '').trim();
             return newStr;
         }
 
-        function Convert2Num(str) {
-            var numStr;
-            (str.length > 3) ?
-            numStr = str.replace(/,/g, '').trim(): numStr = str;
-            return parseFloat(numStr);
+        function convertToNumber(str) {
+            let numStr;
+            numStr = (str.length > 3) ? str.replace(/,/g, '').trim() : str;
+            return parseInt(numStr);
         }
     </script>
 @endsection
