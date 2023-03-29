@@ -21,12 +21,12 @@
             @endcan
 
             @can('isCashier')
-                @isset($volume_of_todaysales)
+                @isset($sales_made_today)
                     <div class="col-lg-3 today-amount">
                         <span>
                             <h5 class="panel-title">
                                 Today: UGX.
-                                <strong class="text-success volume">{{ number_format($volume_of_todaysales) }}</strong>
+                                <strong class="text-success volume">{{ number_format($sales_made_today) }}</strong>
                             </h5>
                         </span>
                     </div>

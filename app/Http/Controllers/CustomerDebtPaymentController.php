@@ -7,6 +7,7 @@ use App\DataTables\CustomerDebtPaymentRecordsDataTable;
 use App\DataTables\CustomersWithDebtsDataTable;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CustomerDebtPayment;
+use App\Repositories\CustomerDebtPaymentRepository;
 use App\Models\Customer;
 use App\Helpers\Helper;
 
@@ -14,11 +15,12 @@ use App\Helpers\Helper;
 class CustomerDebtPaymentController extends Controller
 {
 
-    protected $helper;
+    protected $helper, $customerDebtPaymentRepository;
 
-    public function __construct(Helper $helper)
+    public function __construct(Helper $helper, CustomerDebtPaymentRepository $customerDebtPaymentRepository)
     {
         $this->helper = $helper;
+        $this->customerDebtPaymentRepository = $customerDebtPaymentRepository;
     }
     /**
      * Display a listing of the resource.
@@ -27,14 +29,17 @@ class CustomerDebtPaymentController extends Controller
      */
     public function index()
     {
+
+        $total_records = $this->customerDebtPaymentRepository->count();
         $customers = Customer::distinct()
             ->join('credit_sales', 'customers.id', '=', 'credit_sales.customer_id')
             ->select('customers.id', 'customers.name')
             ->get();
-        return view('pages.main.customers.customer-debt-payment-records')->with(compact('customers'));
+        return view('pages.main.customers.customer-debt-payment-records')
+        ->with(compact('total_records', 'customers'));
     }
 
-    public function GetCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable)
+    public function getCustomerDebtPayments(CustomerDebtPaymentRecordsDataTable $dataTable)
     {
         return $dataTable->render('pages.main.customers.customer-debt-payment-records');
     }

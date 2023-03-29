@@ -4,21 +4,24 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-tile">
-
-                <div class="row nunito-font">
+                <div class="row">
                     <span class="response"></span>
-                    <div class="col-lg-4">
+                    <div class="col-lg-10">
                         <h6 class="text-dark">
                             <i class="fa fa-home text-success"> /</i>
                             <strong>Customers Debt Payment Records</strong>
+                            <span class="badge nunito-font">
+                                @isset($total_records)
+                                    {{ number_format($total_records) }}
+                                @endisset
+                            </span>
                             </span>
                         </h6>
                     </div>
 
-                    <div class="col-lg-4">
-                        <h5>
-                            <a class="text-info bolded" href="javascript:void(0)" id="addNewPayment"> Add payment</a>
-                        </h5>
+                    <div class="col-lg-2">
+                        <button type="button" class="btn btn-primary btn-sm outline-none rounded-pill ml-auto mb-2"
+                            id="addNewPayment"><i class="fa fa-plus-circle pr-1"></i>Add payment</button>
                     </div>
 
                 </div>
@@ -26,14 +29,13 @@
         </div>
 
         <div class="panel-body">
-
             <div class="table-responsive custom-family">
                 <table class="table table-bordered table-hover debt-payment-records-table" id="debt-payment-records-table">
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Date</th>
                             <th>Customer Name</th>
+                            <th>Date</th>
                             <th>Amount Paid</th>
                             <th>Balance</th>
                             <th>Recorded By</th>
@@ -47,7 +49,6 @@
                 aria-labelledby="myModalLabel">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content">
-
                         <form name="customers" id="PaymentForm">
                             @csrf
                             <div class="modal-header text-center">
@@ -59,7 +60,6 @@
                             </div>
 
                             <div class="modal-body">
-
                                 <div class="form-group">
                                     <span><span class="text-danger pr-1">*</span>Customer</span>
                                     <input type="hidden" class="form-control paymentId" name="paymentId">
@@ -139,13 +139,14 @@
                     searchable: false
                 },
                 {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
                     data: 'customer',
                     name: 'customer'
                 },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+
                 {
                     data: 'paid_amount',
                     name: 'paid_amount'
@@ -172,13 +173,14 @@
                     searchable: false
                 },
                 {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
                     data: 'customer',
                     name: 'customer'
                 },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+
                 {
                     data: 'paid_amount',
                     name: 'paid_amount'
