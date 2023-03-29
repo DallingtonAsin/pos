@@ -27,10 +27,12 @@
                             placeholder="Total cost of items">
                     </div>
 
-                    <div class="form-group col-md-2">
+                    {{-- <div class="form-group col-md-2">
                         <label>Tendered Amount</label>
                         <input type="text" class="form-control tendered" id='tendered' placeholder="Tendered amount">
-                    </div>
+                    </div> 
+                    --}}
+
                     <div class="form-group col-md-2">
                         <label>Balance</label>
                         <input type="text" class="form-control  balance" readonly placeholder="Customer balance">
@@ -122,7 +124,8 @@
                                         <div class="d-flex col-lg-6">
 
                                             <label class="pr-2 mt-3 text-danger">Taken on Credit ?</label>
-                                            <select name="is_credit" class="form-control is_credit mt-2" id="is_credit">
+                                            <select name="is_credit" class="form-control is_credit mt-2" id="is_credit"
+                                                readonly>
                                                 <option value="1">Yes</option>
                                                 <option value="0" selected="true">No</option>
                                             </select>
@@ -204,15 +207,17 @@
             let total_cost_str, total_cost;
 
             paid_amount_str = $('#paid_amount').val();
-            paid_amount = convertToNumber(paid_amount_str);
-
             total_cost_str = $('#amountToPay').val();
-            total_cost = convertToNumber(total_cost_str);
 
-            if (paid_amount >= total_cost) {
-                $('.is_credit').val('0');
-            } else {
-                $('.is_credit').val('1');
+            if (paid_amount_str && total_cost_str) {
+                paid_amount = convertToNumber(paid_amount_str);
+                total_cost = convertToNumber(total_cost_str);
+
+                if (paid_amount >= total_cost) {
+                    $('.is_credit').val('0');
+                } else {
+                    $('.is_credit').val('1');
+                }
             }
         });
 
@@ -470,7 +475,7 @@
 
         function EmptyCartTable() {
             $("#cart-table > tbody").empty();
-            $(".tendered").val("");
+            $(".paid_amount").val("");
             $('.balance').val("");
             $('.item-name').val("");
             updateSubTotal();
@@ -500,7 +505,7 @@
             let amount_paid = $("#paid_amount").val();
             let is_credit = $("#is_credit").val();
             let total_cost = $('#amountToPay').val();
-            
+
 
             if (!amount_paid) {
                 alert(`Please enter amount paid by the customer`);
@@ -594,13 +599,15 @@
             return false;
         });
 
-        $(document).on("keyup", ".tendered", function() {
+        $(document).on("keyup", ".paid_amount", function() {
+            let paymentString = $('.amountToPay').val();
             if (this.value.length > 0) {
                 let n = parseInt(this.value.replace(/\D/g, ''), 10);
                 $(this).val(n.toLocaleString());
-                ComputeBalance();
+                if (paymentString.length > 0 && paymentString != '0') {
+                    ComputeBalance();
+                }
             } else {
-                let paymentString = $('.amountToPay').val(); // document.getElementById('amountToPay').innerHTML;
                 if (paymentString.length > 0 && paymentString != '0') {
                     let letCustomerPay = "-" + paymentString;
                     $('.balance').val(letCustomerPay);
@@ -609,6 +616,7 @@
             }
         });
 
+
         $(document).on('change', '.payment', function() {
             ComputeBalance();
         });
@@ -616,14 +624,14 @@
 
         function ComputeBalance() {
 
-            let tenderedMoneyStr = $(".tendered").val();
+            let paidMoneyStr = $(".paid_amount").val();
             let paymentStr = $('.amountToPay').val(); // document.getElementById('amountToPay').innerHTML;
 
-            if (tenderedMoneyStr.length > 0) {
+            if (paidMoneyStr.length > 0) {
 
-                let tenderedmoney = tenderedMoneyStr.replace(/,/g, '').trim();
+                let paid_money = paidMoneyStr.replace(/,/g, '').trim();
                 let payment = paymentStr.replace(/,/g, '').trim();
-                let balance = (parseInt(tenderedmoney) - parseInt(payment));
+                let balance = (parseInt(paid_money) - parseInt(payment));
                 (balance < 0) ? $('.balance').css("color", "red"): $('.balance').css("color", "blue");
                 let balanceStr = FormatNumber(balance);
                 $('.balance').val(balanceStr);
