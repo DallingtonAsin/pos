@@ -2,7 +2,6 @@
 
 namespace App\DataTables\Reports;
 
-use App\User;
 use Yajra\DataTables\Services\DataTable;
 use App\Models\MonthlySale;
 use App\Models\MonthlyPurchase;
@@ -11,6 +10,11 @@ use App\Helpers\Helper;
 
 class MonthlySalesDataTable extends DataTable
 {
+
+protected $helper;
+    public function __construct(Helper $helper){
+         $this->helper = $helper;
+    }
     /**
      * Build DataTable class.
      *
@@ -35,7 +39,7 @@ class MonthlySalesDataTable extends DataTable
              $total  = MonthlySale::sum('TotalSales');
              return round(($data->TotalSales/$total)*100, 2);
          })->addColumn('profits', function ($data){
-            $profits = Helper::getProfitsForAGivenMonth($data->SalesYear, $data->month_int);
+            $profits = $this->helper->getProfitsForAGivenMonth($data->SalesYear, $data->month_int);
             $profits = number_format($profits);
             return $profits;
         });

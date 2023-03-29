@@ -11,7 +11,6 @@ use App\Models\Sale;
 use App\Models\Expense;
 use App\Models\Damage;
 use App\Models\CustomerDebtPayment;
-use App\Models\Supplier;
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LogsController;
@@ -21,10 +20,19 @@ use App\User;
 use  App\Helpers\Constants as Constant;
 use App\Models\SupplierCredit;
 use App\Models\SupplierDebt;
+use App\Repositories\CreditSaleRepository;
+use App\Repositories\CustomerRepository;
 
 class Helper
 {
 
+  protected $creditSaleRepository, $customerRepository;
+
+  public function __construct(CreditSaleRepository $creditSaleRepository, CustomerRepository $customerRepository)
+  {
+    $this->creditSaleRepository = $creditSaleRepository;
+    $this->customerRepository = $customerRepository;
+  }
 
   public static function logError($data)
   {
@@ -351,13 +359,13 @@ class Helper
   }
 
 
-  public static function getProfitsForAGivenMonth($year, $month)
+  public function getProfitsForAGivenMonth($year, $month)
   {
     try {
 
       $totalSales = Sale::whereYear('date', $year)
         ->whereMonth('date', $month)
-        ->sum('paid_amount');
+        ->sum('amount');
 
       $totalBuyingCost = Sale::whereYear('date', $year)
         ->whereMonth('date', $month)
@@ -368,7 +376,7 @@ class Helper
         ->whereMonth('date_of_expenditure', $month)
         ->sum('amount');
 
-  
+
       $totalDamages = Helper::getAnnualBasedDamageCost($year, $month);
 
       $supplierDebts = (SupplierCredit::whereYear('created_at', $year)
@@ -377,10 +385,7 @@ class Helper
         ->whereMonth('created_at', $month)
         ->sum('amount'));
 
-      $customerDebts = Sale::where('fully_paid', 0)
-        ->where('balance', '>', 0)
-        ->whereYear('date', $year)
-        ->whereMonth('date', $month)->sum('balance');
+      $customerDebts = $this->creditSaleRepository->outstandingCreditFromSales($year, $month);
 
       $netProfitPerMonth = (($totalSales - $totalBuyingCost) - ($totalExpenses + $totalDamages) + ($supplierDebts + $customerDebts));
 
@@ -390,7 +395,7 @@ class Helper
     }
   }
 
-  public static function getMonthlySalesData()
+  public function getMonthlySalesData()
   {
     $year = date('Y');
     $result = DB::table('monthlysales')
@@ -401,7 +406,7 @@ class Helper
     $data = $months = $years = $sales = $profits = array();
     $totalProfits = 0;
     foreach ($result as $row) {
-      $profitForEachMonth = Helper::getProfitsForAGivenMonth($row->SalesYear, $row->month_int);
+      $profitForEachMonth = $this->getProfitsForAGivenMonth($row->SalesYear, $row->month_int);
       $totalProfits += $profitForEachMonth;
       array_push($months, date("F", mktime(0, 0, 0, $row->month_int, 10)));
       array_push($profits, $profitForEachMonth);
@@ -472,23 +477,20 @@ class Helper
     return Auth::user()->role_id === $cashier_role_id;
   }
 
-  public static function customerDebt($customer_id)
+  public function getCustomerDebt($customer_id)
   {
     try {
-      $debt = Sale::where('customer_id', $customer_id)->sum('amount')
-        - Sale::where('customer_id', $customer_id)->sum('paid_amount')
-        - CustomerDebtPayment::where('customer_id', $customer_id)->sum('paid_amount');
+      $debt = $this->customerRepository->getCustomerOutstandingDebt($customer_id);
       return $debt;
     } catch (\Exception $ex) {
       throw $ex;
     }
   }
 
-  public static function totalCustomerDebt($customer_id)
+  public function totalCustomerDebt($customer_id)
   {
     try {
-      return  Sale::where('customer_id', $customer_id)->sum('amount')
-        - Sale::where('customer_id', $customer_id)->sum('paid_amount');
+      return $this->customerRepository->getCustomerOutstandingDebt($customer_id);
     } catch (\Exception $ex) {
       throw $ex;
     }
@@ -507,7 +509,7 @@ class Helper
   {
     try {
       $total_debt = Sale::sum('amount')
-        - Sale::sum('paid_amount')
+        - Sale::sum('amount')
         - CustomerDebtPayment::sum('paid_amount');
       return $total_debt;
     } catch (\Exception $ex) {

@@ -27,20 +27,6 @@ class CustomerDebtorsDataTable extends DataTable
          });
     }
 
-//     @isset($debtorsCustomers)
-//     @php
-//     $count = 1;
-//     @endphp
-//     @foreach($debtorsCustomers as $element)
-//     <tr>
-//      <td>{{ $count++ }}</td>
-//      <td>{{ $element->name }}</td>
-//      <td>{{ $element->contact }}</td>
-//      <td>{{ number_format($element->debts) }}</td>
-//      <td>{{ round(($element->debts/$data['totalCustomerDebts'])*100,1) }}</td>
-//    </tr>
-//    @endforeach
-//    @endisset
 
     /**
      * Get query source of dataTable.

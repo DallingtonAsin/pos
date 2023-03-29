@@ -162,8 +162,7 @@
                     <ul class="nav-sub">
                         <li class="nav-sub-item"><a href="{{ Route('sales.index') }}" class="nav-sub-link">Sales</a>
                         </li>
-                        <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Sales with
-                                debts</a></li>
+                        <li class="nav-sub-item"><a href="{{ Route('sales.debts') }}" class="nav-sub-link">Credit Transactions</a></li>
                         <li class="nav-sub-item"><a href="{{ route('m-sales') }}" class="nav-sub-link">Monthly
                                 statistics</a></li>
 

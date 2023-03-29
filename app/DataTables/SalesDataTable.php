@@ -65,21 +65,19 @@ class SalesDataTable extends DataTable
                 return Helper::convertNumber($data->quantity);
             })->editColumn('selling_price', function ($data) {
                 return Helper::convertNumber($data->selling_price);
-            })->editColumn('amount', function ($data) {
-                return Helper::convertNumber($data->amount);
-            })->editColumn('paid_amount', function ($data) {
-                return Helper::convertNumber($data->paid_amount);
-            })->editColumn('balance', function ($data) {
-                return Helper::convertNumber($data->balance);
+            })->editColumn('total_cost', function ($data) {
+                return Helper::convertNumber($data->total_cost);
             })->editColumn('discount', function ($data) {
                 return Helper::convertNumber($data->discount);
+            })->editColumn('amount', function ($data) {
+                return Helper::convertNumber($data->amount);
             })->rawColumns(['action', 'checkbox']);
     }
 
 
     public function query(Sale $model)
     {
-        return $model->newQuery()->select('*')->where('fully_paid', 1)->where('balance', 0);
+        return $model->newQuery()->select('*');
     }
 
     /**
@@ -110,6 +108,7 @@ class SalesDataTable extends DataTable
             'item',
             'quantity',
             'selling_price',
+            'total_cost',
             'discount',
             'amount',
             'date',

@@ -9,22 +9,26 @@ use App\DataTables\Reports\LowRunningStockDataTable;
 use App\DataTables\Reports\CustomerDebtorsDataTable;
 use App\DataTables\Reports\BestSellingItemsDataTable;
 use App\DataTables\Reports\CashiersPerformanceDataTable;
-
 use App\Models\Stock;
 use App\Helpers\Helper;
 
 class ReportsController extends Controller
 {
 
+protected $helper;
 
+public function __construct(Helper $helper)
+{
+  $this->helper = $helper;
+}
  
-public function index(Request $request)
+public function index()
 {
      return view('pages.reports.index',
-     ['chartdata' => Helper::getMonthlySalesData()]);
+     ['chartdata' => $this->helper->getMonthlySalesData()]);
 }
 
-public function purchaseReports(Request $request)
+public function purchaseReports()
 {
      return view('pages.reports.purchases_charts',
      ['chartdata' => Helper::getMonthlyPurchasesData()]);

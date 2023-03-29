@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
-use App\Models\Supplier;
 use App\Models\Expense;
-use App\Models\Customer;
 use App\Exports\ExportSales;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\LogAfterRequest;
@@ -22,6 +19,7 @@ use App\Helpers\Helper;
 use  App\Helpers\Constants as Constant;
 use App\Models\SupplierCredit;
 use App\Models\SupplierDebt;
+use App\Repositories\CreditSaleRepository;
 use Excel;
 use DataTable;
 
@@ -29,10 +27,11 @@ use DataTable;
 class SalesController extends Controller
 {
 
-  public $controller;
-  public function __construct()
+  protected $controller, $creditSaleRepository;
+  public function __construct(CreditSaleRepository $creditSaleRepository)
   {
     $this->controller = 'SalesController';
+    $this->creditSaleRepository = $creditSaleRepository;
   }
 
 
@@ -49,30 +48,22 @@ class SalesController extends Controller
   protected function getCustomSalesReview($startDate, $endDate)
   {
 
-
-    $value1 = Sale::whereBetween('date', [$startDate, $endDate])->sum('total_buying_cost');
-    $total_sales = $value2 = Sale::whereBetween('date', [$startDate, $endDate])->sum('paid_amount');
+    $total_cost = Sale::whereBetween('date', [$startDate, $endDate])->sum('total_buying_cost');
+    $total_sales = Sale::whereBetween('date', [$startDate, $endDate])->sum('amount');
 
     $total_expenses = Expense::whereBetween('date_of_expenditure', [$startDate, $endDate])->sum('amount');
     $cost_of_damages = Helper::getPeriodicDamageCost($startDate, $endDate);
 
-    $value3 = (SupplierCredit::whereDate('created_at', ">=", $startDate)
+    $supplierCredit = (SupplierCredit::whereDate('created_at', ">=", $startDate)
       ->whereDate('created_at', "<=", $endDate)
       ->sum('amount'))
       - (SupplierDebt::whereDate('created_at', ">=", $startDate)
         ->whereDate('created_at', "<=", $endDate)
         ->sum('amount'));
 
-    $value4 = 0;
+    $customerCredit = $this->creditSaleRepository->outstandingCreditFromSales();
 
-    // (Customer::whereDate('created_at', ">=", $startDate)
-    //                     ->whereDate('created_at', "<=", $endDate)
-    //                     ->sum('credit')) 
-    //              - (Customer::whereDate('created_at', ">=", $startDate)
-    //                           ->whereDate('created_at', "<=", $endDate)
-    //                           ->sum('debt'));
-
-    $netValue = (($value2 - $value1) - ($total_expenses + $cost_of_damages) + ($value3 + $value4));
+    $netValue = (($total_sales - $total_cost) - ($total_expenses + $cost_of_damages) + ($supplierCredit + $customerCredit));
 
     return $netValue;
   }
@@ -87,18 +78,9 @@ class SalesController extends Controller
       $startDate = $request->input('from');
       $endDate = $request->input('to');
 
-      $data = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->orderBy('date', 'desc')->get();
-
-      $totl_filtered = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->count();
-
-      $volume_of_filteredsales = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->sum('paid_amount');
-
+      $data = Sale::whereBetween('date', [$startDate, $endDate])->orderBy('date', 'desc')->get();
+      $totl_filtered = Sale::whereBetween('date', [$startDate, $endDate])->count();
+      $volume_of_filteredsales = Sale::whereBetween('date', [$startDate, $endDate])->sum('amount');
       $netValue = $this->getCustomSalesReview($startDate, $endDate);
 
       return DataTable::of($data)->addIndexColumn()
@@ -121,10 +103,6 @@ class SalesController extends Controller
           return Helper::convertNumber($data->selling_price);
         })->editColumn('amount', function ($data) {
           return Helper::convertNumber($data->amount);
-        })->editColumn('paid_amount', function ($data) {
-          return Helper::convertNumber($data->paid_amount);
-        })->editColumn('balance', function ($data) {
-          return Helper::convertNumber($data->balance);
         })->editColumn('discount', function ($data) {
           return Helper::convertNumber($data->discount);
         })->addColumn('action', function ($sale) {
@@ -162,26 +140,9 @@ class SalesController extends Controller
       $startDate = $request->input('from');
       $endDate = $request->input('to');
 
-      $data = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->where('is_credit', 1)
-        ->where('fully_paid', 0)
-        ->where('balance', '>', 0)
-        ->orderBy('date', 'desc')->get();
-
-      $totl_filtered = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->where('is_credit', 1)
-        ->where('fully_paid', 0)
-        ->where('balance', '>', 0)
-        ->count();
-
-      $volume_of_filteredsales = DB::table('sales')
-        ->whereBetween('date', [$startDate, $endDate])
-        ->where('is_credit', 1)
-        ->where('fully_paid', 0)
-        ->where('balance', '>', 0)
-        ->sum('balance');
+      $data = Sale::whereBetween('date', [$startDate, $endDate])->orderBy('date', 'desc')->get();
+      $totl_filtered = Sale::whereBetween('date', [$startDate, $endDate])->count();
+      $volume_of_filteredsales = Sale::whereBetween('date', [$startDate, $endDate])->sum('amount');
 
       $netValue = $this->getCustomSalesReview($startDate, $endDate);
 
@@ -205,10 +166,6 @@ class SalesController extends Controller
           return Helper::convertNumber($data->selling_price);
         })->editColumn('amount', function ($data) {
           return Helper::convertNumber($data->amount);
-        })->editColumn('paid_amount', function ($data) {
-          return Helper::convertNumber($data->paid_amount);
-        })->editColumn('balance', function ($data) {
-          return Helper::convertNumber($data->balance);
         })->editColumn('discount', function ($data) {
           return Helper::convertNumber($data->discount);
         })->addColumn('action', function ($sale) {
@@ -266,11 +223,11 @@ class SalesController extends Controller
 
     $total_number_of_sales = Sale::where('date', Date('Y-m-d'))->count();
     $value1 = Sale::where('date', Date('Y-m-d'))->sum('total_buying_cost');
-    $total_sales = $value2 = Sale::where('date', Date('Y-m-d'))->sum('paid_amount');
+    $total_sales = $value2 = Sale::where('date', Date('Y-m-d'))->sum('amount');
     $total_expenses = Expense::where('date_of_expenditure', Date('Y-m-d'))->sum('amount');
     $cost_of_damages = Helper::getPeriodicDamageCost(Date('Y-m-d'), Date('Y-m-d'));
     $net_supplier_value = (SupplierCredit::whereDate('created_at', Date('Y-m-d'))->sum('amount')) - (SupplierDebt::whereDate('created_at', Date('Y-m-d'))->sum('amount'));
-    $net_customer_value = (Customer::whereDate('created_at', Date('Y-m-d'))->sum('credit')) - (Customer::whereDate('created_at', Date('Y-m-d'))->sum('debt'));
+    $net_customer_value = $this->creditSaleRepository->outstandingCreditFromSales(null, null, Date('Y-m-d'));
 
     $netValue = (($value2 - $value1) - ($total_expenses + $cost_of_damages) + ($net_supplier_value + $net_customer_value));
 
@@ -293,7 +250,7 @@ class SalesController extends Controller
     $all_sales = Sale::where('date', Date('Y-m-d'))->get();
 
     $volume_of_todaysales = Sale::whereDate('date', $today)
-      ->sum('paid_amount');
+      ->sum('amount');
 
     $totl_no =  $arr['totl_no'];
     $total_sales =  $arr['totl_sales'];
@@ -336,10 +293,10 @@ class SalesController extends Controller
     $today = Date('Y-m-d');
 
     $today_sales = Sale::whereDate('date', $today)->get();
-    $all_sales = Sale::where('fully_paid', 1)->where('balance', 0)->get();
+    $all_sales = Sale::get();
 
     $volume_of_todaysales = Sale::whereDate('date', $today)
-      ->sum('paid_amount');
+      ->sum('amount');
 
     $totl_no = $arr['totl_no'];
     $total_sales = $arr['totl_sales'];
@@ -370,36 +327,20 @@ class SalesController extends Controller
   public function salesWithDebtsIndex(Request $request)
   {
 
-    $request->session()->forget('filtered_sales');
-    $arr = $this->GetSalesWithDebtsReview();
     $today = Date('Y-m-d');
+    $request->session()->forget('filtered_sales');
+    $today_sales = Sale::whereDate('date', $today)->get();
 
-    $today_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->whereDate('date', $today)->get();
-    $all_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->get();
-
-    $volume_of_todaysales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->whereDate('date', $today)
-      ->sum('balance');
-
-    $totl_no = $arr['totl_no'];
-    $total_sales = $arr['totl_sales'];
-    $netValue = $arr['NetWorth'];
-
-    ($netValue > 0)
-      ? $net_title = "Net Profit made: shs"
-      : $net_title = "Losses made: shs";
-
-    // if ($request->ajax()) {
-    //   $this->GetSales();
-    // }
+    $no_of_credit_sales =  $this->creditSaleRepository->count();
+    $today_credit_sales =  $this->creditSaleRepository->outstandingCreditFromSales(null, null, $today);
+    $outstanding_credit_sales = $this->creditSaleRepository->outstandingCreditFromSales();
 
     return view('pages.main.sales-with-debts')->with(
       compact(
         'today_sales',
-        'totl_no',
-        'all_sales',
-        'netValue',
-        'volume_of_todaysales',
-        'total_sales'
+        'no_of_credit_sales',
+        'today_credit_sales',
+        'outstanding_credit_sales'
       )
     );
   }
@@ -407,13 +348,14 @@ class SalesController extends Controller
 
   private function GetSalesReview()
   {
-    $total_number_of_sales = Sale::where('fully_paid', 1)->where('balance', 0)->count();
-    $total_sales = Sale::sum('paid_amount');
+
+    $total_number_of_sales = Sale::count();
+    $total_sales = Sale::sum('amount');
     $total_expenses = Expense::sum('amount');
     $cost_of_damages = Helper::getDamageCost();
     $total_initial_cost = Sale::sum('total_buying_cost');
     $supplier_debts = (SupplierCredit::sum('amount')) - (SupplierDebt::sum('amount'));
-    $customer_debts = Sale::where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
+    $customer_debts = $this->creditSaleRepository->outstandingCreditFromSales();
     $netValue = (($total_sales - $total_initial_cost) - ($total_expenses + $cost_of_damages) + ($supplier_debts + $customer_debts));
 
     $data = array(
@@ -430,18 +372,18 @@ class SalesController extends Controller
     $today = Date('Y-m-d');
     if (Gate::allows('isAdmin')) {
 
-      $total_number_of_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->count();
-      $total_sales = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
+      $total_number_of_sales = Sale::count();
+      $total_sales = Sale::sum('amount');
       $total_expenses = Expense::sum('amount');
       $cost_of_damages = Helper::getDamageCost();
       $total_initial_cost = Sale::sum('total_buying_cost');
       $supplier_debts = (SupplierCredit::sum('amount')) - (SupplierDebt::sum('amount'));
-      $customer_debts = Sale::where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
+      $customer_debts = $this->creditSaleRepository->outstandingCreditFromSales();
       $netValue = (($total_sales - $total_initial_cost) - ($total_expenses + $cost_of_damages) + ($supplier_debts + $customer_debts));
     } else {
 
-      $total_number_of_sales = Sale::whereDate('date', $today)->where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->count();
-      $total_sales = Sale::whereDate('date', $today)->where('is_credit', 1)->where('fully_paid', 0)->where('balance', '>', 0)->sum('balance');
+      $total_number_of_sales = Sale::whereDate('date', $today)->count();
+      $total_sales = Sale::whereDate('date', $today)->sum('amount');
       $netValue = 0;
     }
 
