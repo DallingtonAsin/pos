@@ -226,7 +226,7 @@
 
             let url = "{{ route('item.get') }}";
 
-            let qty = $('#qty').val();
+            let qty = convertToNumber($('#qty').val());
             let priceCategory = $('#priceCategory').val();
             let quantity = qty ? qty : 1;
 
