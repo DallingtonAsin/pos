@@ -85,7 +85,7 @@ class PurchasesController extends Controller
       $receipt_no = $request->input('receipt_no');
       $item_id = $request->input('item');
       $quantity = Helper::Numberize($request->input('quantity'));
-      $cost_price_per_item =Helper::Numberize($request->input('cost_price'));
+      $cost_price_per_item = Helper::Numberize($request->input('cost_price'));
       $retail_price = Helper::Numberize($request->input('retail_price'));
       $wholesale_price = Helper::Numberize($request->input('wholesale_price'));
       $supplier_id = $request->input('supplier');
