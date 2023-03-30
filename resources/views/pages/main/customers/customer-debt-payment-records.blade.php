@@ -204,7 +204,7 @@
         const token = "{{ csrf_token() }}";
         let table = $('#debt-payment-records-table');
         let title = "Customers debt payment records";
-        let columns = [1, 2, 3, 4, 5];
+        let columns = [0, 1, 2, 3, 4, 5];
     </script>
 
 

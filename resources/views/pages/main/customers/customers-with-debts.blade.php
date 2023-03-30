@@ -170,7 +170,7 @@
         const token = "{{ csrf_token() }}";
         var table = $('#customers-with-debts-table');
         var title = "List of customers with debts in the system";
-        var columns = [0, 1, 2];
+        var columns = [0, 1, 2, 3, 4, 5];
     </script>
 
 
