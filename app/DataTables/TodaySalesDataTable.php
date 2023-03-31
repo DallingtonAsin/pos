@@ -24,22 +24,22 @@ class TodaySalesDataTable extends DataTable
             })->addIndexColumn()
             ->addColumn('action', function ($sale) {
 
-                $btn = '<a href="javascript:void(0);" id="view-sale"
-            data-toggle="tooltip" data-original-title="View"
-             data-id="' . $sale->id . '" class="px-3 py-1 border border-secondary rounded text-secondary mx-2 pr-4">
-            <i class="fa fa-eye" ></i></a>';
+                $btn =  '<a href="javascript:void(0);" id="view-sale"
+                         data-toggle="tooltip" data-original-title="View"
+                         data-id="' . $sale->id . '" class="px-3 py-1 border border-secondary rounded text-secondary mx-2 pr-4">
+                         <i class="fa fa-eye" ></i></a>';
 
                 if (Gate::allows('isAdmin')) {
 
                     $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
-            data-id="' . $sale->id . '" data-item="' . $sale->item . '" data-original-title="Edit" id="edit-sale"
-            class="px-3 py-1 border border-success rounded mx-2 edit-sale pr-3">
-             <span class="fa fa-pen text-success"></span></a>';
+                             data-id="' . $sale->id . '" data-item="' . $sale->item . '" data-original-title="Edit" id="edit-sale"
+                             class="px-3 py-1 border border-success rounded mx-2 edit-sale pr-3">
+                             <span class="fa fa-pen text-success"></span></a>';
 
                     $btn .= '<a href="javascript:void(0);" id="delete-sale"
-            data-toggle="tooltip" data-original-title="Delete"
-             data-id="' . $sale->id . '" class="px-3 py-1 border border-danger rounded mx-2 pl-2">
-            <span class="fa fa-trash-alt text-danger" ></span></a>';
+                             data-toggle="tooltip" data-original-title="Delete"
+                             data-id="' . $sale->id . '" class="px-3 py-1 border border-danger rounded mx-2 pl-2">
+                             <span class="fa fa-trash-alt text-danger" ></span></a>';
                 }
 
                 return $btn;

@@ -206,8 +206,6 @@ class SalesController extends Controller
     return view('pages.main.sales-with-debts');
   }
 
-
-
   public function GetSales(SalesDataTable $dataTable)
   {
     return $dataTable->render('pages.main.sales');
