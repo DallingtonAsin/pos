@@ -83,13 +83,40 @@ class SalesController extends Controller
       $volume_of_filteredsales = Sale::whereBetween('date', [$startDate, $endDate])->sum('amount');
       $netValue = $this->getCustomSalesReview($startDate, $endDate);
 
-      return DataTable::of($data)->addIndexColumn()
-        ->addColumn('checkbox', function ($sale) {
+      return DataTable::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($sale) {
+
+          $btn = "";
+
+          if (Gate::allows('isAdmin')) {
+
+            $btn .= '<a href="javascript:void(0)" data-toggle="tooltip"
+                  data-id="' . $sale->id . '" data-item="' . $sale->item . '" data-original-title="Edit" id="edit-sale"
+                  class="px-3 py-1 border border-success rounded mx-2 edit-sale pr-3">
+                  <span class="fa fa-pen text-success"></span></a>';
+
+            $btn .= '<a href="javascript:void(0);" id="delete-sale"
+                  data-toggle="tooltip" data-original-title="Delete"
+                  data-id="' . $sale->id . '" class="px-3 py-1 border border-danger rounded mx-2">
+                  <span class="fa fa-trash-alt text-danger" ></span></a>';
+          }
+
+          $btn .= '<a href="javascript:void(0);" id="view-sale"
+                  data-toggle="tooltip" data-original-title="View"
+                  data-id="' . $sale->id . '" class="px-3 py-1 border border-secondary rounded text-secondary">
+                  <i class="fa fa-eye" ></i></a>';
+
+          return $btn;
+        })->addColumn('checkbox', function ($sale) {
           $checkBox = '<input type="checkbox" id="' . $sale->id . '"/>';
           return $checkBox;
         })->addColumn('cashier', function ($sale) {
           $cashier = Helper::getUser($sale->cashier_id);
           return $cashier->first_name . ' ' . $cashier->last_name;
+        })->editColumn('date', function ($sale) {
+          $date_of_sale = $sale->date . ' ' . $sale->time;
+          return date('Y-m-d H:i A', strtotime($date_of_sale));
         })->addColumn('customer', function ($sale) {
           $customer_name = null;
           if ($sale->customer_id) {
@@ -101,28 +128,12 @@ class SalesController extends Controller
           return Helper::convertNumber($data->quantity);
         })->editColumn('selling_price', function ($data) {
           return Helper::convertNumber($data->selling_price);
-        })->editColumn('amount', function ($data) {
-          return Helper::convertNumber($data->amount);
+        })->editColumn('total_cost', function ($data) {
+          return Helper::convertNumber($data->total_cost);
         })->editColumn('discount', function ($data) {
           return Helper::convertNumber($data->discount);
-        })->addColumn('action', function ($sale) {
-
-          $btn = "";
-
-          $btn .= '<a href="javascript:void(0);" id="view-sale"
-            data-toggle="tooltip" data-original-title="View"
-             data-id="' . $sale->id . '" class="text-info bolded pl-4">
-            <i class="fa fa-eye" ></i></a>';
-
-          if (Gate::allows('isAdmin')) {
-
-            $btn .= '<a href="javascript:void(0);" id="delete-sale"
-            data-toggle="tooltip" data-original-title="Delete"
-             data-id="' . $sale->id . '" class="trash-btn pl-4">
-            <span class="fa fa-trash-alt"></span></a>';
-          }
-
-          return $btn;
+        })->editColumn('amount', function ($data) {
+          return Helper::convertNumber($data->amount);
         })->rawColumns(['action', 'checkbox'])->with([
           "totl_filtered" => $totl_filtered,
           "volume" => $volume_of_filteredsales,

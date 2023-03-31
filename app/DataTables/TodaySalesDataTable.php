@@ -49,6 +49,9 @@ class TodaySalesDataTable extends DataTable
             })->addColumn('cashier', function ($sale) {
                 $cashier = Helper::getUser($sale->cashier_id);
                 return $cashier->first_name . ' ' . $cashier->last_name;
+            })->editColumn('date', function ($sale) {
+                $date_of_sale = $sale->date . ' ' . $sale->time;
+                return date('Y-m-d H:i A', strtotime($date_of_sale));
             })->addColumn('customer', function ($sale) {
                 $customer_name = null;
                 if ($sale->customer_id) {
@@ -60,14 +63,12 @@ class TodaySalesDataTable extends DataTable
                 return Helper::convertNumber($data->quantity);
             })->editColumn('selling_price', function ($data) {
                 return Helper::convertNumber($data->selling_price);
-            })->editColumn('amount', function ($data) {
-                return Helper::convertNumber($data->amount);
-            })->editColumn('paid_amount', function ($data) {
-                return Helper::convertNumber($data->paid_amount);
-            })->editColumn('balance', function ($data) {
-                return Helper::convertNumber($data->balance);
+            })->editColumn('total_cost', function ($data) {
+                return Helper::convertNumber($data->total_cost);
             })->editColumn('discount', function ($data) {
                 return Helper::convertNumber($data->discount);
+            })->editColumn('amount', function ($data) {
+                return Helper::convertNumber($data->amount);
             })->rawColumns(['action', 'checkbox']);
     }
 
