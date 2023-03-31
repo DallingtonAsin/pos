@@ -21,7 +21,7 @@ class CashiersPerformanceDataTable extends DataTable
                 return number_format($data->totalsales);
             })->addColumn('cashier', function ($data) {
                 $user = Helper::getUser($data->cashier_id);
-                return $user->first_name . " " . $user->last_name;
+                return ucfirst($user->first_name). ' '.ucfirst($user->last_name);
             })->addColumn('percent', function ($data) {
                 $total  = TopCashier::sum('totalsales');
                 return round(($data->totalsales / $total) * 100, 2);

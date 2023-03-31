@@ -113,7 +113,7 @@ class SalesController extends Controller
           return $checkBox;
         })->addColumn('cashier', function ($sale) {
           $cashier = Helper::getUser($sale->cashier_id);
-          return $cashier->first_name . ' ' . $cashier->last_name;
+          return ucfirst($cashier->first_name) . ' ' . ucfirst($cashier->last_name);
         })->editColumn('date', function ($sale) {
           $date_of_sale = $sale->date . ' ' . $sale->time;
           return date('Y-m-d H:i A', strtotime($date_of_sale));
@@ -163,7 +163,7 @@ class SalesController extends Controller
           return $checkBox;
         })->addColumn('cashier', function ($sale) {
           $cashier = Helper::getUser($sale->cashier_id);
-          return $cashier->first_name . ' ' . $cashier->last_name;
+          return ucfirst($cashier->first_name) . ' ' . ucfirst($cashier->last_name);
         })->addColumn('customer', function ($sale) {
           $customer_name = null;
           if ($sale->customer_id) {

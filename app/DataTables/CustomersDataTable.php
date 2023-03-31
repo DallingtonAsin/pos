@@ -43,7 +43,7 @@ class CustomersDataTable extends DataTable
 
         })->editColumn('added_by', function($customer){
             $user = Helper::getUser($customer->added_by);
-            return $user->first_name. ' '.$user->last_name;
+            return ucfirst($user->first_name). ' '.ucfirst($user->last_name);
         })->addColumn('checkbox', function ($customer) {
               $checkBox = '<input type="checkbox" id="'.$customer->id.'"/>';
              return $checkBox;
