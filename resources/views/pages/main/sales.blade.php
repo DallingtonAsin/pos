@@ -330,9 +330,6 @@
                     data: 'checkbox',
                     name: 'checkbox'
                 },
-                //  {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,  searchable: false },
-                // {data: 'id', name:'id'},
-                //  {data: 'item_id', name:'item_id'},
                 {
                     data: 'item',
                     name: 'item'
@@ -346,21 +343,17 @@
                     name: 'selling_price'
                 },
                 {
-                    data: 'discount',
-                    name: 'discount'
-                },
-                {
                     data: 'total_cost',
                     name: 'total_cost'
+                },
+                {
+                    data: 'discount',
+                    name: 'discount'
                 },
                 {
                     data: 'amount',
                     name: 'amount'
                 },
-                // {
-                //     data: 'customer',
-                //     name: 'customer'
-                // },
                 {
                     data: 'cashier',
                     name: 'cashier'
@@ -413,10 +406,6 @@
                     data: 'amount',
                     name: 'amount'
                 },
-                // {
-                //     data: 'customer',
-                //     name: 'customer'
-                // },
                 {
                     data: 'cashier',
                     name: 'cashier'

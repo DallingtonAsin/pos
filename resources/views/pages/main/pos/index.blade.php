@@ -125,7 +125,7 @@
 
                                             <label class="pr-2 mt-3 text-danger">Taken on Credit ?</label>
                                             <select name="is_credit" class="form-control is_credit mt-2" id="is_credit"
-                                                readonly>
+                                                disabled>
                                                 <option value="1">Yes</option>
                                                 <option value="0" selected="true">No</option>
                                             </select>
