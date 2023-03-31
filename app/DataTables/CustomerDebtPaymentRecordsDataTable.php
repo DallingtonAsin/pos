@@ -50,7 +50,7 @@ class CustomerDebtPaymentRecordsDataTable extends DataTable
             return number_format($data->balance);
         })->editColumn('recorded_by', function ($data) {
             $user = Helper::getUser($data->recorded_by);
-            return $user->first_name. ' '.$user->last_name;
+            return ucfirst($user->first_name). ' '.ucfirst($user->last_name);
         })->addColumn('customer', function ($data) {
             $customer = Helper::getCustomer($data->customer_id);
             return $customer->name;

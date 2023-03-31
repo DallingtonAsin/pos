@@ -47,7 +47,7 @@ class StoreDataTable extends DataTable
                 return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>';
             })->editColumn('added_by', function ($store) {
                 $user = Helper::getUser($store->added_by);
-                return $user->first_name . ' ' . $user->last_name;
+                return ucfirst($user->first_name). ' '.ucfirst($user->last_name);
             })->rawColumns(['checkbox', 'is_deleted', 'action']);
     }
 

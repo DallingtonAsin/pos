@@ -53,7 +53,7 @@ class SalesWithDebtsDataTable extends DataTable
                 return $checkBox;
             })->addColumn('cashier', function ($sale) {
                 $cashier = Helper::getUser($sale->cashier_id);
-                return $cashier->first_name . ' ' . $cashier->last_name;
+                return ucfirst($cashier->first_name) . ' ' . ucfirst($cashier->last_name);
             })->addColumn('customer', function ($sale) {
                 $customer_name = null;
                 if ($sale->customer_id) {

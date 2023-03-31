@@ -48,7 +48,7 @@ class SupplierCreditDataTable extends DataTable
                 return $data->is_deleted ? '<span class="text-danger">Yes</span>' : '<span class="text-dark">No</span>';
             })->editColumn('added_by', function ($supplierCredit) {
                 $user = Helper::getUser($supplierCredit->added_by);
-                return $user->first_name . ' ' . $user->last_name;
+                return ucfirst($user->first_name). ' '.ucfirst($user->last_name);
             })->editColumn('amount', function ($supplierCredit) {
                 return number_format($supplierCredit->amount);
             })->addColumn('checkbox', function ($supplierCredit) {
