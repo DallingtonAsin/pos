@@ -55,20 +55,27 @@ class StockDataTable extends DataTable
                 $category_name = null;
                 if ($data->category_id) {
                     $category = StockCat::find($data->category_id);
-                    $category_name = $category->name;
+                    if (!empty($category->name)) {
+                        $category_name = $category->name;
+                    }
                 }
                 return $category_name;
             })->addColumn('supplier', function ($data) {
                 $supplier_name = null;
                 if ($data->supplier_id) {
                     $supplier = Supplier::find($data->supplier_id);
-                    $supplier_name = $supplier->name;
+                    if (!empty($supplier->name)) {
+                        $supplier_name = $supplier->name;
+                    }
                 }
                 return $supplier_name;
             })->addColumn('store', function ($data) {
                 $store_name = null;
                 if ($data->store_id) {
-                    return Store::find($data->store_id)->name;
+                    $store = Store::find($data->store_id);
+                    if (!empty($store->name)) {
+                        $store_name = $store->name;
+                    }
                 }
                 return $store_name;
             })->editColumn('quantity', function ($data) {
