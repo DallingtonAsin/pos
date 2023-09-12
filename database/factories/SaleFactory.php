@@ -36,7 +36,6 @@ class SaleFactory extends Factory
         'selling_price' => $this->faker->numberBetween($min = 4000, $max = 9000),
          'discount' => $this->faker->numberBetween($min = 100, $max = 700),
          'amount' => $amount,
-         'paid_amount' => $amount,
          'date' => $this->faker->date($format='Y-m-d', $max='now'),
          'time' => $this->faker->time($format = 'H:i:s', $max = 'now'),
          'cashier_id' => $cashier_id,
