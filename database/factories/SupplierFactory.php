@@ -26,9 +26,7 @@ class SupplierFactory extends Factory
       'name' => $this->faker->firstName,
       'address' => $this->faker->state,
       'contact' => $this->faker->e164phoneNumber,
-      'email' => $this->faker->unique()->safeEmail,
-      'debt' => $this->faker->numberBetween($min = 1000, $max = 9000),
-      'credit' => $this->faker->numberBetween($min = 9000, $max = 10000),
+      'email' => $this->faker->unique()->safeEmail
     ];
   }
 }
