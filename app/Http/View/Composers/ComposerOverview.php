@@ -51,7 +51,7 @@ class ComposerOverview
       $company = new Company();
       $company->name = env('COMPANY_NAME', 'Point of Sale');
       $company->abbrev = env('COMPANY_ABBREV', 'POS');
-      $company->email = env('COMPANY_EMAIL', 'info@pivosoftltd.com');
+      $company->email = env('COMPANY_EMAIL', 'info@pivosoft.com');
       $company->phone_number = env('COMPANY_PHONE_NUMBER', '+256 700477421');
       $company->address = env('COMPANY_ADDRESS', 'Ntinda, Kampala');
       $company->logo = "";

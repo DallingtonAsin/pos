@@ -23,13 +23,13 @@ POS is accessible, powerful, and provides tools required for large, robust appli
 
 ## Using POS
 
-PivoSoft has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Pivosoft has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## PivoSoft POS Sponsors
+## Pivosoft POS Sponsors
 
-We would like to extend our thanks to the following sponsors for funding POS development. If you are interested in becoming a sponsor, please visit the pos [PivoSoft page](https://pivosoftltd.com).
+We would like to extend our thanks to the following sponsors for funding POS development. If you are interested in becoming a sponsor, please visit the pos [Pivosoft website](https://pivosoft.com).
 
 - **[Vehikl](https://vehikl.com/)**
 - **[Tighten Co.](https://tighten.co)**
@@ -49,7 +49,7 @@ We would like to extend our thanks to the following sponsors for funding POS dev
 
 ## Contributing
 
-Thank you for considering contributing to the PivoSoft Ltd development! The contribution guide can be found in the [PivoSoft documentation](https://laravel.com/docs/contributions).
+Thank you for considering contributing to the Pivosoft development! The contribution guide can be found in the [Pivosoft documentation](https://laravel.com/docs/contributions).
 
 <!-- ## Security Vulnerabilities
 
@@ -57,4 +57,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 ## License
 
-The PivoSoft POS system is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Pivosoft POS system is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
